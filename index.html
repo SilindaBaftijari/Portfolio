@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silinda | Creative Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-canvas"></div>
+    
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text">SILINDA</span>
+                <span class="logo-dot"></span>
+            </div>
+            <div class="nav-menu">
+                <a href="#work" class="nav-item">Work</a>
+                <a href="#experience" class="nav-item">Experience</a>
+                <a href="#about" class="nav-item">About</a>
+                <a href="#contact" class="nav-item">Contact</a>
+            </div>
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-left">
+                <div class="hero-label">Creative Developer & Designer</div>
+                <h1 class="hero-title">
+                    <div class="title-line">Hello, I'm</div>
+                    <div class="title-line main-name">Silinda</div>
+                    <div class="title-line">Baftijari</div>
+                </h1>
+                <p class="hero-description">
+                    I craft digital experiences that blend clean aesthetics with functional design. 
+                    Currently studying Computer Science at the University of Copenhagen.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#work" class="button-primary">
+                        View My Work
+                        <span class="button-line"></span>
+                    </a>
+                    <a href="mailto:hello@silinda.design" class="button-secondary">
+                        <span>Get in Touch</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+                <div class="code-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="window-title">silinda.js</div>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>function createExperience() {
+  const design = "intuitive";
+  const code = "performant";
+  return design + " × " + code;
+}
+
+const portfolio = {
+  skills: ["UI/UX", "Frontend", "Prototyping"],
+  location: "Copenhagen",
+  status: "Building"
+};</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="indicator-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience-section" id="experience">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Experience</h2>
+                <p class="section-subtitle">Where I've worked and what I've learned</p>
+            </div>
+            
+            <div class="experience-timeline">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 — Present</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Social Media Marketing</h3>
+                        <div class="timeline-company">Phone Republik · Part-time</div>
+                        <p class="timeline-description">
+                            Managing social media strategy and content creation across multiple platforms, 
+                            focusing on brand growth and engagement optimization.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>Marketing</span>
+                            <span>Content</span>
+                            <span>Analytics</span>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2017 — Present</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Web Designer & Developer</h3>
+                        <div class="timeline-company">Phone Republik · Part-time</div>
+                        <p class="timeline-description">
+                            Designing and developing responsive websites with focus on user experience 
+                            and performance optimization.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>UI Design</span>
+                            <span>Frontend</span>
+                            <span>WordPress</span>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Mar 2025</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Freelance Web Developer</h3>
+                        <div class="timeline-company">L'arocca · Project-based</div>
+                        <p class="timeline-description">
+                            Built a custom WordPress website with responsive design and optimized performance.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>WordPress</span>
+                            <span>Elementor</span>
+                            <span>Responsive</span>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section" id="skills">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h2 class="section-title">Skills</h2>
+                <p class="section-subtitle">Tools and technologies I work with</p>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">🎨</div>
+                        <h3>Design</h3>
+                    </div>
+                    <div class="category-items">
+                        <div class="skill-item" data-level="90">
+                            <span class="skill-name">UI/UX Design</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <span class="skill-name">Prototyping</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <span class="skill-name">User Research</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <span class="skill-name">Figma</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">💻</div>
+                        <h3>Development</h3>
+                    </div>
+                    <div class="category-items">
+                        <div class="skill-item" data-level="95">
+                            <span class="skill-name">HTML/CSS</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <span class="skill-name">React</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="90">
+                            <span class="skill-name">WordPress</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">🚀</div>
+                        <h3>Tools</h3>
+                    </div>
+                    <div class="category-items">
+                        <div class="skill-item" data-level="90">
+                            <span class="skill-name">VS Code</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="85">
+                            <span class="skill-name">Git</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="80">
+                            <span class="skill-name">GSAP</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item" data-level="75">
+                            <span class="skill-name">Adobe CC</span>
+                            <div class="skill-bar">
+                                <div class="skill-level"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section" id="work">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">Selected Projects</h2>
+                <p class="section-subtitle">A showcase of my design and development work</p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-number">01</div>
+                    <div class="project-image">
+                        <div class="image-overlay">
+                            <div class="project-tags">
+                                <span>UI Design</span>
+                                <span>Prototyping</span>
+                                <span>Research</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">E-commerce Platform Redesign</h3>
+                        <p class="project-description">
+                            Complete UI/UX overhaul focusing on user journey optimization 
+                            and conversion rate improvement.
+                        </p>
+                        <div class="project-stats">
+                            <div class="stat">
+                                <div class="stat-value">+45%</div>
+                                <div class="stat-label">Conversion</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">-32%</div>
+                                <div class="stat-label">Bounce Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-link">View Case Study →</div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-number">02</div>
+                    <div class="project-image">
+                        <div class="image-overlay">
+                            <div class="project-tags">
+                                <span>Web Development</span>
+                                <span>React</span>
+                                <span>API</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">Interactive Dashboard</h3>
+                        <p class="project-description">
+                            Real-time data visualization dashboard with interactive 
+                            charts and customizable widgets.
+                        </p>
+                        <div class="project-stats">
+                            <div class="stat">
+                                <div class="stat-value">95%</div>
+                                <div class="stat-label">Performance</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">60fps</div>
+                                <div class="stat-label">Animations</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-link">View Live Demo →</div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-number">03</div>
+                    <div class="project-image">
+                        <div class="image-overlay">
+                            <div class="project-tags">
+                                <span>Mobile App</span>
+                                <span>UX Research</span>
+                                <span>Design System</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">Fitness Tracking App</h3>
+                        <p class="project-description">
+                            Mobile application with personalized workout plans 
+                            and progress tracking features.
+                        </p>
+                        <div class="project-stats">
+                            <div class="stat">
+                                <div class="stat-value">4.8★</div>
+                                <div class="stat-label">Rating</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">10k+</div>
+                                <div class="stat-label">Users</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-link">View Prototype →</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-left">
+                    <div class="section-header">
+                        <div class="section-number">04</div>
+                        <h2 class="section-title">About Me</h2>
+                        <p class="section-subtitle">Developer with empathy, designer with logic</p>
+                    </div>
+                    
+                    <div class="about-content">
+                        <p>
+                            I'm a Computer Science student at the University of Copenhagen 
+                            with a strong interest in interaction design, UI/UX, and 
+                            development of digital solutions.
+                        </p>
+                        <p>
+                            I thrive at the intersection of empathy and logic, ensuring 
+                            every pixel serves a purpose and every user feels at home.
+                        </p>
+                        
+                        <div class="education-card">
+                            <h3>Education</h3>
+                            <div class="education-item">
+                                <h4>University of Copenhagen</h4>
+                                <p>Bachelor's degree, Computer Science</p>
+                                <span class="education-date">2021 — 2025</span>
+                            </div>
+                            <div class="education-item">
+                                <h4>UNORD</h4>
+                                <p>Mathematics & Chemistry Program</p>
+                                <span class="education-date">2016 — 2021</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-right">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">3+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">24+</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">18+</div>
+                            <div class="stat-label">Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Satisfaction</div>
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-visual">
+                        <div class="visual-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <div class="visual-lines"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <div class="contact-grid">
+                <div class="contact-left">
+                    <div class="section-header">
+                        <div class="section-number">05</div>
+                        <h2 class="section-title">Let's Connect</h2>
+                        <p class="section-subtitle">Ready to create something amazing together?</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">📧</div>
+                            <div class="info-content">
+                                <h3>Email</h3>
+                                <a href="mailto:hello@silinda.design">hello@silinda.design</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div class="info-content">
+                                <h3>Location</h3>
+                                <p>Copenhagen, Denmark</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">🎓</div>
+                            <div class="info-content">
+                                <h3>Education</h3>
+                                <p>University of Copenhagen</p>
+                                <p>Computer Science BSc</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-right">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <input type="text" placeholder="Your Name" required>
+                                <div class="form-line"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" placeholder="Email Address" required>
+                                <div class="form-line"></div>
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Your Message" rows="4" required></textarea>
+                                <div class="form-line"></div>
+                            </div>
+                            <button type="submit" class="submit-button">
+                                <span>Send Message</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/silinda-baftijari-68a676228/" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-dribbble"></i>
+                            <span>Dribbble</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-codepen"></i>
+                            <span>CodePen</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">SB</div>
+                <div class="footer-text">
+                    <p>© 2025 Silinda Baftijari. All rights reserved.</p>
+                    <p>Crafted with code and care in Copenhagen.</p>
+                </div>
+            </div>
+            <button class="back-to-top">
+                <span>Back to top</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12H19M5 12L12 5M5 12L12 19" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
