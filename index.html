@@ -1,571 +1,597 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silinda | Creative Developer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Silinda | Kreativ Udvikler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Blød Organisk Palet
+                        primary: '#2D3332',      // Mørk Kulk-Grøn (Tekst)
+                        secondary: '#588157',    // Mørkere Salvie (Kontrast)
+                        accent: '#A3B18A',       // Salvie Grøn (Hovedaccent)
+                        background: '#FFF5F5',   // Blød Pink-Hvid (Baggrund)
+                        card: 'rgba(255, 255, 255, 0.7)',
+                        border: '#D1DBCE',       // Dæmpet Salvie-Kant
+                        hover: 'rgba(27, 48, 34, 0.06)',
+                        text: {
+                            primary: '#2D3332',
+                            secondary: '#4A5553',
+                            muted: '#7E8C89'
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-medium': 'float 4s ease-in-out infinite',
+                        'float-fast': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #FFF5F5; color: #2D3332; overflow-x: hidden; scroll-behavior: smooth; }
+        
+        /* Tilpassede Baggradsgradienter */
+        .bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(163, 177, 138, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(45, 51, 50, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(163, 177, 138, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        
+        /* Kodevindue Styling */
+        .code-window {
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
+            border: 1px solid #D1DBCE; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(27, 48, 34, 0.05);
+        }
+        .window-dots span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+        .window-dots span:nth-child(1) { background: #E5989B; }
+        .window-dots span:nth-child(2) { background: #FFB4A2; }
+        .window-dots span:nth-child(3) { background: #B7B7A4; }
+        
+        /* Færdigheder & Interaktive Visuelle Elementer */
+        .skill-bar { background: rgba(163, 177, 138, 0.2); height: 4px; border-radius: 2px; overflow: hidden; }
+        .skill-level { height: 100%; background: linear-gradient(90deg, #A3B18A, #588157); width: 0; transition: width 1.5s cubic-bezier(0.17, 0.55, 0.55, 1); }
+        .project-image { background: linear-gradient(135deg, rgba(163, 177, 138, 0.1), rgba(45, 51, 50, 0.05)); height: 200px; border-radius: 12px; border: 1px solid #D1DBCE; position: relative; overflow: hidden; }
+        .image-overlay { position: absolute; inset: 0; background: rgba(255, 245, 245, 0.9); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 1rem; }
+        .project-card:hover .image-overlay { opacity: 1; }
+        .project-card:hover { transform: translateY(-4px); background-color: rgba(27, 48, 34, 0.06); }
+        
+        .visual-lines {
+            position: absolute; inset: 0;
+            background: 
+                linear-gradient(90deg, transparent 49%, rgba(163, 177, 138, 0.15) 50%, transparent 51%),
+                linear-gradient(transparent 49%, rgba(163, 177, 138, 0.15) 50%, transparent 51%);
+        }
+
+        /* Tilpassede Ikoner */
+        .custom-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(163, 177, 138, 0.15), rgba(88, 129, 87, 0.1));
+            border: 1px solid rgba(209, 219, 206, 0.5);
+            color: #588157;
+            font-size: 1.2rem;
+        }
+
+        /* Uddannelse Kort */
+        .education-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #D1DBCE;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .education-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(27, 48, 34, 0.08);
+            border-color: #A3B18A;
+        }
+
+        /* Erfarings Tidslinje */
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #A3B18A;
+            border: 3px solid #FFF5F5;
+            border-radius: 50%;
+            position: absolute;
+            left: -6px;
+            top: 5px;
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-menu { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(255, 245, 245, 0.98); backdrop-filter: blur(10px); flex-direction: column; justify-content: center; align-items: center; transition: right 0.3s ease; z-index: 40; }
+            .nav-menu.active { right: 0; }
+        }
+    </style>
 </head>
-<body>
-    <!-- Animated Background -->
+<body class="font-inter">
     <div class="bg-canvas"></div>
     
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-text">SILINDA</span>
-                <span class="logo-dot"></span>
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-bold text-primary tracking-tight">SILINDA</span>
+                <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
             </div>
-            <div class="nav-menu">
-                <a href="#work" class="nav-item">Work</a>
-                <a href="#experience" class="nav-item">Experience</a>
-                <a href="#about" class="nav-item">About</a>
-                <a href="#contact" class="nav-item">Contact</a>
+            <div class="nav-menu hidden md:flex items-center space-x-8">
+                <a href="#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
+                <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
             </div>
-            <button class="menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50">
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-container">
-            <div class="hero-left">
-                <div class="hero-label">Creative Developer & Designer</div>
-                <h1 class="hero-title">
-                    <div class="title-line">Hello, I'm</div>
-                    <div class="title-line main-name">Silinda</div>
-                    <div class="title-line">Baftijari</div>
+    <section class="min-h-screen flex items-center pt-16 pb-20 px-4 md:px-8">
+        <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Kreativ Udvikler & Designer</div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                    <div class="text-text-secondary">Hej, jeg er</div>
+                    <div class="gradient-text my-2">Silinda</div>
+                    <div class="text-primary">Baftijari</div>
                 </h1>
-                <p class="hero-description">
-                    I craft digital experiences that blend clean aesthetics with functional design. 
-                    Currently studying Computer Science at the University of Copenhagen.
+                <p class="text-text-secondary text-lg mb-8 max-w-lg leading-relaxed">
+                    Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
                 </p>
-                <div class="hero-buttons">
-                    <a href="#work" class="button-primary">
-                        View My Work
-                        <span class="button-line"></span>
-                    </a>
-                    <a href="mailto:hello@silinda.design" class="button-secondary">
-                        <span>Get in Touch</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#arbejde" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-colors">Se mit arbejde</a>
+                    <a href="mailto:hello@silinda.design" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all">
+                        <span>Kontakt mig</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
-            <div class="hero-right">
-                <div class="floating-shapes">
-                    <div class="shape shape-1"></div>
-                    <div class="shape shape-2"></div>
-                    <div class="shape shape-3"></div>
+            <div class="relative">
+                <div class="absolute inset-0">
+                    <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-accent/20 rounded-full blur-2xl animate-float-slow"></div>
                 </div>
-                <div class="code-visual">
-                    <div class="code-window">
-                        <div class="window-header">
-                            <div class="window-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="window-title">silinda.js</div>
-                        </div>
-                        <div class="code-content">
-                            <pre><code>function createExperience() {
-  const design = "intuitive";
-  const code = "performant";
-  return design + " × " + code;
-}
-
-const portfolio = {
-  skills: ["UI/UX", "Frontend", "Prototyping"],
-  location: "Copenhagen",
-  status: "Building"
-};</code></pre>
-                        </div>
+                <div class="relative code-window">
+                    <div class="flex items-center px-4 py-3 border-b border-border bg-white/40">
+                        <div class="window-dots flex gap-1.5"><span></span><span></span><span></span></div>
+                        <div class="ml-4 text-xs font-mono text-text-muted uppercase tracking-widest">silinda.js</div>
+                    </div>
+                    <div class="p-6">
+                        <pre class="text-sm text-text-secondary font-mono"><code><span class="text-secondary">function</span> <span class="text-primary">skabOplevelse</span>() {
+  <span class="text-secondary">const</span> design = <span class="text-accent">"intuitivt"</span>;
+  <span class="text-secondary">const</span> kode = <span class="text-accent">"performant"</span>;
+  <span class="text-secondary">return</span> design + <span class="text-text-muted">" × "</span> + kode;
+}</code></pre>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="scroll-indicator">
-            <div class="indicator-line"></div>
-            <span>Scroll</span>
-        </div>
     </section>
 
-    <!-- Experience Section -->
-    <section class="experience-section" id="experience">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-number">01</div>
-                <h2 class="section-title">Experience</h2>
-                <p class="section-subtitle">Where I've worked and what I've learned</p>
+    <section id="erfaring" class="py-20 px-4 md:px-8 bg-white/30">
+        <div class="container mx-auto max-w-4xl">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">01</div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2">Erfaring</h2>
+                    <p class="text-text-secondary">Fuld professionel historik</p>
+                </div>
             </div>
             
-            <div class="experience-timeline">
-                <div class="timeline-line"></div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">2023 — Present</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-title">Social Media Marketing</h3>
-                        <div class="timeline-company">Phone Republik · Part-time</div>
-                        <p class="timeline-description">
-                            Managing social media strategy and content creation across multiple platforms, 
-                            focusing on brand growth and engagement optimization.
-                        </p>
-                        <div class="timeline-tags">
-                            <span>Marketing</span>
-                            <span>Content</span>
-                            <span>Analytics</span>
-                        </div>
-                    </div>
+            <!-- Phone Republik - Marketing på sociale medier -->
+            <div class="relative pl-8 border-l-2 border-accent/30 mb-16">
+                <div class="relative mb-8">
                     <div class="timeline-dot"></div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">2017 — Present</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-title">Web Designer & Developer</h3>
-                        <div class="timeline-company">Phone Republik · Part-time</div>
-                        <p class="timeline-description">
-                            Designing and developing responsive websites with focus on user experience 
-                            and performance optimization.
-                        </p>
-                        <div class="timeline-tags">
-                            <span>UI Design</span>
-                            <span>Frontend</span>
-                            <span>WordPress</span>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
+                            <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
                         </div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Mar 2025</div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-title">Freelance Web Developer</h3>
-                        <div class="timeline-company">L'arocca · Project-based</div>
-                        <p class="timeline-description">
-                            Built a custom WordPress website with responsive design and optimized performance.
-                        </p>
-                        <div class="timeline-tags">
-                            <span>WordPress</span>
-                            <span>Elementor</span>
-                            <span>Responsive</span>
-                        </div>
-                    </div>
-                    <div class="timeline-dot"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section class="skills-section" id="skills">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-number">02</div>
-                <h2 class="section-title">Skills</h2>
-                <p class="section-subtitle">Tools and technologies I work with</p>
-            </div>
-            
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">🎨</div>
-                        <h3>Design</h3>
-                    </div>
-                    <div class="category-items">
-                        <div class="skill-item" data-level="90">
-                            <span class="skill-name">UI/UX Design</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">Prototyping</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">User Research</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">Figma</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">💻</div>
-                        <h3>Development</h3>
-                    </div>
-                    <div class="category-items">
-                        <div class="skill-item" data-level="95">
-                            <span class="skill-name">HTML/CSS</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">JavaScript</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">React</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="90">
-                            <span class="skill-name">WordPress</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">🚀</div>
-                        <h3>Tools</h3>
-                    </div>
-                    <div class="category-items">
-                        <div class="skill-item" data-level="90">
-                            <span class="skill-name">VS Code</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="85">
-                            <span class="skill-name">Git</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="80">
-                            <span class="skill-name">GSAP</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item" data-level="75">
-                            <span class="skill-name">Adobe CC</span>
-                            <div class="skill-bar">
-                                <div class="skill-level"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section class="projects-section" id="work">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-number">03</div>
-                <h2 class="section-title">Selected Projects</h2>
-                <p class="section-subtitle">A showcase of my design and development work</p>
-            </div>
-            
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-number">01</div>
-                    <div class="project-image">
-                        <div class="image-overlay">
-                            <div class="project-tags">
-                                <span>UI Design</span>
-                                <span>Prototyping</span>
-                                <span>Research</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-title">E-commerce Platform Redesign</h3>
-                        <p class="project-description">
-                            Complete UI/UX overhaul focusing on user journey optimization 
-                            and conversion rate improvement.
-                        </p>
-                        <div class="project-stats">
-                            <div class="stat">
-                                <div class="stat-value">+45%</div>
-                                <div class="stat-label">Conversion</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">-32%</div>
-                                <div class="stat-label">Bounce Rate</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-link">View Case Study →</div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-number">02</div>
-                    <div class="project-image">
-                        <div class="image-overlay">
-                            <div class="project-tags">
-                                <span>Web Development</span>
-                                <span>React</span>
-                                <span>API</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-title">Interactive Dashboard</h3>
-                        <p class="project-description">
-                            Real-time data visualization dashboard with interactive 
-                            charts and customizable widgets.
-                        </p>
-                        <div class="project-stats">
-                            <div class="stat">
-                                <div class="stat-value">95%</div>
-                                <div class="stat-label">Performance</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">60fps</div>
-                                <div class="stat-label">Animations</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-link">View Live Demo →</div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-number">03</div>
-                    <div class="project-image">
-                        <div class="image-overlay">
-                            <div class="project-tags">
-                                <span>Mobile App</span>
-                                <span>UX Research</span>
-                                <span>Design System</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-title">Fitness Tracking App</h3>
-                        <p class="project-description">
-                            Mobile application with personalized workout plans 
-                            and progress tracking features.
-                        </p>
-                        <div class="project-stats">
-                            <div class="stat">
-                                <div class="stat-value">4.8★</div>
-                                <div class="stat-label">Rating</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value">10k+</div>
-                                <div class="stat-label">Users</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-link">View Prototype →</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about-section" id="about">
-        <div class="section-container">
-            <div class="about-grid">
-                <div class="about-left">
-                    <div class="section-header">
-                        <div class="section-number">04</div>
-                        <h2 class="section-title">About Me</h2>
-                        <p class="section-subtitle">Developer with empathy, designer with logic</p>
+                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
                     </div>
                     
-                    <div class="about-content">
-                        <p>
-                            I'm a Computer Science student at the University of Copenhagen 
-                            with a strong interest in interaction design, UI/UX, and 
-                            development of digital solutions.
+                    <div class="bg-card p-6 rounded-xl border border-border mb-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="custom-icon">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-primary">Marketing på sociale medier</h4>
+                                <div class="text-sm text-text-secondary">Fuldtid · Fjernarbejde</div>
+                            </div>
+                        </div>
+                        <p class="text-text-secondary leading-relaxed mb-4">
+                            Jeg er ansvarlig for Phone Republik's sociale medier, herunder Instagram, TikTok og Facebook. I denne rolle arbejder jeg på at styrke virksomhedens online tilstedeværelse ved at skabe engagerende indhold og strategier.
                         </p>
-                        <p>
-                            I thrive at the intersection of empathy and logic, ensuring 
-                            every pixel serves a purpose and every user feels at home.
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Digital marketing</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Sociale medier</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Webdesigner student -->
+                    <div class="bg-card p-6 rounded-xl border border-border">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="custom-icon">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-primary">Webdesigner studentermedhjælper</h4>
+                                <div class="text-sm text-text-secondary">Praktik · jan. 2017 - nu · 9 år</div>
+                            </div>
+                        </div>
+                        <p class="text-text-secondary leading-relaxed mb-4">
+                            I rollen som studentermedhjælper hos Phone Republik er jeg ansvarlig for at assistere med design og optimering af virksomhedens hjemmeside. Mit arbejde omfatter UI/UX-design, hvor jeg arbejder på at forbedre brugeroplevelsen.
                         </p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">UI/UX Design</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Front-end Udvikling</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webdesign</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Optimering</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slagsassistent -->
+            <div class="relative pl-8 border-l-2 border-accent/30 mb-16">
+                <div class="relative mb-8">
+                    <div class="timeline-dot"></div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
+                            <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
+                        </div>
+                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
+                    </div>
+                    <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Detailhandel</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- L'ancora Freelance -->
+            <div class="relative pl-8 border-l-2 border-accent/30">
+                <div class="relative">
+                    <div class="timeline-dot"></div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
+                            <div class="text-text-secondary">L'ancora · Freelance</div>
+                        </div>
+                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 1 md.</div>
+                    </div>
+                    <div class="text-text-secondary mb-4">Fjernarbejde</div>
+                    <p class="text-text-secondary leading-relaxed mb-6">
+                        Designede og udviklede L'ancoras hjemmeside fra bunden i WordPress med brug af Elementor. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">WordPress</span>
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webudvikling</span>
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Responsivt design</span>
+                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Elementor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kompetencer" class="py-20 px-4 md:px-8">
+        <div class="container mx-auto">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">02</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-primary">Kompetencer & Teknologier</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Design Kompetencer -->
+                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="custom-icon">
+                            <i class="fa-solid fa-pen-ruler"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary">Design</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">UI/UX Design</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">Prototyper</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">Brugerresearch</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">Figma</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Udvikling Kompetencer -->
+                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="custom-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary">Udvikling</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">HTML/CSS</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">JavaScript</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">React</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">WordPress</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Værktøjer -->
+                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="custom-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary">Værktøjer</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">VS Code</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">Git</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">GSAP</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <i class="fa-solid fa-circle text-accent text-xs"></i>
+                            <span class="text-text-secondary">Adobe CC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="arbejde" class="py-20 px-4 md:px-8 bg-white/20">
+        <div class="container mx-auto">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">03</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-primary">Udvalgte Projekter</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
+                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">UI DESIGN</span></div></div>
+                    <h3 class="text-xl font-bold text-primary mb-3">E-handel Redesign</h3>
+                    <p class="text-text-secondary text-sm mb-6">Komplet UI/UX overhaling med fokus på brugerrejseoptimering.</p>
+                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Case Study →</div>
+                </div>
+                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
+                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">UDVIKLING</span></div></div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Data Dashboard</h3>
+                    <p class="text-text-secondary text-sm mb-6">Realtid visualiseringsdashboard med interaktive widgets.</p>
+                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Live Demo →</div>
+                </div>
+                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
+                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">MOBIL</span></div></div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Fitness App</h3>
+                    <p class="text-text-secondary text-sm mb-6">Mobilapp til personlig træningsregistrering.</p>
+                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Prototype →</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="om-mig" class="py-20 px-4 md:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">04</div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2">Om mig</h2>
+                    <p class="text-text-secondary text-lg">Udvikler med empati, designer med logik</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <p class="text-text-secondary text-lg leading-relaxed mb-6">
+                        Jeg er en Datalogistuderende på Københavns Universitet med en stærk interesse for interaktionsdesign, UI/UX og udvikling af digitale løsninger.
+                    </p>
+                    <p class="text-text-secondary text-lg leading-relaxed mb-8">
+                        Jeg trives i krydsfeltet mellem empati og logik og sikrer, at hvert pixel har en mening og hver bruger føler sig hjemme.
+                    </p>
+                    
+                    <!-- Statistikker -->
+                    <div class="grid grid-cols-2 gap-6 mb-12">
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">3+</div>
+                            <div class="text-text-secondary font-medium">Års erfaring</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">24+</div>
+                            <div class="text-text-secondary font-medium">Projekter</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">18+</div>
+                            <div class="text-text-secondary font-medium">Kunder</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">100%</div>
+                            <div class="text-text-secondary font-medium">Tilfredshed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Uddannelse -->
+                <div>
+                    <div class="bg-card p-8 rounded-2xl border border-border shadow-sm mb-8">
+                        <h3 class="text-xl font-bold text-primary mb-8">Uddannelse</h3>
                         
-                        <div class="education-card">
-                            <h3>Education</h3>
-                            <div class="education-item">
-                                <h4>University of Copenhagen</h4>
-                                <p>Bachelor's degree, Computer Science</p>
-                                <span class="education-date">2021 — 2025</span>
-                            </div>
-                            <div class="education-item">
-                                <h4>UNORD</h4>
-                                <p>Mathematics & Chemistry Program</p>
-                                <span class="education-date">2016 — 2021</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="about-right">
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-number">3+</div>
-                            <div class="stat-label">Years Experience</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">24+</div>
-                            <div class="stat-label">Projects</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">18+</div>
-                            <div class="stat-label">Clients</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100%</div>
-                            <div class="stat-label">Satisfaction</div>
-                        </div>
-                    </div>
-                    
-                    <div class="interactive-visual">
-                        <div class="visual-dots">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                        </div>
-                        <div class="visual-lines"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <div class="section-container">
-            <div class="contact-grid">
-                <div class="contact-left">
-                    <div class="section-header">
-                        <div class="section-number">05</div>
-                        <h2 class="section-title">Let's Connect</h2>
-                        <p class="section-subtitle">Ready to create something amazing together?</p>
-                    </div>
-                    
-                    <div class="contact-info">
-                        <div class="info-item">
-                            <div class="info-icon">📧</div>
-                            <div class="info-content">
-                                <h3>Email</h3>
-                                <a href="mailto:hello@silinda.design">hello@silinda.design</a>
+                        <!-- Københavns Universitet -->
+                        <div class="mb-8">
+                            <div class="flex items-start gap-4 mb-4">
+                                <div class="custom-icon mt-1">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-primary mb-1">Københavns Universitet</h4>
+                                    <p class="text-text-secondary mb-2">Bachelor i Datalogi</p>
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 rounded-full text-sm text-secondary">
+                                        <i class="fa-solid fa-calendar text-xs"></i>
+                                        <span>2021 – 2025</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="info-item">
-                            <div class="info-icon">📍</div>
-                            <div class="info-content">
-                                <h3>Location</h3>
-                                <p>Copenhagen, Denmark</p>
+                        <!-- UNORD -->
+                        <div>
+                            <div class="flex items-start gap-4 mb-4">
+                                <div class="custom-icon mt-1">
+                                    <i class="fa-solid fa-school"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-primary mb-1">UNORD</h4>
+                                    <p class="text-text-secondary mb-2">Matematik & Kemi Program</p>
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 rounded-full text-sm text-secondary">
+                                        <i class="fa-solid fa-calendar text-xs"></i>
+                                        <span>2018 – 2021</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="info-item">
-                            <div class="info-icon">🎓</div>
-                            <div class="info-content">
-                                <h3>Education</h3>
-                                <p>University of Copenhagen</p>
-                                <p>Computer Science BSc</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-right">
-                    <div class="contact-form">
-                        <form id="contactForm">
-                            <div class="form-group">
-                                <input type="text" placeholder="Your Name" required>
-                                <div class="form-line"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" placeholder="Email Address" required>
-                                <div class="form-line"></div>
-                            </div>
-                            <div class="form-group">
-                                <textarea placeholder="Your Message" rows="4" required></textarea>
-                                <div class="form-line"></div>
-                            </div>
-                            <button type="submit" class="submit-button">
-                                <span>Send Message</span>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/silinda-baftijari-68a676228/" target="_blank" class="social-link">
-                            <i class="fab fa-linkedin"></i>
-                            <span>LinkedIn</span>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-github"></i>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-dribbble"></i>
-                            <span>Dribbble</span>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-codepen"></i>
-                            <span>CodePen</span>
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-logo">SB</div>
-                <div class="footer-text">
-                    <p>© 2025 Silinda Baftijari. All rights reserved.</p>
-                    <p>Crafted with code and care in Copenhagen.</p>
-                </div>
+    <section id="kontakt" class="py-20 px-4 md:px-8">
+        <div class="container mx-auto max-w-4xl bg-card border border-border rounded-3xl p-12 shadow-xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold text-primary mb-4">Lad os vokse sammen.</h2>
+                <p class="text-text-secondary">Klar til at starte din næste digitale rejse?</p>
             </div>
-            <button class="back-to-top">
-                <span>Back to top</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12H19M5 12L12 5M5 12L12 19" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            </button>
+            <form class="grid md:grid-cols-2 gap-8">
+                <input type="text" placeholder="Dit navn" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
+                <input type="email" placeholder="E-mailadresse" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
+                <textarea placeholder="Din besked" rows="4" class="md:col-span-2 bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors"></textarea>
+                <div class="md:col-span-2 text-center">
+                    <button class="px-10 py-4 bg-primary text-white rounded-full font-bold hover:bg-secondary transition-all transform hover:-translate-y-1">Send besked</button>
+                </div>
+            </form>
+            <div class="flex justify-center gap-6 mt-12">
+                <a href="#" class="text-text-muted hover:text-secondary text-2xl"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="text-text-muted hover:text-secondary text-2xl"><i class="fa-brands fa-github"></i></a>
+            </div>
         </div>
+    </section>
+
+    <footer class="py-12 border-t border-border text-center">
+        <p class="text-text-muted text-sm">© 2025 Silinda Baftijari. Bygget med Salvie & Omsorg.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        menuToggle.addEventListener('click', () => { navMenu.classList.toggle('active'); });
+
+        // GSAP Initialization
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate skill bars
+        document.querySelectorAll('.skill-level').forEach(level => {
+            const targetWidth = level.getAttribute('data-level');
+            ScrollTrigger.create({
+                trigger: level, start: 'top 90%',
+                onEnter: () => level.style.width = targetWidth
+            });
+        });
+
+        // Section Fade
+        gsap.utils.toArray('section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: { trigger: section, start: 'top 85%' },
+                y: 30, opacity: 0, duration: 1, ease: 'power2.out'
+            });
+        });
+
+        // Animate education cards on hover
+        document.querySelectorAll('.education-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.03,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
