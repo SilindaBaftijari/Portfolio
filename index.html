@@ -83,8 +83,10 @@
         .skill-bar { background: rgba(163, 177, 138, 0.2); height: 4px; border-radius: 2px; overflow: hidden; }
         .skill-level { height: 100%; background: linear-gradient(90deg, #A3B18A, #588157); width: 0; transition: width 1.5s cubic-bezier(0.17, 0.55, 0.55, 1); }
         .project-image { background: linear-gradient(135deg, rgba(163, 177, 138, 0.1), rgba(45, 51, 50, 0.05)); height: 200px; border-radius: 12px; border: 1px solid #D1DBCE; position: relative; overflow: hidden; }
+        .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .image-overlay { position: absolute; inset: 0; background: rgba(255, 245, 245, 0.9); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 1rem; }
         .project-card:hover .image-overlay { opacity: 1; }
+        .project-card:hover img { transform: scale(1.05); }
         .project-card:hover { transform: translateY(-4px); background-color: rgba(27, 48, 34, 0.06); }
         
         .visual-lines {
@@ -442,24 +444,46 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-primary">Udvalgte Projekter</h2>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
+
+                <!-- Phone Republik -->
                 <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
-                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">UI DESIGN</span></div></div>
-                    <h3 class="text-xl font-bold text-primary mb-3">E-handel Redesign</h3>
-                    <p class="text-text-secondary text-sm mb-6">Komplet UI/UX overhaling med fokus på brugerrejseoptimering.</p>
-                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Case Study →</div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="/Users/silindabaftijari/Desktop/Portfolie/image/Phone Republik.png" alt="Data Dashboard interface" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Phone Republik</h3>
+                    <p class="text-text-secondary text-sm mb-6">Digital serviceplatform skabt til at forene teknisk ekspertise med en intuitiv brugeroplevelse. 
+                        Jeg har designet og udviklet en responsiv løsning, der optimerer kunderejsen fra prissøgning til booking af reparation.</p>
+                    <a href="https://phonerepublik.dk/" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Besøg hjemmesiden →</a>
                 </div>
+
+                <!-- L'ancora Projekt -->
                 <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
-                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">UDVIKLING</span></div></div>
-                    <h3 class="text-xl font-bold text-primary mb-3">Data Dashboard</h3>
-                    <p class="text-text-secondary text-sm mb-6">Realtid visualiseringsdashboard med interaktive widgets.</p>
-                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Live Demo →</div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="/Users/silindabaftijari/Desktop/Portfolie/image/Lancora.png" alt="L'ancora hjemmeside forside" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">L'ancora Hjemmeside</h3>
+                    <p class="text-text-secondary text-sm mb-6">Fra dej til digital. Jeg har stået for den fulde rejse fra designudkast til lancering. En visuelt indbydende WordPress-løsning, der er lynhurtig, mobiloptimeret og skræddersyet til unge gæster.</p>
+                    <a href="https://www.lancora.dk/" target="_blank" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Besøg hjemmesiden →</a>
                 </div>
+                
+                
+                <!-- Fitness App Projekt -->
                 <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all">
-                    <div class="project-image mb-6"><div class="image-overlay"><span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-bold">MOBIL</span></div></div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="fitness-app-screenshot.jpg" alt="Fitness App interface" class="w-full h-full object-cover">
+                    </div>
                     <h3 class="text-xl font-bold text-primary mb-3">Fitness App</h3>
-                    <p class="text-text-secondary text-sm mb-6">Mobilapp til personlig træningsregistrering.</p>
-                    <div class="text-secondary font-bold text-sm uppercase tracking-widest">Prototype →</div>
+                    <p class="text-text-secondary text-sm mb-6">Mobilapp til personlig træningsregistrering og træningsplanlægning med progress tracking.</p>
+                    <a href="#fitness-prototype" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Se Prototype →</a>
                 </div>
+            </div>
+            
+            <!-- Se mere knap som link til ny side -->
+            <div class="text-center mt-12">
+                <a href="all-projects.html" class="inline-block px-8 py-3 bg-accent text-white rounded-lg font-medium hover:bg-secondary transition-colors flex items-center gap-2 mx-auto">
+                    <span>Se alle projekter</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -570,7 +594,7 @@
     </section>
 
     <footer class="py-12 border-t border-border text-center">
-        <p class="text-text-muted text-sm">© 2025 Silinda Baftijari. Skaber rammerne for din fortælling.</p>
+        <p class="text-text-muted text-sm">© 2025 Silinda Baftijari. Dedikeret til detaljen.</p>
     </footer>
 
     <script>
@@ -604,6 +628,25 @@
             card.addEventListener('mouseenter', () => {
                 gsap.to(card, {
                     scale: 1.03,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Add hover effect for project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.02,
                     duration: 0.3,
                     ease: 'power2.out'
                 });

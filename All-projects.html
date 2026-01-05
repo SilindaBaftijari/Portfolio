@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alle Projekter | Silinda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2D3332',
+                        secondary: '#588157',
+                        accent: '#A3B18A',
+                        background: '#FFF5F5',
+                        card: 'rgba(255, 255, 255, 0.7)',
+                        border: '#D1DBCE',
+                        hover: 'rgba(27, 48, 34, 0.06)',
+                        text: {
+                            primary: '#2D3332',
+                            secondary: '#4A5553',
+                            muted: '#7E8C89'
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #FFF5F5; color: #2D3332; overflow-x: hidden; scroll-behavior: smooth; }
+        
+        /* Tilpassede Baggradsgradienter */
+        .bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(163, 177, 138, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(45, 51, 50, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(163, 177, 138, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        
+        /* Mappe Animation */
+        .folder-container {
+            position: relative;
+            width: 80px;
+            height: 70px;
+            margin-bottom: 25px;
+        }
+
+        .folder-icon {
+            position: absolute;
+            font-size: 5rem;
+            color: #A3B18A;
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+
+        .folder-icon.open {
+            color: #588157;
+            opacity: 0;
+            transform: translateY(10px) scale(1.05);
+            z-index: 1;
+        }
+
+        .project-card:hover .folder-icon.closed {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .project-card:hover .folder-icon.open {
+            opacity: 1;
+            transform: translateY(0) scale(1.05);
+        }
+
+        /* Projekt Kort Styling */
+        .project-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #D1DBCE;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(27, 48, 34, 0.05);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: #A3B18A;
+            box-shadow: 0 15px 40px rgba(27, 48, 34, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Tech Tags */
+        .tech-tag {
+            background: rgba(163, 177, 138, 0.15);
+            color: #588157;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(88, 129, 87, 0.2);
+        }
+
+        /* Tilpassede Knapper */
+        .view-btn {
+            background: linear-gradient(90deg, #A3B18A, #588157);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .view-btn:hover {
+            background: linear-gradient(90deg, #588157, #A3B18A);
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(88, 129, 87, 0.2);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #4A5553;
+            border: 2px solid #D1DBCE;
+            padding: 10px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(163, 177, 138, 0.1);
+            border-color: #A3B18A;
+            color: #588157;
+        }
+
+        /* Responsive grid */
+        @media (max-width: 768px) {
+            .project-card {
+                padding: 24px;
+            }
+            
+            .folder-container {
+                width: 70px;
+                height: 60px;
+            }
+            
+            .folder-icon {
+                font-size: 4rem;
+            }
+        }
+
+        /* Navigation Menu */
+        .nav-menu.active {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="font-inter">
+    <div class="bg-canvas"></div>
+    
+    <!-- Navigation -->
+    <nav class="sticky top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/70 backdrop-blur-md border-b border-border">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2 no-underline">
+                <span class="text-xl font-bold text-primary tracking-tight hover:text-accent transition-colors">SILINDA</span>
+                <div class="w-2 h-2 bg-accent rounded-full"></div>
+            </a>
+            <div class="nav-menu hidden md:flex items-center space-x-8">
+                <a href="index.html#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
+                <a href="index.html#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                <a href="index.html#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                <a href="index.html#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                <a href="index.html#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+            </div>
+            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50">
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-8 pb-20 px-4 md:px-8">
+        <div class="container mx-auto">
+            <!-- Header -->
+            <header class="text-center mb-12">
+                <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Samling af Projekter</div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                    <div class="text-text-secondary">Alle</div>
+                    <div class="gradient-text my-2">Projekter</div>
+                </h1>
+                <p class="text-text-secondary text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+                    En komplet oversigt over mine udviklingsprojekter, der spænder fra webapplikationer til AI-systemer og mobilapps.
+                </p>
+                <a href="index.html#arbejde" class="back-btn inline-flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Tilbage til hjemmesiden</span>
+                </a>
+            </header>
+            
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1: TDSB Homework Management Interface -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">TDSB Homework Management Interface</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        En applikation udviklet for Toronto District School Board med Flask back-end og Vue front-end.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">Python (Flask)</span>
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">Bootstrap</span>
+                        <span class="tech-tag">SQL</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Projekt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 2: Adam A.I. -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Adam A.I.</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        En selvlærende AI, der lærer at navigere gennem komplekse labyrinter ved hjælp af genetiske algoritmer.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">HTML/CSS</span>
+                        <span class="tech-tag">AI/ML</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Projekt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 3: Game Centre -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Game Centre</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        En Android-app med tre brætspil, inklusive multiplayer, autosave og brugerautentificering.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Android Studio</span>
+                        <span class="tech-tag">Mobile</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Projekt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 4: Distributed Logging and Monitoring System -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Distributed Logging and Monitoring System</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Et system der etablerer ORM-forbindelse til en Prisma-klient for at kommunikere logs fra mikrotjenester.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">Node.js (Express.js)</span>
+                        <span class="tech-tag">React.js</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Microservices</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Projekt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 5: Minimax Stonehenge -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Minimax Stonehenge</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Et to-spiller, nul-sum spil med en strategisk Minimax kunstig intelligens.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">AI</span>
+                        <span class="tech-tag">Game Development</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Projekt
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 6: L'ancora Hjemmeside (from your main page) -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">L'ancora Hjemmeside</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Fra dej til digital. En WordPress-løsning, der er lynhurtig, mobiloptimeret og skræddersyet til unge gæster.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">WordPress</span>
+                        <span class="tech-tag">Elementor</span>
+                        <span class="tech-tag">Webdesign</span>
+                        <span class="tech-tag">Responsivt Design</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <a href="https://www.lancora.dk/" target="_blank" class="view-btn w-full text-center block">
+                            <i class="fa-solid fa-external-link-alt mr-2"></i>
+                            Besøg Hjemmesiden
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project 7: Data Dashboard (from your main page) -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Data Dashboard</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Realtid visualiseringsdashboard med interaktive widgets og data-analyseredskaber.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">Data Visualization</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Case Study
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 8: Fitness App (from your main page) -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Fitness App</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Mobilapp til personlig træningsregistrering og træningsplanlægning med progress tracking.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Mobile App</span>
+                        <span class="tech-tag">Fitness</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            Se Prototype
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 9: Portfolio Website (this site) -->
+                <div class="project-card">
+                    <div class="folder-container">
+                        <i class="folder-icon closed fas fa-folder"></i>
+                        <i class="folder-icon open fas fa-folder-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-3">Portfolio Website</h3>
+                    <p class="text-text-secondary text-base mb-6 leading-relaxed flex-grow">
+                        Denne portfolio-hjemmeside med moderne design, interaktive animationer og responsivt layout.
+                    </p>
+                    <div class="tech-stack flex flex-wrap gap-2 mb-6">
+                        <span class="tech-tag">HTML/CSS</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Tailwind CSS</span>
+                        <span class="tech-tag">GSAP</span>
+                    </div>
+                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
+                        <button class="view-btn w-full">
+                            <i class="fa-solid fa-code mr-2"></i>
+                            Se Kode
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="mt-20 pt-12 border-t border-border/50">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-6 bg-card rounded-2xl border border-border">
+                        <div class="text-3xl font-bold text-secondary mb-2">9+</div>
+                        <div class="text-text-secondary font-medium">Projekter</div>
+                    </div>
+                    <div class="p-6 bg-card rounded-2xl border border-border">
+                        <div class="text-3xl font-bold text-secondary mb-2">8+</div>
+                        <div class="text-text-secondary font-medium">Teknologier</div>
+                    </div>
+                    <div class="p-6 bg-card rounded-2xl border border-border">
+                        <div class="text-3xl font-bold text-secondary mb-2">3+</div>
+                        <div class="text-text-secondary font-medium">Års erfaring</div>
+                    </div>
+                    <div class="p-6 bg-card rounded-2xl border border-border">
+                        <div class="text-3xl font-bold text-secondary mb-2">100%</div>
+                        <div class="text-text-secondary font-medium">Engagement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 border-t border-border text-center bg-white/50">
+        <div class="container mx-auto">
+            <p class="text-text-muted text-sm mb-4">© 2025 Silinda Baftijari. Dedikeret til detaljen.</p>
+            <div class="flex justify-center gap-6">
+                <a href="#" class="text-text-muted hover:text-secondary text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="text-text-muted hover:text-secondary text-xl"><i class="fa-brands fa-github"></i></a>
+                <a href="index.html#kontakt" class="text-text-muted hover:text-secondary text-xl"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => { 
+                navMenu.classList.toggle('active'); 
+            });
+        }
+
+        // Project card click functionality
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.tagName === 'A') return; // Skip if it's already a link
+                
+                const projectCard = this.closest('.project-card');
+                const projectTitle = projectCard.querySelector('h3').textContent;
+                
+                // In a real implementation, this would navigate to the project page
+                // For now, show a message
+                alert(`Åbner projekt: ${projectTitle}\n\nDette ville normalt navigere til projektets side eller GitHub repository.`);
+            });
+        });
+
+        // Add hover effect for project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
