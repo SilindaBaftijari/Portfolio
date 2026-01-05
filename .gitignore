@@ -1,2 +1,6 @@
 image/Lancora.png
 image/*.png
+image/
+*.png
+*.jpg
+*.jpeg
