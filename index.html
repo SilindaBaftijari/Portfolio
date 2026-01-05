@@ -122,7 +122,28 @@
             border-color: #A3B18A;
         }
 
-        /* Erfarings Tidslinje */
+        /* Erfarings Tidslinje - FIXED */
+        .timeline-container {
+            position: relative;
+            margin-left: 1rem;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(163, 177, 138, 0.3);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+
         .timeline-dot {
             width: 12px;
             height: 12px;
@@ -130,8 +151,9 @@
             border: 3px solid #FFF5F5;
             border-radius: 50%;
             position: absolute;
-            left: -6px;
+            left: -1px;
             top: 5px;
+            z-index: 1;
         }
 
         /* Mobile Navigation */
@@ -216,101 +238,103 @@
                 </div>
             </div>
             
-            <!-- Phone Republik - Marketing på sociale medier -->
-            <div class="relative pl-8 border-l-2 border-accent/30 mb-16">
-                <div class="relative mb-8">
+            <!-- Timeline Container -->
+            <div class="timeline-container">
+                <!-- Phone Republik -->
+                <div class="timeline-item">
                     <div class="timeline-dot"></div>
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
-                            <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
-                        </div>
-                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
-                    </div>
-                    
-                    <div class="bg-card p-6 rounded-xl border border-border mb-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="custom-icon">
-                                <i class="fa-solid fa-bullhorn"></i>
-                            </div>
+                    <div class="mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
                             <div>
-                                <h4 class="font-bold text-primary">Marketing på sociale medier</h4>
-                                <div class="text-sm text-text-secondary">Fuldtid · Fjernarbejde</div>
+                                <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
+                                <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
+                        </div>
+                        
+                        <div class="bg-card p-6 rounded-xl border border-border mb-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="custom-icon">
+                                    <i class="fa-solid fa-bullhorn"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary">Marketing på sociale medier</h4>
+                                    <div class="text-sm text-text-secondary">Fuldtid · Fjernarbejde</div>
+                                </div>
+                            </div>
+                            <p class="text-text-secondary leading-relaxed mb-4">
+                                Jeg er ansvarlig for Phone Republik's sociale medier, herunder Instagram, TikTok og Facebook. I denne rolle arbejder jeg på at styrke virksomhedens online tilstedeværelse ved at skabe engagerende indhold og strategier.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Digital marketing</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Sociale medier</span>
                             </div>
                         </div>
-                        <p class="text-text-secondary leading-relaxed mb-4">
-                            Jeg er ansvarlig for Phone Republik's sociale medier, herunder Instagram, TikTok og Facebook. I denne rolle arbejder jeg på at styrke virksomhedens online tilstedeværelse ved at skabe engagerende indhold og strategier.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Digital marketing</span>
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Sociale medier</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Webdesigner student -->
-                    <div class="bg-card p-6 rounded-xl border border-border">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="custom-icon">
-                                <i class="fa-solid fa-laptop-code"></i>
+                        
+                        <!-- Webdesigner student -->
+                        <div class="bg-card p-6 rounded-xl border border-border">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="custom-icon">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary">Webdesigner studentermedhjælper</h4>
+                                    <div class="text-sm text-text-secondary">Praktik · jan. 2017 - nu · 9 år</div>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-primary">Webdesigner studentermedhjælper</h4>
-                                <div class="text-sm text-text-secondary">Praktik · jan. 2017 - nu · 9 år</div>
+                            <p class="text-text-secondary leading-relaxed mb-4">
+                                I rollen som studentermedhjælper hos Phone Republik er jeg ansvarlig for at assistere med design og optimering af virksomhedens hjemmeside. Mit arbejde omfatter UI/UX-design, hvor jeg arbejder på at forbedre brugeroplevelsen.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">UI/UX Design</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Front-end Udvikling</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webdesign</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Optimering</span>
                             </div>
-                        </div>
-                        <p class="text-text-secondary leading-relaxed mb-4">
-                            I rollen som studentermedhjælper hos Phone Republik er jeg ansvarlig for at assistere med design og optimering af virksomhedens hjemmeside. Mit arbejde omfatter UI/UX-design, hvor jeg arbejder på at forbedre brugeroplevelsen.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">UI/UX Design</span>
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Front-end Udvikling</span>
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webdesign</span>
-                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Optimering</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Slagsassistent -->
-            <div class="relative pl-8 border-l-2 border-accent/30 mb-16">
-                <div class="relative mb-8">
+                
+                <!-- Slagsassistent -->
+                <div class="timeline-item">
                     <div class="timeline-dot"></div>
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
-                            <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
+                    <div class="mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
+                                <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
                         </div>
-                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
-                    </div>
-                    <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Detailhandel</span>
+                        <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Detailhandel</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- L'ancora Freelance -->
-            <div class="relative pl-8 border-l-2 border-accent/30">
-                <div class="relative">
+                
+                <!-- L'ancora Freelance -->
+                <div class="timeline-item">
                     <div class="timeline-dot"></div>
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
-                            <div class="text-text-secondary">L'ancora · Freelance</div>
+                    <div>
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
+                                <div class="text-text-secondary">L'ancora · Freelance</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
                         </div>
-                        <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
-                    </div>
-                    <div class="text-text-secondary mb-4">Fjernarbejde</div>
-                    <p class="text-text-secondary leading-relaxed mb-6">
-                        Designede og udviklede L'ancoras hjemmeside fra bunden i WordPress med brug af Elementor. 
-                        Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">WordPress</span>
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webudvikling</span>
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Responsivt design</span>
-                        <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Elementor</span>
+                        <div class="text-text-secondary mb-4">Fjernarbejde</div>
+                        <p class="text-text-secondary leading-relaxed mb-6">
+                            Designede og udviklede L'ancoras hjemmeside fra bunden i WordPress med brug af Elementor. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">WordPress</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webudvikling</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Responsivt design</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Elementor</span>
+                        </div>
                     </div>
                 </div>
             </div>
