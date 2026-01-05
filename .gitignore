@@ -1,6 +1,7 @@
-image/Lancora.png
-image/*.png
+# Ignorer originale store billedfiler
 image/
 *.png
-*.jpg
-*.jpeg
+
+# MEN tillad vores optimerede assets
+!assets/
+assets/*.jpg
