@@ -37,9 +37,24 @@
                         'float-medium': 'float 4s ease-in-out infinite',
                         'float-fast': 'float 3s ease-in-out infinite',
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce': 'bounce 1s infinite'
                     },
                     keyframes: {
                         float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        bounce: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
                         }
@@ -51,7 +66,59 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #FFF5F5; color: #2D3332; overflow-x: hidden; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #FFF5F5; 
+            color: #2D3332; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark Mode */
+        [data-theme="dark"] body { 
+            background-color: #1a1f1e; 
+            color: #E8EDEB; 
+        }
+        
+        [data-theme="dark"] .gradient-text {
+            background: linear-gradient(135deg, #E8EDEB 0%, #7A8C69 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Loading Animation */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            background: #2D3332;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        [data-theme="dark"] .page-transition {
+            background: #1a1f1e;
+        }
+        
+        .page-transition.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(90deg, #A3B18A, #588157);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+            transition: width 0.1s ease-out;
+        }
         
         /* Tilpassede Baggradsgradienter */
         .bg-canvas {
@@ -61,6 +128,14 @@
                 radial-gradient(circle at 80% 20%, rgba(45, 51, 50, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(163, 177, 138, 0.1) 0%, transparent 50%);
             z-index: -1;
+            transition: background 0.5s ease;
+        }
+        
+        [data-theme="dark"] .bg-canvas {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(122, 140, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 31, 30, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(122, 140, 105, 0.1) 0%, transparent 50%);
         }
         
         .gradient-text {
@@ -73,7 +148,15 @@
             background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
             border: 1px solid #D1DBCE; border-radius: 12px; overflow: hidden;
             box-shadow: 0 8px 32px rgba(27, 48, 34, 0.05);
+            transition: all 0.3s ease;
         }
+        
+        [data-theme="dark"] .code-window {
+            background: rgba(30, 35, 34, 0.7);
+            border: 1px solid #4A5553;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
         .window-dots span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
         .window-dots span:nth-child(1) { background: #E5989B; }
         .window-dots span:nth-child(2) { background: #FFB4A2; }
@@ -82,9 +165,24 @@
         /* Færdigheder & Interaktive Visuelle Elementer */
         .skill-bar { background: rgba(163, 177, 138, 0.2); height: 4px; border-radius: 2px; overflow: hidden; }
         .skill-level { height: 100%; background: linear-gradient(90deg, #A3B18A, #588157); width: 0; transition: width 1.5s cubic-bezier(0.17, 0.55, 0.55, 1); }
+        
+        [data-theme="dark"] .skill-level {
+            background: linear-gradient(90deg, #7A8C69, #588157);
+        }
+        
         .project-image { background: linear-gradient(135deg, rgba(163, 177, 138, 0.1), rgba(45, 51, 50, 0.05)); height: 200px; border-radius: 12px; border: 1px solid #D1DBCE; position: relative; overflow: hidden; }
         .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .image-overlay { position: absolute; inset: 0; background: rgba(255, 245, 245, 0.9); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 1rem; }
+        
+        [data-theme="dark"] .project-image {
+            background: linear-gradient(135deg, rgba(122, 140, 105, 0.1), rgba(30, 35, 34, 0.1));
+            border: 1px solid #4A5553;
+        }
+        
+        [data-theme="dark"] .image-overlay {
+            background: rgba(26, 31, 30, 0.9);
+        }
+        
         .project-card:hover .image-overlay { opacity: 1; }
         .project-card:hover img { transform: scale(1.05); }
         .project-card:hover { transform: translateY(-4px); background-color: rgba(27, 48, 34, 0.06); }
@@ -108,6 +206,13 @@
             border: 1px solid rgba(209, 219, 206, 0.5);
             color: #588157;
             font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .custom-icon {
+            background: linear-gradient(135deg, rgba(122, 140, 105, 0.2), rgba(88, 129, 87, 0.15));
+            border: 1px solid rgba(122, 140, 105, 0.3);
+            color: #7A8C69;
         }
 
         /* Uddannelse Kort */
@@ -118,13 +223,24 @@
             padding: 1.5rem;
             transition: all 0.3s ease;
         }
+        
+        [data-theme="dark"] .education-card {
+            background: rgba(30, 35, 34, 0.8);
+            border: 1px solid #4A5553;
+        }
+        
         .education-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 24px rgba(27, 48, 34, 0.08);
             border-color: #A3B18A;
         }
+        
+        [data-theme="dark"] .education-card:hover {
+            border-color: #7A8C69;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
 
-        /* Erfarings Tidslinje - FIXED */
+        /* Erfarings Tidslinje */
         .timeline-container {
             position: relative;
             margin-left: 1rem;
@@ -138,6 +254,10 @@
             bottom: 0;
             width: 2px;
             background: rgba(163, 177, 138, 0.3);
+        }
+        
+        [data-theme="dark"] .timeline-container::before {
+            background: rgba(122, 140, 105, 0.3);
         }
 
         .timeline-item {
@@ -157,41 +277,169 @@
             top: 5px;
             z-index: 1;
         }
+        
+        [data-theme="dark"] .timeline-dot {
+            background: #7A8C69;
+            border-color: #1a1f1e;
+        }
 
         /* Mobile Navigation */
         @media (max-width: 768px) {
-            .nav-menu { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(255, 245, 245, 0.98); backdrop-filter: blur(10px); flex-direction: column; justify-content: center; align-items: center; transition: right 0.3s ease; z-index: 40; }
+            .nav-menu { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 100%; 
+                height: 100vh; 
+                background: rgba(255, 245, 245, 0.98); 
+                backdrop-filter: blur(10px); 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                transition: right 0.3s ease; 
+                z-index: 40; 
+            }
+            
+            [data-theme="dark"] .nav-menu {
+                background: rgba(26, 31, 30, 0.98);
+            }
+            
             .nav-menu.active { right: 0; }
+        }
+        
+        /* Animated Counters */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Transition classes */
+        .transition-all-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Dark mode text colors */
+        [data-theme="dark"] .text-primary {
+            color: #E8EDEB;
+        }
+        
+        [data-theme="dark"] .text-text-secondary {
+            color: #B8C5B7;
+        }
+        
+        [data-theme="dark"] .text-text-muted {
+            color: #7E8C89;
+        }
+        
+        /* Dark mode backgrounds */
+        [data-theme="dark"] .bg-white\/30 {
+            background-color: rgba(26, 31, 30, 0.3);
+        }
+        
+        [data-theme="dark"] .bg-white\/20 {
+            background-color: rgba(26, 31, 30, 0.2);
+        }
+        
+        [data-theme="dark"] .bg-white\/60 {
+            background-color: rgba(26, 31, 30, 0.6);
+        }
+        
+        [data-theme="dark"] .bg-card {
+            background: rgba(30, 35, 34, 0.7);
+        }
+        
+        [data-theme="dark"] .border-border {
+            border-color: #4A5553;
+        }
+        
+        /* Cursor Styles */
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #588157;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.3s ease;
+        }
+        
+        .cursor-outline {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(163, 177, 138, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9996;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+        
+        /* Hide default cursor */
+        @media (min-width: 769px) {
+            html, body *:not(input):not(textarea):not(select) {
+                cursor: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body class="font-inter">
+    <!-- Loading Animation -->
+    <div class="page-transition">
+        <div class="loader flex items-center gap-3">
+            <div class="w-3 h-3 bg-accent rounded-full animate-bounce"></div>
+            <div class="w-3 h-3 bg-accent rounded-full animate-bounce delay-75"></div>
+            <div class="w-3 h-3 bg-accent rounded-full animate-bounce delay-150"></div>
+        </div>
+    </div>
+    
     <div class="bg-canvas"></div>
     
-    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border">
+    <!-- Progress Bar -->
+    <div class="progress-bar" style="width: 0%"></div>
+    
+    <!-- Navigation with Dark Mode Toggle -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
         <div class="container mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <span class="text-xl font-bold text-primary tracking-tight">SILINDA</span>
+                <span class="text-xl font-bold text-primary tracking-tight transition-colors">SILINDA</span>
                 <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
             </div>
-            <div class="nav-menu hidden md:flex items-center space-x-8">
-                <a href="#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
-                <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
-                <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
-                <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
-                <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+            
+            <div class="flex items-center gap-4">
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth" aria-label="Skift tema">
+                    <i class="fa-solid fa-moon text-accent"></i>
+                </button>
+                
+                <div class="nav-menu hidden md:flex items-center space-x-8">
+                    <a href="#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
+                    <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                    <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                    <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                    <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+                </div>
             </div>
-            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50">
-                <span class="w-6 h-0.5 bg-primary"></span>
-                <span class="w-6 h-0.5 bg-primary"></span>
-                <span class="w-6 h-0.5 bg-primary"></span>
+            
+            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50 p-2" aria-label="Åben menu">
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
             </button>
         </div>
     </nav>
 
-    <section class="min-h-screen flex items-center pt-16 pb-20 px-4 md:px-8">
+    <!-- Hero Section with Animated Stats -->
+    <section class="min-h-screen flex items-center pt-20 pb-20 px-4 md:px-8">
         <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <div class="animate-slide-up">
                 <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Kreativ Udvikler & Designer</div>
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
                     <div class="text-text-secondary">Hej, jeg er</div>
@@ -202,18 +450,36 @@
                     Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="#arbejde" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-colors">Se mit arbejde</a>
-                    <a href="mailto:hello@silinda.design" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all">
+                    <a href="#arbejde" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-all transform hover:-translate-y-0.5 active:scale-95">Se mit arbejde</a>
+                    <button id="email-button" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all transform hover:-translate-y-0.5 active:scale-95">
                         <span>Kontakt mig</span>
                         <i class="fa-solid fa-arrow-right"></i>
-                    </a>
+                    </button>
+                </div>
+                
+                <!-- Animated Stats -->
+                <div class="mt-12 grid grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="3">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Års erfaring</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="24">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Projekter</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="18">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Kunder</div>
+                    </div>
                 </div>
             </div>
-            <div class="relative">
+            
+            <div class="relative animate-fade-in">
                 <div class="absolute inset-0">
                     <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-accent/20 rounded-full blur-2xl animate-float-slow"></div>
+                    <div class="absolute top-1/3 right-1/4 w-20 h-20 bg-secondary/10 rounded-full blur-xl animate-float-medium"></div>
                 </div>
-                <div class="relative code-window">
+                <div class="relative code-window transform hover:-translate-y-1 transition-transform">
                     <div class="flex items-center px-4 py-3 border-b border-border bg-white/40">
                         <div class="window-dots flex gap-1.5"><span></span><span></span><span></span></div>
                         <div class="ml-4 text-xs font-mono text-text-muted uppercase tracking-widest">silinda.js</div>
@@ -230,6 +496,8 @@
         </div>
     </section>
 
+    <!-- Resten af din eksisterende kode (behold alt som det er) -->
+    <!-- Erfaring Section -->
     <section id="erfaring" class="py-20 px-4 md:px-8 bg-white/30">
         <div class="container mx-auto max-w-4xl">
             <div class="flex items-center gap-4 mb-12">
@@ -255,7 +523,7 @@
                             <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
                         </div>
                         
-                        <div class="bg-card p-6 rounded-xl border border-border mb-6">
+                        <div class="bg-card p-6 rounded-xl border border-border mb-6 transition-all hover:border-accent/50">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="custom-icon">
                                     <i class="fa-solid fa-bullhorn"></i>
@@ -275,7 +543,7 @@
                         </div>
                         
                         <!-- Webdesigner student -->
-                        <div class="bg-card p-6 rounded-xl border border-border">
+                        <div class="bg-card p-6 rounded-xl border border-border transition-all hover:border-accent/50">
                             <div class="flex items-center gap-3 mb-4">
                                 <div class="custom-icon">
                                     <i class="fa-solid fa-laptop-code"></i>
@@ -344,151 +612,172 @@
         </div>
     </section>
 
-    <section id="kompetencer" class="py-20 px-4 md:px-8">
-        <div class="container mx-auto">
-            <div class="flex items-center gap-4 mb-12">
-                <div class="text-4xl font-bold text-accent/30">02</div>
-                <h2 class="text-3xl md:text-4xl font-bold text-primary">Kompetencer & Teknologier</h2>
+    <!-- Kompetencer Section -->
+<section id="kompetencer" class="py-20 px-4 md:px-8">
+    <div class="container mx-auto">
+        <div class="flex items-center gap-4 mb-12">
+            <div class="text-4xl font-bold text-accent/30">02</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary">Kompetencer & Teknologier</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Design Kompetencer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-pen-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary">Design</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">UI/UX Design</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Prototyper</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Brugerresearch</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Figma</span>
+                    </div>
+                </div>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Design Kompetencer -->
-                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="custom-icon">
-                            <i class="fa-solid fa-pen-ruler"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary">Design</h3>
+
+            <!-- Udvikling Kompetencer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-code"></i>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">UI/UX Design</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">Prototyper</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">Brugerresearch</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">Figma</span>
-                        </div>
+                    <h3 class="text-xl font-bold text-primary">Udvikling</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">HTML/CSS</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">JavaScript</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">React</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">WordPress</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Udvikling Kompetencer -->
-                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="custom-icon">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary">Udvikling</h3>
+            <!-- Værktøjer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">HTML/CSS</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">JavaScript</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">React</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">WordPress</span>
-                        </div>
-                    </div>
+                    <h3 class="text-xl font-bold text-primary">Værktøjer</h3>
                 </div>
-
-                <!-- Værktøjer -->
-                <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="custom-icon">
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-primary">Værktøjer</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">VS Code</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">VS Code</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">Git</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2 border-b border-border/50">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">GSAP</span>
-                        </div>
-                        <div class="flex items-center gap-3 py-2">
-                            <i class="fa-solid fa-circle text-accent text-xs"></i>
-                            <span class="text-text-secondary">Adobe CC</span>
-                        </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Git</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">GSAP</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Adobe CC</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="arbejde" class="py-20 px-4 md:px-8 bg-white/20">
-        <div class="container mx-auto">
-            <div class="flex items-center gap-4 mb-12">
-                <div class="text-4xl font-bold text-accent/30">03</div>
-                <h2 class="text-3xl md:text-4xl font-bold text-primary">Udvalgte Projekter</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
+
+ <!-- Arbejde Section -->
+<section id="arbejde" class="py-20 px-4 md:px-8 bg-white/20">
+    <div class="container mx-auto">
+        <div class="flex items-center gap-4 mb-12">
+            <div class="text-4xl font-bold text-accent/30">03</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary">Udvalgte Projekter</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
     
-                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="project-image mb-6 overflow-hidden">
-                            <img src="image/phone-republik.png" alt="Phone Republik" class="w-full h-full object-cover">
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-3">Phone Republik</h3>
-                        <p class="text-text-secondary text-sm mb-6">Digital serviceplatform skabt til at forene teknisk ekspertise med en intuitiv brugeroplevelse. Jeg har designet og udviklet en responsiv løsning, der optimerer kunderejsen fra prissøgning til booking af reparation.</p>
+            <!-- Phone Republik Card -->
+            <a href="https://phonerepublik.dk/" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/phone-republik.png" alt="Phone Republik" class="w-full h-full object-cover">
                     </div>
-                    <a href="https://phonerepublik.dk/" target="_blank" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Besøg hjemmesiden →</a>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">Phone Republik</h3>
+                    <p class="text-text-secondary text-sm mb-6">Digital serviceplatform skabt til at forene teknisk ekspertise med en intuitiv brugeroplevelse. Jeg har designet og udviklet en responsiv løsning, der optimerer kunderejsen fra prissøgning til booking af reparation.</p>
                 </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
     
-                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="project-image mb-6 overflow-hidden">
-                            <img src="image/lancora.png" alt="L'ancora" class="w-full h-full object-cover">
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-3">L'ancora </h3>
-                        <p class="text-text-secondary text-sm mb-6">En komplet digital rejse fra visuelt koncept til færdig WordPress-løsning. Fokus har været på at skabe en lynhurtig, mobiloptimeret hjemmeside, der formidler restaurantens atmosfære og gør menuen let tilgængelig.</p>
+            <!-- L'ancora Card -->
+            <a href="https://lancora.dk" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/lancora.png" alt="L'ancora" class="w-full h-full object-cover">
                     </div>
-                    <a href="https://lancora.dk" target="_blank" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Besøg hjemmesiden →</a>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">L'ancora</h3>
+                    <p class="text-text-secondary text-sm mb-6">En komplet digital rejse fra visuelt koncept til færdig WordPress-løsning. Fokus har været på at skabe en lynhurtig, mobiloptimeret hjemmeside, der formidler restaurantens atmosfære og gør menuen let tilgængelig.</p>
                 </div>
-                
-                <div class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="project-image mb-6 overflow-hidden">
-                            <img src="image/spilfiks.png" alt="Spil Fiks" class="w-full h-full object-cover">
-                        </div>
-                        <h3 class="text-xl font-bold text-primary mb-3">Spil Fiks</h3>
-                        <p class="text-text-secondary text-sm mb-6">
-                            Gennemarbejdet UX-case og prototype for en reparationsplatform dedikeret til spillekonsoller som PS5, Xbox og Nintendo. Hjemmesiden fokuserer på at gøre fejlfinding og bookingprocessen intuitiv for gamere gennem et moderne, mørkt interface.
-                        </p>                    </div>
-                    <a href="https://spilfiks.dk" target="_blank" class="text-secondary font-bold text-sm uppercase tracking-widest hover:text-primary transition-colors">Besøg hjemmesiden →</a> 
-            </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
             
-            <div class="text-center mt-12">
-                <a href="all-projects.html" class="inline-block px-8 py-3 bg-accent text-white rounded-lg font-medium hover:bg-secondary transition-colors flex items-center gap-2 mx-auto w-fit">
-                    <span>Se alle projekter</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+            <!-- Spil Fiks Card -->
+            <a href="https://spilfiks.dk" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/spilfiks.png" alt="Spil Fiks" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">Spil Fiks</h3>
+                    <p class="text-text-secondary text-sm mb-6">
+                        Gennemarbejdet UX-case og prototype for en reparationsplatform dedikeret til spillekonsoller som PS5, Xbox og Nintendo. Hjemmesiden fokuserer på at gøre fejlfinding og bookingprocessen intuitiv for gamere gennem et moderne, mørkt interface.
+                    </p>
+                </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
         </div>
-    </section>
+        
+        <div class="text-center mt-12">
+            <a href="all-projects.html" class="inline-block px-8 py-3 bg-accent text-white rounded-lg font-medium hover:bg-secondary transition-colors flex items-center gap-2 mx-auto w-fit transform hover:-translate-y-0.5 active:scale-95">
+                <span>Se alle projekter</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
 
+    <!-- Om Mig Section -->
     <section id="om-mig" class="py-20 px-4 md:px-8">
         <div class="container mx-auto max-w-6xl">
             <div class="flex items-center gap-4 mb-12">
@@ -573,23 +862,26 @@
         </div>
     </section>
 
+    <!-- Kontakt Section -->
     <section id="kontakt" class="py-20 px-4 md:px-8">
         <div class="container mx-auto max-w-4xl bg-card border border-border rounded-3xl p-12 shadow-xl">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-5xl font-bold text-primary mb-4">Lad os vokse sammen.</h2>
                 <p class="text-text-secondary">Klar til at starte din næste digitale rejse?</p>
             </div>
-            <form class="grid md:grid-cols-2 gap-8">
+            <form id="contact-form" class="grid md:grid-cols-2 gap-8">
                 <input type="text" placeholder="Dit navn" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
                 <input type="email" placeholder="E-mailadresse" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
                 <textarea placeholder="Din besked" rows="4" class="md:col-span-2 bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors"></textarea>
                 <div class="md:col-span-2 text-center">
-                    <button class="px-10 py-4 bg-primary text-white rounded-full font-bold hover:bg-secondary transition-all transform hover:-translate-y-1">Send besked</button>
+                    <button type="submit" class="px-10 py-4 bg-primary text-white rounded-full font-bold hover:bg-secondary transition-all transform hover:-translate-y-1 active:scale-95">
+                        Send besked
+                    </button>
                 </div>
             </form>
             <div class="flex justify-center gap-6 mt-12">
-                <a href="#" class="text-text-muted hover:text-secondary text-2xl"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#" class="text-text-muted hover:text-secondary text-2xl"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="social-link text-text-muted hover:text-secondary text-2xl transition-all transform hover:-translate-y-1"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="social-link text-text-muted hover:text-secondary text-2xl transition-all transform hover:-translate-y-1"><i class="fa-brands fa-github"></i></a>
             </div>
         </div>
     </section>
@@ -598,63 +890,189 @@
         <p class="text-text-muted text-sm">© 2025 Silinda Baftijari. Dedikeret til detaljen.</p>
     </footer>
 
+    <!-- Main JavaScript -->
     <script>
+        // Hide loading animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.page-transition').classList.add('hidden');
+            }, 500);
+        });
+
         // Menu toggle
         const menuToggle = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-menu');
-        menuToggle.addEventListener('click', () => { navMenu.classList.toggle('active'); });
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener('click', () => { 
+                navMenu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+        }
 
         // GSAP Initialization
         gsap.registerPlugin(ScrollTrigger);
         
-        // Animate skill bars
-        document.querySelectorAll('.skill-level').forEach(level => {
-            const targetWidth = level.getAttribute('data-level');
-            ScrollTrigger.create({
-                trigger: level, start: 'top 90%',
-                onEnter: () => level.style.width = targetWidth
-            });
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
         });
 
-        // Section Fade
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme or prefer-color-scheme
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+
+        // Email copy functionality
+        const emailButton = document.getElementById('email-button');
+        if (emailButton) {
+            emailButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = 'hello@silinda.design';
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(email).then(() => {
+                    const original = this.innerHTML;
+                    this.innerHTML = '<i class="fa-solid fa-check"></i> Email kopieret!';
+                    this.style.background = 'rgba(88, 129, 87, 0.1)';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = original;
+                        this.style.background = '';
+                    }, 2000);
+                });
+                
+                // Open mail client
+                window.location.href = `mailto:${email}`;
+            });
+        }
+
+        // Animated counters
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target') || 100;
+                const increment = target / 50;
+                let current = 0;
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const updateCounter = () => {
+                                if (current < target) {
+                                    current += increment;
+                                    counter.textContent = Math.ceil(current) + '+';
+                                    setTimeout(updateCounter, 30);
+                                } else {
+                                    counter.textContent = target + '+';
+                                }
+                            };
+                            updateCounter();
+                            observer.unobserve(counter);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(counter);
+            });
+        }
+        
+        // Initialize counters
+        document.addEventListener('DOMContentLoaded', initCounters);
+
+        // Form submission
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sender...';
+                submitButton.disabled = true;
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Besked sendt!';
+                    submitButton.style.background = '#588157';
+                    
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                        submitButton.style.background = '';
+                        contactForm.reset();
+                    }, 2000);
+                }, 1500);
+            });
+        }
+
+        // Section animations with GSAP
         gsap.utils.toArray('section').forEach(section => {
             gsap.from(section, {
-                scrollTrigger: { trigger: section, start: 'top 85%' },
-                y: 30, opacity: 0, duration: 1, ease: 'power2.out'
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out'
             });
         });
 
-        // Animate education cards on hover
-        document.querySelectorAll('.education-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                gsap.to(card, {
-                    scale: 1.03,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                });
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, {
-                    scale: 1,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                });
+        // Skill bars animation
+        document.querySelectorAll('.skill-level').forEach(level => {
+            const targetWidth = level.getAttribute('data-level') || '80%';
+            ScrollTrigger.create({
+                trigger: level,
+                start: 'top 90%',
+                onEnter: () => {
+                    gsap.to(level, {
+                        width: targetWidth,
+                        duration: 1.5,
+                        ease: 'power3.out'
+                    });
+                }
             });
         });
 
-        // Add hover effect for project cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                gsap.to(card, {
+        // Micro-interactions
+        document.querySelectorAll('.skill-category, .education-card, .project-card').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                gsap.to(item, {
                     scale: 1.02,
                     duration: 0.3,
                     ease: 'power2.out'
                 });
             });
             
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, {
+            item.addEventListener('mouseleave', () => {
+                gsap.to(item, {
                     scale: 1,
                     duration: 0.3,
                     ease: 'power2.out'
@@ -662,112 +1080,111 @@
             });
         });
 
+        // Button click effects
+        document.querySelectorAll('button:not(#theme-toggle), .button-primary, .button-secondary').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Don't trigger for links that navigate
+                if (this.tagName === 'A' && this.getAttribute('href') !== '#') return;
+                
+                gsap.to(this, {
+                    scale: 0.95,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: 'power2.out'
+                });
+            });
+        });
 
+        // Social link hover effects
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, {
+                    scale: 1.1,
+                    duration: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, {
+                    scale: 1,
+                    duration: 0.2,
+                    ease: 'power2.out'
+                });
+            });
+        });
     </script>
 
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
-<script>
-    // ULTRA SIMPLE CURSOR - IMPROVED VERSION
+    <!-- Custom Cursor -->
+    <script>
     (function() {
         if ('ontouchstart' in window) return;
         
-        // Create cursor elements
         const dot = document.createElement('div');
         dot.className = 'cursor-dot';
-        dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s ease, background 0.3s ease;';
+        dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform 0.1s, background 0.3s;';
         
         const outline = document.createElement('div');
         outline.className = 'cursor-outline';
-        outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.3s ease;';
+        outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:all 0.3s;';
         
         document.body.appendChild(dot);
         document.body.appendChild(outline);
         document.body.style.cursor = 'none';
         
-        // Track mouse position
-        let mouseX = 0;
-        let mouseY = 0;
-        let outlineX = 0;
-        let outlineY = 0;
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
         
-        // Smooth follow effect for outline
-        function animate() {
-            // Smooth movement for outline
-            outlineX += (mouseX - outlineX) * 0.2;
-            outlineY += (mouseY - outlineY) * 0.2;
-            
-            outline.style.left = outlineX + 'px';
-            outline.style.top = outlineY + 'px';
-            
-            requestAnimationFrame(animate);
-        }
-        
-        // Mouse movement
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
-            // Update dot immediately
             dot.style.left = mouseX + 'px';
             dot.style.top = mouseY + 'px';
         });
         
-        // Hover effects for interactive elements
-        function setupHoverEffects() {
-            const interactiveElements = document.querySelectorAll(
-                'a, button, .project-card, .menu-toggle, .skill-category, ' +
-                '.education-card, .nav-item, .button-primary, .button-secondary, ' +
-                '.social-link, .submit-button, .back-to-top, .timeline-item, ' +
-                '.code-window, .form-group input, .form-group textarea'
-            );
-            
-            interactiveElements.forEach(element => {
-                // Skip if element is disabled
-                if (element.disabled) return;
-                
-                element.addEventListener('mouseenter', () => {
-                    // Enlarge and change color
-                    dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                    dot.style.background = '#2D3332'; // Dark color
-                    
-                    outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                    outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
-                    outline.style.borderWidth = '1px';
-                    
-                    // Special effect for specific elements
-                    if (element.classList.contains('button-primary')) {
-                        outline.style.borderColor = 'rgba(45, 51, 50, 0.8)';
-                    }
-                    
-                    if (element.classList.contains('project-card')) {
-                        outline.style.transform = 'translate(-50%, -50%) scale(1.8)';
-                    }
-                });
-                
-                element.addEventListener('mouseleave', () => {
-                    // Return to normal
-                    dot.style.transform = 'translate(-50%, -50%) scale(1)';
-                    dot.style.background = '#588157'; // Original color
-                    
-                    outline.style.transform = 'translate(-50%, -50%) scale(1)';
-                    outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
-                    outline.style.borderWidth = '2px';
-                });
-            });
+        // Smooth outline animation
+        function animateOutline() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            outline.style.left = outlineX + 'px';
+            outline.style.top = outlineY + 'px';
+            requestAnimationFrame(animateOutline);
         }
+        animateOutline();
         
-        // Click effects
+        // Hover effects
+        const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-category, .education-card, .social-link');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                dot.style.background = '#2D3332';
+                outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
+                
+                // Dark mode adjustment
+                if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                    dot.style.background = '#E8EDEB';
+                }
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                dot.style.transform = 'translate(-50%, -50%) scale(1)';
+                dot.style.background = '#588157';
+                outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
+            });
+        });
+        
+        // Click effect
         document.addEventListener('mousedown', () => {
             dot.style.transform = 'translate(-50%, -50%) scale(0.8)';
             outline.style.transform = 'translate(-50%, -50%) scale(0.9)';
-            outline.style.borderColor = 'rgba(88, 129, 87, 0.8)';
         });
         
         document.addEventListener('mouseup', () => {
             dot.style.transform = 'translate(-50%, -50%) scale(1)';
             outline.style.transform = 'translate(-50%, -50%) scale(1)';
-            outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
         });
         
         // Hide cursor when leaving window
@@ -781,15 +1198,9 @@
             outline.style.opacity = '1';
         });
         
-        // Initialize
-        animate();
-        
-        // Wait a bit for DOM to be ready, then setup hover effects
-        setTimeout(setupHoverEffects, 500);
-        
-        console.log('Custom cursor loaded with hover effects!');
+        console.log('Enhanced custom cursor loaded!');
     })();
     </script>
-</body>
 
+</body>
 </html>
