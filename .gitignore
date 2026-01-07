@@ -1,7 +1,6 @@
-# Ignorer originale store billedfiler
-image/
-*.png
+# Fjern ignorering af billeder
+# (Slet de gamle linjer der blokerede image/ og *.png)
 
-# MEN tillad vores optimerede assets
-!assets/
-assets/*.jpg
+node_modules/
+.DS_Store
+dist/
