@@ -16,12 +16,13 @@
                         'inter': ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#2D3332',
-                        secondary: '#588157',
-                        accent: '#A3B18A',
-                        background: '#FFF5F5',
+                        // Blød Organisk Palet
+                        primary: '#2D3332',      // Mørk Kulk-Grøn (Tekst)
+                        secondary: '#588157',    // Mørkere Salvie (Kontrast)
+                        accent: '#A3B18A',       // Salvie Grøn (Hovedaccent)
+                        background: '#FFF5F5',   // Blød Pink-Hvid (Baggrund)
                         card: 'rgba(255, 255, 255, 0.7)',
-                        border: '#D1DBCE',
+                        border: '#D1DBCE',       // Dæmpet Salvie-Kant
                         hover: 'rgba(27, 48, 34, 0.06)',
                         text: {
                             primary: '#2D3332',
@@ -31,11 +32,22 @@
                     },
                     animation: {
                         'float-slow': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
                         }
                     }
                 }
@@ -45,7 +57,96 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: #FFF5F5; color: #2D3332; overflow-x: hidden; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #FFF5F5; 
+            color: #2D3332; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 80px; /* Added for fixed nav */
+        }
+        
+        /* ===== DARK MODE STYLES ===== */
+        [data-theme="dark"] body { 
+            background-color: #1a1f1e; 
+            color: #E8EDEB; 
+        }
+        
+        [data-theme="dark"] .gradient-text {
+            background: linear-gradient(135deg, #E8EDEB 0%, #7A8C69 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            display: inline-block;
+            position: relative;
+        }
+        
+        [data-theme="dark"] .bg-canvas {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(122, 140, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 31, 30, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(122, 140, 105, 0.1) 0%, transparent 50%);
+        }
+        
+        [data-theme="dark"] .text-primary {
+            color: #E8EDEB;
+        }
+        
+        [data-theme="dark"] .text-text-secondary {
+            color: #B8C5B7;
+        }
+        
+        [data-theme="dark"] .text-text-muted {
+            color: #7E8C89;
+        }
+        
+        [data-theme="dark"] .text-secondary {
+            color: #7A8C69;
+        }
+        
+        [data-theme="dark"] .text-accent {
+            color: #7A8C69;
+        }
+        
+        [data-theme="dark"] .bg-white\/70 {
+            background-color: rgba(26, 31, 30, 0.7);
+        }
+        
+        [data-theme="dark"] .bg-white\/50 {
+            background-color: rgba(26, 31, 30, 0.5);
+        }
+        
+        [data-theme="dark"] .bg-white\/60 {
+            background-color: rgba(26, 31, 30, 0.6);
+        }
+        
+        [data-theme="dark"] .bg-white\/30 {
+            background-color: rgba(26, 31, 30, 0.3);
+        }
+        
+        [data-theme="dark"] .bg-white\/20 {
+            background-color: rgba(26, 31, 30, 0.2);
+        }
+        
+        [data-theme="dark"] .bg-card {
+            background: rgba(30, 35, 34, 0.7);
+        }
+        
+        [data-theme="dark"] .border-border {
+            border-color: #4A5553;
+        }
+        
+        [data-theme="dark"] nav {
+            background: rgba(26, 31, 30, 0.95);
+            border-color: #4A5553;
+        }
+        
+        [data-theme="dark"] footer {
+            background: rgba(26, 31, 30, 0.5);
+            border-color: #4A5553;
+        }
         
         /* Tilpassede Baggradsgradienter */
         .bg-canvas {
@@ -55,11 +156,37 @@
                 radial-gradient(circle at 80% 20%, rgba(45, 51, 50, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(163, 177, 138, 0.1) 0%, transparent 50%);
             z-index: -1;
+            transition: background 0.5s ease;
         }
         
+        /* FIXED: Clipped "j" issue in gradient text */
         .gradient-text {
             background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15; /* Added this line to fix clipped text */
+            display: inline-block; /* Added for better rendering */
+            position: relative;
+        }
+        
+        /* FIXED NAVIGATION */
+        nav {
+            position: fixed; /* Changed from sticky to fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Increased from 50 to 1000 */
+            padding: 1rem 0;
+            background: rgba(255, 245, 245, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(45, 51, 50, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        main {
+            padding-top: 20px; /* Reduced since we have body padding */
+            min-height: calc(100vh - 180px);
         }
         
         /* Mappe Animation */
@@ -94,8 +221,17 @@
             opacity: 1;
             transform: translateY(0) scale(1.05);
         }
+        
+        /* Dark mode folder icons */
+        [data-theme="dark"] .folder-icon {
+            color: #7A8C69;
+        }
+        
+        [data-theme="dark"] .folder-icon.open {
+            color: #588157;
+        }
 
-        /* Projekt Kort Styling */
+        /* Projekt Kort Styling - FIXED FOR TOOLTIPS */
         .project-card {
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid #D1DBCE;
@@ -106,9 +242,10 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             backdrop-filter: blur(8px);
             box-shadow: 0 8px 32px rgba(27, 48, 34, 0.05);
+            z-index: 1;
         }
 
         .project-card:hover {
@@ -116,6 +253,20 @@
             border-color: #A3B18A;
             box-shadow: 0 15px 40px rgba(27, 48, 34, 0.1);
             background: rgba(255, 255, 255, 0.9);
+            z-index: 100; /* Lower than nav's 1000 */
+        }
+        
+        /* Dark mode project cards */
+        [data-theme="dark"] .project-card {
+            background: rgba(30, 35, 34, 0.7);
+            border: 1px solid #4A5553;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        [data-theme="dark"] .project-card:hover {
+            background: rgba(40, 45, 44, 0.9);
+            border-color: #7A8C69;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         /* Tech Tags */
@@ -128,27 +279,132 @@
             font-weight: 600;
             border: 1px solid rgba(88, 129, 87, 0.2);
         }
+        
+        /* Dark mode tech tags */
+        [data-theme="dark"] .tech-tag {
+            background: rgba(122, 140, 105, 0.2);
+            color: #7A8C69;
+            border: 1px solid rgba(122, 140, 105, 0.3);
+        }
+
+        /* Action Icons Styling - FIXED FOR TOOLTIPS */
+        .action-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(209, 219, 206, 0.5);
+            overflow: visible;
+            position: relative;
+        }
+        
+        /* Dark mode action icons */
+        [data-theme="dark"] .action-icons {
+            border-top: 1px solid rgba(74, 85, 83, 0.5);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(163, 177, 138, 0.15);
+            color: #588157;
+            border: 2px solid rgba(88, 129, 87, 0.2);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            text-decoration: none;
+            position: relative;
+        }
+        
+        /* Dark mode action buttons */
+        [data-theme="dark"] .action-btn {
+            background: rgba(122, 140, 105, 0.2);
+            color: #7A8C69;
+            border: 2px solid rgba(122, 140, 105, 0.3);
+        }
+
+        .action-btn:hover {
+            background: #588157;
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+            border-color: #588157;
+            box-shadow: 0 5px 15px rgba(88, 129, 87, 0.3);
+        }
+
+        .action-btn.github:hover {
+            background: #333;
+            border-color: #333;
+            box-shadow: 0 5px 15px rgba(51, 51, 51, 0.3);
+        }
+
+        .action-btn.pdf:hover {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .action-btn.website:hover {
+            background: #3498db;
+            border-color: #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .action-btn-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2D3332;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            margin-bottom: 8px;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-weight: 500;
+        }
+        
+        /* Dark mode tooltips */
+        [data-theme="dark"] .action-btn-tooltip {
+            background: #1a1f1e;
+            border: 1px solid #4A5553;
+        }
+
+        /* Tooltip arrow */
+        .action-btn-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2D3332 transparent transparent transparent;
+        }
+        
+        [data-theme="dark"] .action-btn-tooltip::after {
+            border-color: #1a1f1e transparent transparent transparent;
+        }
+
+        .action-btn:hover .action-btn-tooltip {
+            opacity: 1;
+        }
+
+        /* Add a slight delay to prevent flickering */
+        .action-btn .action-btn-tooltip {
+            transition: opacity 0.2s 0.1s;
+        }
 
         /* Tilpassede Knapper */
-        .view-btn {
-            background: linear-gradient(90deg, #A3B18A, #588157);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        .view-btn:hover {
-            background: linear-gradient(90deg, #588157, #A3B18A);
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(88, 129, 87, 0.2);
-        }
-
         .back-btn {
             background: transparent;
             color: #4A5553;
@@ -159,6 +415,16 @@
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Dark mode back button */
+        [data-theme="dark"] .back-btn {
+            color: #B8C5B7;
+            border: 2px solid #4A5553;
         }
 
         .back-btn:hover {
@@ -166,9 +432,23 @@
             border-color: #A3B18A;
             color: #588157;
         }
+        
+        [data-theme="dark"] .back-btn:hover {
+            background: rgba(122, 140, 105, 0.2);
+            border-color: #7A8C69;
+            color: #7A8C69;
+        }
 
         /* Responsive grid */
         @media (max-width: 768px) {
+            body {
+                padding-top: 70px; /* Adjust for mobile */
+            }
+            
+            nav {
+                padding: 0.75rem 0;
+            }
+            
             .project-card {
                 padding: 24px;
             }
@@ -181,40 +461,106 @@
             .folder-icon {
                 font-size: 4rem;
             }
+            
+            .action-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            /* Mobile Navigation */
+            .nav-menu { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 100%; 
+                height: 100vh; 
+                background: rgba(255, 245, 245, 0.98); 
+                backdrop-filter: blur(10px); 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                transition: right 0.3s ease; 
+                z-index: 1001; /* Higher than nav */
+            }
+            
+            [data-theme="dark"] .nav-menu {
+                background: rgba(26, 31, 30, 0.98);
+            }
+            
+            .nav-menu.active { 
+                right: 0; 
+            }
+            
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
         }
 
         /* Navigation Menu */
         .nav-menu.active {
             display: flex !important;
         }
+
+        /* Ensure the grid has proper stacking context */
+        .grid {
+            position: relative;
+        }
+        
+        /* Transition classes */
+        .transition-all-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Menu toggle animation */
+        .menu-toggle span {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body class="font-inter">
     <div class="bg-canvas"></div>
     
-    <!-- Navigation -->
-    <nav class="sticky top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/70 backdrop-blur-md border-b border-border">
+    <!-- Navigation with Dark Mode Toggle -->
+    <nav class="py-4 px-4 md:px-8 backdrop-blur-md border-b border-border transition-all-smooth">
         <div class="container mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-2 no-underline">
                 <span class="text-xl font-bold text-primary tracking-tight hover:text-accent transition-colors">SILINDA</span>
-                <div class="w-2 h-2 bg-accent rounded-full"></div>
+                <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
             </a>
-            <div class="nav-menu hidden md:flex items-center space-x-8">
-                <a href="index.html#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
-                <a href="index.html#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
-                <a href="index.html#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
-                <a href="index.html#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
-                <a href="index.html#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+            
+            <div class="flex items-center gap-4">
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth" aria-label="Skift tema">
+                    <i class="fa-solid fa-moon text-accent"></i>
+                </button>
+                
+                <div class="nav-menu hidden md:flex items-center space-x-8">
+                    <a href="index.html#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
+                    <a href="index.html#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                    <a href="index.html#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                    <a href="index.html#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                    <a href="index.html#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+                </div>
             </div>
-            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50">
-                <span class="w-6 h-0.5 bg-primary"></span>
-                <span class="w-6 h-0.5 bg-primary"></span>
-                <span class="w-6 h-0.5 bg-primary"></span>
+            
+            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50 p-2" aria-label="Åben menu">
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
             </button>
         </div>
     </nav>
 
-    <main class="min-h-screen pt-8 pb-20 px-4 md:px-8">
+    <main class="pb-20 px-4 md:px-8">
         <div class="container mx-auto">
             <!-- Header -->
             <header class="text-center mb-12">
@@ -234,7 +580,7 @@
             
             <!-- Projects Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1: TDSB Homework Management Interface -->
+                <!-- Project 1: TDSB Homework Management Interface (Code + PDF) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -250,15 +596,19 @@
                         <span class="tech-tag">Bootstrap</span>
                         <span class="tech-tag">SQL</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Projekt
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/tdsb-homework" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
+                        <a href="projects/tdsb-case-study.pdf" download class="action-btn pdf" title="Download PDF case study">
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="action-btn-tooltip">Download Case Study (PDF)</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 2: Adam A.I. -->
+                <!-- Project 2: Adam A.I. (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -273,15 +623,15 @@
                         <span class="tech-tag">HTML/CSS</span>
                         <span class="tech-tag">AI/ML</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Projekt
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/adam-ai" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 3: Game Centre -->
+                <!-- Project 3: Game Centre (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -296,15 +646,15 @@
                         <span class="tech-tag">Android Studio</span>
                         <span class="tech-tag">Mobile</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Projekt
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/game-centre" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 4: Distributed Logging and Monitoring System -->
+                <!-- Project 4: Distributed Logging and Monitoring System (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -320,15 +670,15 @@
                         <span class="tech-tag">PostgreSQL</span>
                         <span class="tech-tag">Microservices</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Projekt
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/distributed-logging" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 5: Minimax Stonehenge -->
+                <!-- Project 5: Minimax Stonehenge (PDF only - academic paper) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -343,15 +693,15 @@
                         <span class="tech-tag">AI</span>
                         <span class="tech-tag">Game Development</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Projekt
-                        </button>
+                    <div class="action-icons">
+                        <a href="projects/minimax-stonehenge.pdf" download class="action-btn pdf" title="Download PDF dokumentation">
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="action-btn-tooltip">Download Dokumentation (PDF)</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 6: L'ancora Hjemmeside (from your main page) -->
+                <!-- Project 6: L'ancora Hjemmeside (Website + GitHub) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -367,15 +717,19 @@
                         <span class="tech-tag">Webdesign</span>
                         <span class="tech-tag">Responsivt Design</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <a href="https://www.lancora.dk/" target="_blank" class="view-btn w-full text-center block">
-                            <i class="fa-solid fa-external-link-alt mr-2"></i>
-                            Besøg Hjemmesiden
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/lancora-website" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
+                        <a href="https://www.lancora.dk/" target="_blank" class="action-btn website" title="Besøg hjemmesiden">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span class="action-btn-tooltip">Besøg Hjemmesiden</span>
                         </a>
                     </div>
                 </div>
                 
-                <!-- Project 7: Data Dashboard (from your main page) -->
+                <!-- Project 7: Data Dashboard (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -391,15 +745,15 @@
                         <span class="tech-tag">D3.js</span>
                         <span class="tech-tag">Data Visualization</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Case Study
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/data-dashboard" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 8: Fitness App (from your main page) -->
+                <!-- Project 8: Fitness App (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -415,15 +769,15 @@
                         <span class="tech-tag">Mobile App</span>
                         <span class="tech-tag">Fitness</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            Se Prototype
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/fitness-app" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Project 9: Portfolio Website (this site) -->
+                <!-- Project 9: Portfolio Website (Code only) -->
                 <div class="project-card">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
@@ -439,11 +793,11 @@
                         <span class="tech-tag">Tailwind CSS</span>
                         <span class="tech-tag">GSAP</span>
                     </div>
-                    <div class="card-footer mt-auto pt-4 border-t border-border/50">
-                        <button class="view-btn w-full">
-                            <i class="fa-solid fa-code mr-2"></i>
-                            Se Kode
-                        </button>
+                    <div class="action-icons">
+                        <a href="https://github.com/yourusername/portfolio-website" target="_blank" class="action-btn github" title="Se koden på GitHub">
+                            <i class="fab fa-github"></i>
+                            <span class="action-btn-tooltip">GitHub Repository</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -490,34 +844,150 @@
         
         if (menuToggle && navMenu) {
             menuToggle.addEventListener('click', () => { 
-                navMenu.classList.toggle('active'); 
+                navMenu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+            
+            // Close menu when clicking outside on mobile
+            document.addEventListener('click', (event) => {
+                if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
+                    if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                        navMenu.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                    }
+                }
             });
         }
 
-        // Project card click functionality
-        document.querySelectorAll('.view-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                if (this.tagName === 'A') return; // Skip if it's already a link
+        // Simplified hover effect - remove JavaScript z-index manipulation
+        // CSS now handles the z-index correctly
+
+        // Add click tracking for analytics (optional)
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const actionType = this.classList.contains('github') ? 'GitHub' :
+                                 this.classList.contains('pdf') ? 'PDF Download' :
+                                 this.classList.contains('website') ? 'Website Visit' : 'Action';
+                const projectTitle = this.closest('.project-card').querySelector('h3').textContent;
                 
-                const projectCard = this.closest('.project-card');
-                const projectTitle = projectCard.querySelector('h3').textContent;
-                
-                // In a real implementation, this would navigate to the project page
-                // For now, show a message
-                alert(`Åbner projekt: ${projectTitle}\n\nDette ville normalt navigere til projektets side eller GitHub repository.`);
+                console.log(`${actionType} clicked for project: ${projectTitle}`);
+                // Here you could add Google Analytics tracking
             });
         });
 
-        // Add hover effect for project cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px)';
-            });
+        // ===== DARK MODE FUNCTIONALITY =====
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme or prefer-color-scheme
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
             
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
         });
     </script>
+
+    <script>
+        // Custom cursor for allprojects.html
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only add custom cursor on desktop
+            if (window.innerWidth > 768 && !('ontouchstart' in window)) {
+                const dot = document.createElement('div');
+                dot.className = 'cursor-dot';
+                dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform 0.1s, background 0.3s;';
+                
+                const outline = document.createElement('div');
+                outline.className = 'cursor-outline';
+                outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:all 0.3s;';
+                
+                document.body.appendChild(dot);
+                document.body.appendChild(outline);
+                document.body.style.cursor = 'none';
+                
+                let mouseX = 0, mouseY = 0;
+                let outlineX = 0, outlineY = 0;
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    dot.style.left = mouseX + 'px';
+                    dot.style.top = mouseY + 'px';
+                });
+                
+                // Smooth outline animation
+                function animateOutline() {
+                    outlineX += (mouseX - outlineX) * 0.15;
+                    outlineY += (mouseY - outlineY) * 0.15;
+                    outline.style.left = outlineX + 'px';
+                    outline.style.top = outlineY + 'px';
+                    requestAnimationFrame(animateOutline);
+                }
+                animateOutline();
+                
+                // Hover effects
+                const hoverElements = document.querySelectorAll('a, button, .project-card, .action-btn, .tech-tag, .back-btn');
+                hoverElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        dot.style.background = '#2D3332';
+                        outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
+                        
+                        // Dark mode adjustment
+                        if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                            dot.style.background = '#E8EDEB';
+                        }
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        dot.style.transform = 'translate(-50%, -50%) scale(1)';
+                        dot.style.background = '#588157';
+                        outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                        outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
+                    });
+                });
+                
+                // Click effect
+                document.addEventListener('mousedown', () => {
+                    dot.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                    outline.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    dot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+                
+                // Hide cursor when leaving window
+                document.addEventListener('mouseleave', () => {
+                    dot.style.opacity = '0';
+                    outline.style.opacity = '0';
+                });
+                
+                document.addEventListener('mouseenter', () => {
+                    dot.style.opacity = '1';
+                    outline.style.opacity = '1';
+                });
+            }
+        });
+        </script>
+
+
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 // Main JavaScript for Interactive Portfolio
 
 document.addEventListener('DOMContentLoaded', function() {
