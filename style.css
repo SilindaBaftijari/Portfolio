@@ -7,7 +7,51 @@
     --card-bg: rgba(255, 255, 255, 0.7); /* Card background */
 }
 
-/* Reset & Base Styles */
+/* ===== CUSTOM CURSOR STYLING ===== */
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #588157; /* Din secondary farve */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s ease;
+}
+
+.cursor-outline {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(88, 129, 87, 0.5); /* Din secondary farve med opacity */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.2s ease;
+}
+
+/* Hide default cursor on desktop */
+@media (min-width: 769px) {
+    html, body * {
+        cursor: none !important;
+    }
+    
+    /* Keep default for form elements */
+    input, textarea, select {
+        cursor: auto !important;
+    }
+}
+
+/* Show default cursor on mobile */
+@media (max-width: 768px) {
+    .cursor-dot, .cursor-outline {
+        display: none !important;
+    }
+}
+
+/* ===== RESET & BASE STYLES ===== */
 * {
     margin: 0;
     padding: 0;
@@ -24,9 +68,10 @@ body {
     color: var(--text);
     overflow-x: hidden;
     line-height: 1.6;
+    min-height: 100vh;
 }
 
-/* Background Canvas */
+/* ===== BACKGROUND CANVAS ===== */
 .bg-canvas {
     position: fixed;
     top: 0;
@@ -49,7 +94,7 @@ body {
     100% { background-position: 100px 100px; }
 }
 
-/* Navigation */
+/* ===== NAVIGATION ===== */
 .main-nav {
     position: fixed;
     top: 0;
@@ -134,7 +179,7 @@ body {
     gap: 4px;
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: none !important;
     padding: 0.5rem;
 }
 
@@ -145,7 +190,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hero Section */
+/* ===== HERO SECTION ===== */
 .hero-section {
     min-height: 100vh;
     padding: 8rem 2rem 4rem;
@@ -254,7 +299,7 @@ body {
     color: var(--accent);
 }
 
-/* Hero Right */
+/* ===== HERO RIGHT ===== */
 .hero-right {
     position: relative;
 }
@@ -391,7 +436,7 @@ body {
     100% { height: 0; opacity: 0; }
 }
 
-/* Section Styles */
+/* ===== SECTION STYLES ===== */
 .section-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -423,7 +468,7 @@ body {
     max-width: 500px;
 }
 
-/* Experience Section */
+/* ===== EXPERIENCE SECTION ===== */
 .experience-timeline {
     position: relative;
     padding-left: 2rem;
@@ -503,7 +548,7 @@ body {
     font-weight: 500;
 }
 
-/* Skills Section */
+/* ===== SKILLS SECTION ===== */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -573,7 +618,7 @@ body {
     transition: width 1.5s ease;
 }
 
-/* Projects Section */
+/* ===== PROJECTS SECTION ===== */
 .projects-grid {
     display: grid;
     gap: 3rem;
@@ -708,7 +753,7 @@ body {
     gap: 1rem;
 }
 
-/* About Section */
+/* ===== ABOUT SECTION ===== */
 .about-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -866,7 +911,7 @@ body {
     background-size: 20px 100%;
 }
 
-/* Contact Section */
+/* ===== CONTACT SECTION ===== */
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -967,7 +1012,7 @@ body {
     border-radius: 50px;
     font-weight: 500;
     font-size: 1rem;
-    cursor: pointer;
+    cursor: none !important;
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
@@ -1008,7 +1053,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* Footer */
+/* ===== FOOTER ===== */
 .main-footer {
     padding: 3rem 2rem;
     border-top: 1px solid rgba(45, 51, 50, 0.1);
@@ -1047,7 +1092,7 @@ body {
     padding: 0.75rem 1.5rem;
     border-radius: 50px;
     font-size: 0.9rem;
-    cursor: pointer;
+    cursor: none !important;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1060,7 +1105,7 @@ body {
     gap: 1rem;
 }
 
-/* Responsive Design */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
     .hero-container {
         grid-template-columns: 1fr;
@@ -1139,5 +1184,19 @@ body {
         flex-direction: column;
         gap: 2rem;
         text-align: center;
+    }
+}
+
+/* ===== TOUCH DEVICE SUPPORT ===== */
+@media (hover: none) and (pointer: coarse) {
+    .cursor-dot, .cursor-outline {
+        display: none !important;
+    }
+    
+    body, a, button, .project-card, .menu-toggle, .education-card, 
+    .skill-category, .nav-item, .button-primary, .button-secondary,
+    .timeline-item, .code-window, .social-link, .back-to-top,
+    .submit-button {
+        cursor: auto !important;
     }
 }
