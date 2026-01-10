@@ -1,4 +1,3 @@
-
 // Main JavaScript for Interactive Portfolio
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -407,17 +406,19 @@ function initMicroInteractions() {
     });
 }
 
-// Custom Cursor (detaches from main init)
+// Custom Cursor - OPTIMERET TIL MAKSIMAL HASTIGHED
 function initCustomCursor() {
     if ('ontouchstart' in window) return;
     
     const dot = document.createElement('div');
     dot.className = 'cursor-dot';
-    dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform 0.1s, background 0.3s;';
+    // Vi fjerner CSS transitions næsten helt for at undgå "input lag"
+    dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);'; 
     
     const outline = document.createElement('div');
     outline.className = 'cursor-outline';
-    outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:all 0.3s;';
+    // transition sat til 0.05s så den føles responsiv men stadig blød
+    outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition: transform 0.1s ease-out, opacity 0.2s ease;'; 
     
     document.body.appendChild(dot);
     document.body.appendChild(outline);
@@ -429,55 +430,40 @@ function initCustomCursor() {
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
+        
+        // Prikken skal være 1:1 med musen (ingen forsinkelse)
         dot.style.left = mouseX + 'px';
         dot.style.top = mouseY + 'px';
     });
     
-    // Smooth outline animation
+    // Smooth outline animation - MEGET HURTIGERE
     function animateOutline() {
-        outlineX += (mouseX - outlineX) * 0.6;
-        outlineY += (mouseY - outlineY) * 0.6;
+        // Vi øger faktoren fra 0.1 til 0.3 for at gøre den mere "snappy"
+        const speed = 0.3; 
+        outlineX += (mouseX - outlineX) * speed;
+        outlineY += (mouseY - outlineY) * speed;
+        
         outline.style.left = outlineX + 'px';
         outline.style.top = outlineY + 'px';
         requestAnimationFrame(animateOutline);
     }
     animateOutline();
     
-    // Hover effects
+    // Hover effekter
     const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-category, .education-card, .social-link');
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
-            dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            dot.style.background = '#2D3332';
             outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
-            
-            // Dark mode adjustment
-            if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                dot.style.background = '#E8EDEB';
-            }
+            outline.style.background = 'rgba(163, 177, 138, 0.1)';
         });
         
         el.addEventListener('mouseleave', () => {
-            dot.style.transform = 'translate(-50%, -50%) scale(1)';
-            dot.style.background = '#588157';
             outline.style.transform = 'translate(-50%, -50%) scale(1)';
-            outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
+            outline.style.background = 'transparent';
         });
     });
     
-    // Click effect
-    document.addEventListener('mousedown', () => {
-        dot.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        outline.style.transform = 'translate(-50%, -50%) scale(0.9)';
-    });
-    
-    document.addEventListener('mouseup', () => {
-        dot.style.transform = 'translate(-50%, -50%) scale(1)';
-        outline.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-    
-    // Hide cursor when leaving window
+    // Skjul/vis cursor
     document.addEventListener('mouseleave', () => {
         dot.style.opacity = '0';
         outline.style.opacity = '0';
@@ -487,10 +473,7 @@ function initCustomCursor() {
         dot.style.opacity = '1';
         outline.style.opacity = '1';
     });
-    
-    console.log('Enhanced custom cursor loaded!');
 }
-
 // Initialize custom cursor separately
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCustomCursor);
