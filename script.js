@@ -435,8 +435,8 @@ function initCustomCursor() {
     
     // Smooth outline animation
     function animateOutline() {
-        outlineX += (mouseX - outlineX) * 0.3;
-        outlineY += (mouseY - outlineY) * 0.3;
+        outlineX += (mouseX - outlineX) * 0.6;
+        outlineY += (mouseY - outlineY) * 0.6;
         outline.style.left = outlineX + 'px';
         outline.style.top = outlineY + 'px';
         requestAnimationFrame(animateOutline);
