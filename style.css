@@ -1527,3 +1527,41 @@ body {
     background: #7A8C69;
     border-color: #1a1f1e;
 }
+
+/* ===== ANIMATION CSS ===== */
+
+/* Typewriter cursor blink */
+@keyframes blink {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: #333; }
+  }
+  
+  .typewriter-cursor {
+    border-right: 2px solid #333;
+    animation: blink 1s infinite;
+  }
+  
+  /* Smooth transitions for hover effects */
+  .project-card, .projekt-card {
+    transition: all 0.3s ease;
+    will-change: transform, box-shadow; /* Performance optimering */
+  }
+  
+  /* Fade-in base class */
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Stat number animation */
+  .stat-number {
+    display: inline-block;
+  }
+
+  

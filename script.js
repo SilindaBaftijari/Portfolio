@@ -1,3 +1,6 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 // Main JavaScript for Interactive Portfolio
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,6 +22,102 @@ document.addEventListener('DOMContentLoaded', function() {
     initMicroInteractions();
 });
 
+// Tilføj i din JavaScript (efter DOMContentLoaded)
+function terminalEffect() {
+    const text = "const designer = new Designer();\nconst developer = new Developer();\nconst solution = designer.meet(developer);\nconsole.log(solution); // 'Magical Digital Experience'";
+    const terminal = document.getElementById('terminal-code');
+    
+    if (terminal) {
+        let lineIndex = 0;
+        const lines = text.split('\n');
+        
+        function typeLine() {
+            if (lineIndex < lines.length) {
+                const line = lines[lineIndex];
+                let charIndex = 0;
+                const lineElement = document.createElement('div');
+                lineElement.className = 'terminal-line';
+                terminal.appendChild(lineElement);
+                
+                function typeChar() {
+                    if (charIndex < line.length) {
+                        lineElement.textContent += line.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 30 + Math.random() * 30);
+                    } else {
+                        lineIndex++;
+                        setTimeout(typeLine, 200);
+                    }
+                }
+                typeChar();
+            }
+        }
+        setTimeout(typeLine, 500);
+    }
+}
+
+// Animation der "highlight" kode keywords
+function codeHighlightPulse() {
+    const codeElements = document.querySelectorAll('.code-keyword, .code-function, .code-string');
+    
+    codeElements.forEach((el, i) => {
+        gsap.to(el, {
+            color: "#588157",
+            duration: 0.5,
+            repeat: 3,
+            yoyo: true,
+            delay: i * 0.2,
+            ease: "power2.inOut"
+        });
+    });
+}
+
+// Animation der viser "flow" mellem UI elementer
+function prototypeFlow() {
+    const flowPath = document.querySelector('.flow-path');
+    if (flowPath) {
+        const pathLength = flowPath.getTotalLength();
+        
+        // Reset
+        flowPath.style.strokeDasharray = pathLength;
+        flowPath.style.strokeDashoffset = pathLength;
+        
+        gsap.to(flowPath, {
+            strokeDashoffset: 0,
+            duration: 3,
+            repeat: -1,
+            ease: "power1.inOut"
+        });
+    }
+}
+
+
+// Animerede data bars til kompetencer
+function animateSkillBars() {
+    gsap.utils.toArray('.skill-bar-container').forEach(container => {
+        const skillLevel = container.getAttribute('data-level') || '80';
+        const bar = container.querySelector('.skill-level');
+        
+        ScrollTrigger.create({
+            trigger: container,
+            start: "top 80%",
+            onEnter: () => {
+                gsap.to(bar, {
+                    width: `${skillLevel}%`,
+                    duration: 2,
+                    ease: "elastic.out(1, 0.5)",
+                    onUpdate: function() {
+                        const currentWidth = Math.ceil(this.progress() * skillLevel);
+                        const percentage = container.querySelector('.skill-percentage');
+                        if (percentage) {
+                            percentage.textContent = `${currentWidth}%`;
+                        }
+                    }
+                });
+            }
+        });
+    });
+}
 // Loading Animation
 function initLoadingAnimation() {
     window.addEventListener('load', () => {
@@ -487,3 +586,103 @@ if (!window.requestAnimationFrame) {
         return setTimeout(callback, 1000 / 60);
     };
 }
+
+// Registrer ScrollTrigger plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+// Animationer kun kører i browseren
+if (typeof window !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // ===== 1. TYPEWRITER ANIMATION =====
+    const heroText = document.querySelector('#hero-text');
+    if (heroText) {
+      const originalText = heroText.textContent;
+      heroText.textContent = '';
+      heroText.style.overflow = 'hidden';
+      heroText.style.borderRight = '2px solid #333';
+      heroText.style.whiteSpace = 'nowrap';
+      heroText.style.display = 'inline-block';
+      
+      let i = 0;
+      const typeWriter = () => {
+        if (i < originalText.length) {
+          heroText.textContent += originalText.charAt(i);
+          i++;
+          setTimeout(typeWriter, 50);
+        } else {
+          setTimeout(() => {
+            heroText.style.borderRight = 'none';
+          }, 500);
+        }
+      };
+      
+      // Start med forsinkelse
+      setTimeout(typeWriter, 300);
+    }
+    
+    // ===== 2. FADE-IN PÅ SCROLL =====
+    gsap.utils.toArray('section').forEach((section, i) => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        delay: i * 0.1,
+        ease: 'power2.out',
+      });
+    });
+    
+    // ===== 3. HOVER EFFECT PÅ PROJEKTER =====
+    const projectCards = document.querySelectorAll('.project-card, .projekt-card'); // Begge mulige klasser
+    projectCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          y: -8,
+          scale: 1.02,
+          boxShadow: '0 15px 40px rgba(0,0,0,0.12)',
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          y: 0,
+          scale: 1,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+          duration: 0.3,
+          ease: 'power2.out',
+        });
+      });
+    });
+    
+    // ===== 4. COUNTER ANIMATION TIL STATISTIK =====
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      const target = parseInt(stat.textContent.replace('+', ''));
+      if (!isNaN(target)) {
+        gsap.to(stat, {
+          innerText: target,
+          duration: 2,
+          snap: { innerText: 1 },
+          scrollTrigger: {
+            trigger: stat,
+            start: 'top 90%',
+            once: true, // Kør kun én gang
+          },
+          onUpdate: function() {
+            stat.textContent = Math.floor(this.targets()[0].innerText) + '+';
+          },
+        });
+      }
+    });
+  });
+}
+
