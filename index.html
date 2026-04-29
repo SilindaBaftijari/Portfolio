@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="da">
 <head>
@@ -8,10 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script> 
 
     
     <script>
@@ -142,6 +141,14 @@
                 radial-gradient(circle at 40% 40%, rgba(122, 140, 105, 0.1) 0%, transparent 50%);
         }
         
+        .font-display { font-family: 'Fraunces', serif !important; }
+        .hero-line { overflow: hidden; display: block; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+        .hero-line-inner { display: block; padding-top: 0.05em; }
+        .gsap-reveal { opacity: 0; transform: translateY(24px); }
+        @keyframes loaderBar { 0%,100%{transform:scaleX(0.3);opacity:0.4} 50%{transform:scaleX(1);opacity:1} }
+        @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        @keyframes badgeIn { 0%{opacity:0;transform:scale(0.4) rotate(-6deg)} 70%{transform:scale(1.08) rotate(1deg)} 100%{opacity:1;transform:scale(1) rotate(0deg)} }
+        @keyframes caretBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
         .gradient-text {
             background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -397,10 +404,9 @@
 <body class="font-inter">
     <!-- Loading Animation -->
     <div class="page-transition">
-        <div class="loader flex items-center gap-3">
-            <div class="w-3 h-3 bg-accent rounded-full animate-bounce"></div>
-            <div class="w-3 h-3 bg-accent rounded-full animate-bounce delay-75"></div>
-            <div class="w-3 h-3 bg-accent rounded-full animate-bounce delay-150"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1.25rem;">
+            <span style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:600;color:#A3B18A;letter-spacing:-0.02em;">By <span style="font-style:italic;color:#FFF5F5;">Silinda</span></span>
+            <div style="width:40px;height:2px;background:#A3B18A;border-radius:2px;animation:loaderBar 1.2s ease-in-out infinite;"></div>
         </div>
     </div>
     
@@ -412,10 +418,10 @@
     <!-- Navigation with Dark Mode Toggle -->
     <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
         <div class="container mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl font-bold text-primary tracking-tight transition-colors">BY SILINDA</span>
+            <a href="#" style="text-decoration:none;" class="flex items-center space-x-2">
+                <span style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;" class="text-primary">By <span style="font-style:italic;color:#588157;">Silinda</span></span>
                 <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
-            </div>
+            </a>
             
             <div class="flex items-center gap-4">
                 <!-- Dark Mode Toggle -->
@@ -445,10 +451,10 @@
         <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="animate-slide-up">
                 <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Kreativ Udvikler & Designer</div>
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-                    <div class="text-text-secondary">Hej, jeg er</div>
-                    <div class="gradient-text my-2">Silinda</div>
-                    <div class="text-primary">Baftijari</div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-display" style="line-height:1.08;letter-spacing:-0.02em;">
+                    <span class="hero-line"><span class="hero-line-inner text-text-secondary" style="font-weight:300;">Hej, jeg er</span></span>
+                    <span class="hero-line"><span class="hero-line-inner gradient-text" style="display:block;">Silinda</span></span>
+                    <span class="hero-line"><span class="hero-line-inner text-primary" style="font-style:italic;">Baftijari</span></span>
                 </h1>
                 <p class="text-text-secondary text-lg mb-8 max-w-lg leading-relaxed">
                     Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
@@ -479,23 +485,35 @@
             </div>
             
             <div class="relative animate-fade-in">
-                <div class="absolute inset-0">
-                    <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-accent/20 rounded-full blur-2xl animate-float-slow"></div>
-                    <div class="absolute top-1/3 right-1/4 w-20 h-20 bg-secondary/10 rounded-full blur-xl animate-float-medium"></div>
+                <div class="absolute inset-0" style="pointer-events:none;">
+                    <div class="absolute top-1/4 left-1/4 w-40 h-40 bg-accent/20 rounded-full blur-3xl animate-float-slow"></div>
+                    <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl animate-float-medium"></div>
                 </div>
-                <div class="relative code-window transform hover:-translate-y-1 transition-transform">
-                    <div class="flex items-center px-4 py-3 border-b border-border bg-white/40">
-                        <div class="window-dots flex gap-1.5"><span></span><span></span><span></span></div>
-                        <div class="ml-4 text-xs font-mono text-text-muted uppercase tracking-widest">silinda.js</div>
+
+                <!-- Main terminal -->
+                <div id="heroEditor" style="opacity:0;transform:translateY(20px);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(45,51,50,0.1),0 0 0 1px rgba(209,219,206,0.6);">
+                    <div id="editorTitleBar" style="display:flex;align-items:center;gap:6px;padding:11px 16px;background:#F0EDE8;border-bottom:1px solid rgba(209,219,206,0.6);">
+                        <div style="width:11px;height:11px;border-radius:50%;background:#FF6B6B;flex-shrink:0;"></div>
+                        <div style="width:11px;height:11px;border-radius:50%;background:#FFD93D;flex-shrink:0;"></div>
+                        <div style="width:11px;height:11px;border-radius:50%;background:#6BCB77;flex-shrink:0;"></div>
+                        <span style="margin:0 auto;font-size:0.62rem;color:#7E8C89;font-family:monospace;letter-spacing:0.08em;">zsh - silinda@portfolio</span>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                            <span style="width:5px;height:5px;border-radius:50%;background:#6BCB77;animation:livePulse 1.5s ease-in-out infinite;"></span>
+                            <span style="font-size:0.55rem;font-weight:700;color:#6BCB77;letter-spacing:0.1em;font-family:monospace;">LIVE</span>
+                        </div>
                     </div>
-                    <div class="p-6">
-                        <pre class="text-sm text-text-secondary font-mono"><code><span class="text-secondary">function</span> <span class="text-primary">skabOplevelse</span>() {
-  <span class="text-secondary">const</span> design = <span class="text-accent">"intuitivt"</span>;
-  <span class="text-secondary">const</span> kode = <span class="text-accent">"performant"</span>;
-  <span class="text-secondary">return</span> design + <span class="text-text-muted">" × "</span> + kode;
-}</code></pre>
+                    <div id="editorBody" style="background:#FAFAF8;padding:1.1rem 1.3rem;height:230px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;">
+                        <pre id="heroCode" style="font-family:Courier New,monospace;font-size:0.75rem;line-height:1.9;margin:0;white-space:pre;color:#2D3332;"></pre>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.3rem 1rem;background:#F0EDE8;border-top:1px solid rgba(209,219,206,0.4);">
+                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">ZSH</span>
+                        <span id="heroStatus" style="font-size:0.58rem;color:#588157;font-family:monospace;font-weight:700;">ready</span>
+                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">~/portfolio</span>
                     </div>
                 </div>
+
+
+
             </div>
         </div>
     </section>
@@ -507,7 +525,7 @@
             <div class="flex items-center gap-4 mb-12">
                 <div class="text-4xl font-bold text-accent/30">01</div>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2">Erfaring</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2 font-display gsap-reveal">Erfaring</h2>
                     <p class="text-text-secondary">Fuld professionel historik</p>
                 </div>
             </div>
@@ -717,7 +735,7 @@
     <div class="container mx-auto">
         <div class="flex items-center gap-4 mb-12">
             <div class="text-4xl font-bold text-accent/30">03</div>
-            <h2 class="text-3xl md:text-4xl font-bold text-primary">Udvalgte Projekter</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary font-display gsap-reveal">Udvalgte Projekter</h2>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
     
@@ -787,7 +805,7 @@
             <div class="flex items-center gap-4 mb-12">
                 <div class="text-4xl font-bold text-accent/30">04</div>
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2">Om mig</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2 font-display gsap-reveal">Om mig</h2>
                     <p class="text-text-secondary text-lg">Udvikler med empati, designer med logik</p>
                 </div>
             </div>
@@ -870,7 +888,7 @@
     <section id="kontakt" class="py-20 px-4 md:px-8">
         <div class="container mx-auto max-w-4xl bg-card border border-border rounded-3xl p-12 shadow-xl">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-5xl font-bold text-primary mb-4">Lad os vokse sammen.</h2>
+                <h2 class="text-3xl md:text-5xl font-bold text-primary mb-4 font-display gsap-reveal">Lad os vokse sammen.</h2>
                 <p class="text-text-secondary">Klar til at starte din næste digitale rejse?</p>
             </div>
             <form id="contact-form" class="grid md:grid-cols-2 gap-8">
@@ -900,7 +918,7 @@
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.querySelector('.page-transition').classList.add('hidden');
-            }, 500);
+            }, 200);
         });
 
         // Menu toggle
@@ -913,8 +931,42 @@
             });
         }
 
-        // GSAP Initialization
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Apply dark mode to terminal on page load if needed
+        (function() {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                window.addEventListener('load', function() {
+                    var tb = document.getElementById('editorTitleBar');
+                    var eb = document.getElementById('editorBody');
+                    var ce = document.getElementById('heroCode');
+                    var ed = document.getElementById('heroEditor');
+                    if(tb){tb.style.background='#1E2220';tb.style.borderBottomColor='rgba(255,255,255,0.05)';}
+                    if(eb) eb.style.background='#0F1412';
+                    if(ce) ce.style.color='#E8EBE8';
+                    if(ed) ed.style.boxShadow='0 24px 70px rgba(0,0,0,0.35)';
+                });
+            }
+        })();
+
+        // Hero reveal
+        function runHeroAnim() {
+            var hl = document.querySelectorAll('.hero-line-inner');
+            gsap.set(hl, { yPercent: 110, opacity: 0 });
+            gsap.to(hl, { yPercent:0, opacity:1, duration:1, ease:'power4.out', stagger:0.14, delay:0.1 });
+            gsap.from('.animate-slide-up > *:not(h1)', { y:22, opacity:0, duration:0.8, ease:'power3.out', stagger:0.1, delay:0.55 });
+        }
+        window.addEventListener('load', function() { setTimeout(runHeroAnim, 560); });
+
+        // Section reveals
+        document.querySelectorAll('.gsap-reveal').forEach(function(el) {
+            gsap.to(el, {
+                scrollTrigger: { trigger:el, start:'top 88%', toggleActions:'play none none none' },
+                y:0, opacity:1, duration:0.9, ease:'power3.out'
+            });
+        });
         
         // Progress Bar
         window.addEventListener('scroll', () => {
@@ -1117,92 +1169,205 @@
                     ease: 'power2.out'
                 });
             });
+
+        // ============================================
+        // MAIN TERMINAL ANIMATION
+        // ============================================
+        (function() {
+            var editor   = document.getElementById('heroEditor');
+            var codeEl   = document.getElementById('heroCode');
+            var bodyEl   = document.getElementById('editorBody');
+            var statusEl = document.getElementById('heroStatus');
+            if (!editor) return;
+
+            var CARET = '<span style="color:#588157;animation:caretBlink 1s step-end infinite;">|</span>';
+            var CHAR_MS = 32;
+
+            // All ASCII-safe terminal lines
+            var LINES = [
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'who am i',                col:'#2D3332', pause:350 },
+                { r:'  -> Silinda Baftijari',col:'#588157' },
+                { r:'  -> 24 år, København, Danmark', col:'#588157' },
+                { r:'  -> KU Datalogi 2021-2026', col:'#588157' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'npm run design',        col:'#2D3332', pause:400 },
+                { r:'  ✓ UX/UI loaded',    col:'#4A5553' },
+                { r:'  ✓ Figma loaded',    col:'#4A5553' },
+                { r:'  ✓ Canva loaded',    col:'#4A5553' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'open social-media/',    col:'#2D3332', pause:350 },
+                { r:'  ✓ Instagram Design', col:'#4A5553' },
+                { r:'  ✓ TikTok Design',   col:'#4A5553' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'Import Language',  col:'#2D3332', pause:500 },
+                { r:'  ✓ Python', col:'#588157' },
+                { r:'  ✓ CSS', col:'#588157' },
+                { r:'  ✓ JavaScript', col:'#588157' },
+                { r:'  ✓ WordPress', col:'#588157' },
+            ];
+
+            var done = [];
+            var li = 0;
+
+            function render() {
+                codeEl.innerHTML = done.join('\n') + CARET;
+                if (bodyEl) { bodyEl.scrollTop = bodyEl.scrollHeight; }
+            }
+
+            function typeLine(line, cb) {
+                var pause = line.pause || 0;
+                if (!line.r) { done.push(''); render(); setTimeout(cb, 60); return; }
+                var c = 0;
+                done.push('');
+                function tick() {
+                    c++;
+                    done[done.length-1] = '<span style="color:#9A9A9A">' + line.r.slice(0,c) + '</span>';
+                    render();
+                    if (c >= line.r.length) {
+                        done[done.length-1] = '<span style="color:' + line.col + '">' + line.r + '</span>';
+                        render();
+                        statusEl.textContent = 'running...';
+                        setTimeout(cb, 60 + pause);
+                    } else {
+                        setTimeout(tick, 22 + Math.random()*10);
+                    }
+                }
+                tick();
+            }
+
+            function runLines() {
+                if (li >= LINES.length) {
+                    codeEl.innerHTML = done.join('\n');
+                    statusEl.textContent = 'done';
+                    setTimeout(deleteAll, 2200);
+                    return;
+                }
+                typeLine(LINES[li], function() { li++; runLines(); });
+            }
+
+            function deleteAll() {
+                statusEl.textContent = 'clearing...';
+                var full = LINES.map(function(l){ return l.r; }).join('\n');
+                function del() {
+                    if (full.length > 0) {
+                        full = full.slice(0,-1);
+                        codeEl.innerHTML = '<span style="color:#A3B18A">' + full + '</span>' + CARET;
+                        setTimeout(del, 8);
+                    } else {
+                        done = []; li = 0;
+                        codeEl.innerHTML = CARET;
+                        statusEl.textContent = 'ready';
+                        setTimeout(runLines, 500);
+                    }
+                }
+                del();
+            }
+
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    gsap.to(editor, { opacity:1, y:0, duration:0.9, ease:'power3.out' });
+                    setTimeout(runLines, 900);
+                }, 700);
+            });
+
+            // Magnetic tilt
+            editor.addEventListener('mousemove', function(e) {
+                var r = this.getBoundingClientRect();
+                var x = (e.clientX - r.left - r.width/2)  / r.width  * 6;
+                var y = (e.clientY - r.top  - r.height/2) / r.height * 6;
+                gsap.to(this, { rotationY:x, rotationX:-y, transformPerspective:800, duration:0.4, ease:'power2.out' });
+            });
+            editor.addEventListener('mouseleave', function() {
+                gsap.to(this, { rotationY:0, rotationX:0, duration:0.7, ease:'elastic.out(1,0.5)' });
+            });
+            gsap.to(editor, { y:-8, duration:4, ease:'sine.inOut', repeat:-1, yoyo:true, delay:2 });
+
+            // Theme toggle
+            var themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    // Read AFTER main handler has toggled data-theme
+                    setTimeout(function() {
+                        var nowDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                        var tb = document.getElementById('editorTitleBar');
+                        var eb = document.getElementById('editorBody');
+                        if (nowDark) {
+                            if(tb){tb.style.background='#1E2220';tb.style.borderBottomColor='rgba(255,255,255,0.05)';}
+                            if(eb) eb.style.background='#0F1412';
+                            if(codeEl) codeEl.style.color='#E8EBE8';
+                            editor.style.boxShadow='0 24px 70px rgba(0,0,0,0.35)';
+                        } else {
+                            if(tb){tb.style.background='#F0EDE8';tb.style.borderBottomColor='rgba(209,219,206,0.6)';}
+                            if(eb) eb.style.background='#FAFAF8';
+                            if(codeEl) codeEl.style.color='#2D3332';
+                            editor.style.boxShadow='0 12px 40px rgba(45,51,50,0.1),0 0 0 1px rgba(209,219,206,0.6)';
+                        }
+                    }, 10);
+                });
+            }
+        })();
+
+
+
         });
     </script>
 
     <!-- Custom Cursor -->
     <script>
     (function() {
-        if ('ontouchstart' in window) return;
-        
-        const dot = document.createElement('div');
-        dot.className = 'cursor-dot';
-        dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform 0.1s, background 0.3s;';
-        
-        const outline = document.createElement('div');
-        outline.className = 'cursor-outline';
-        outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:all 0.3s;';
-        
+        if ('ontouchstart' in window || window.innerWidth < 768) return;
+
+        // Dot — snaps instantly to mouse
+        var dot = document.createElement('div');
+        dot.style.cssText = 'position:fixed;width:7px;height:7px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;left:0;top:0;will-change:transform;';
         document.body.appendChild(dot);
-        document.body.appendChild(outline);
         document.body.style.cursor = 'none';
-        
-        let mouseX = 0, mouseY = 0;
-        let outlineX = 0, outlineY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.left = mouseX + 'px';
-            dot.style.top = mouseY + 'px';
-        });
-        
-        // Smooth outline animation
-        function animateOutline() {
-            outlineX += (mouseX - outlineX) * 0.15;
-            outlineY += (mouseY - outlineY) * 0.15;
-            outline.style.left = outlineX + 'px';
-            outline.style.top = outlineY + 'px';
-            requestAnimationFrame(animateOutline);
-        }
-        animateOutline();
-        
-        // Hover effects
-        const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-category, .education-card, .social-link');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                dot.style.background = '#2D3332';
-                outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
-                
-                // Dark mode adjustment
-                if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                    dot.style.background = '#E8EDEB';
-                }
+
+        // Ring — follows with GSAP lag
+        var ring = document.createElement('div');
+        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
+        document.body.appendChild(ring);
+
+        var mx = 0, my = 0;
+
+        // Dot follows cursor instantly via transform
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX;
+            my = e.clientY;
+            dot.style.transform = 'translate(' + (mx - 3.5) + 'px,' + (my - 3.5) + 'px)';
+            // Ring follows with GSAP quickSetter for max perf
+            gsap.to(ring, { x: mx - 17, y: my - 17, duration: 0.18, ease: 'power2.out', overwrite: true });
+        }, { passive: true });
+
+        // Hover — grow ring, change dot color
+        document.querySelectorAll('a, button, .project-card, .skill-category, .education-card').forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                gsap.to(ring, { scale: 1.6, borderColor: 'rgba(88,129,87,0.7)', duration: 0.2 });
+                dot.style.background = document.documentElement.getAttribute('data-theme') === 'dark' ? '#E8EDEB' : '#2D3332';
             });
-            
-            el.addEventListener('mouseleave', () => {
-                dot.style.transform = 'translate(-50%, -50%) scale(1)';
+            el.addEventListener('mouseleave', function() {
+                gsap.to(ring, { scale: 1, borderColor: 'rgba(163,177,138,0.55)', duration: 0.2 });
                 dot.style.background = '#588157';
-                outline.style.transform = 'translate(-50%, -50%) scale(1)';
-                outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
             });
         });
-        
-        // Click effect
-        document.addEventListener('mousedown', () => {
-            dot.style.transform = 'translate(-50%, -50%) scale(0.8)';
-            outline.style.transform = 'translate(-50%, -50%) scale(0.9)';
+
+        // Click
+        document.addEventListener('mousedown', function() {
+            gsap.to(ring, { scale: 0.85, duration: 0.1 });
+            gsap.to(dot,  { scale: 0.7,  duration: 0.1 });
         });
-        
-        document.addEventListener('mouseup', () => {
-            dot.style.transform = 'translate(-50%, -50%) scale(1)';
-            outline.style.transform = 'translate(-50%, -50%) scale(1)';
+        document.addEventListener('mouseup', function() {
+            gsap.to(ring, { scale: 1, duration: 0.2, ease: 'back.out(2)' });
+            gsap.to(dot,  { scale: 1, duration: 0.2, ease: 'back.out(2)' });
         });
-        
-        // Hide cursor when leaving window
-        document.addEventListener('mouseleave', () => {
-            dot.style.opacity = '0';
-            outline.style.opacity = '0';
-        });
-        
-        document.addEventListener('mouseenter', () => {
-            dot.style.opacity = '1';
-            outline.style.opacity = '1';
-        });
-        
-        console.log('Enhanced custom cursor loaded!');
+
+        // Hide on leave
+        document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+        document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
     })();
     </script>
 

@@ -38,6 +38,32 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* ===== FONT STYLES ===== */
+h1, h2, h3,
+.logo,
+.hero-title,
+.section-title,
+.project-title,
+.timeline-title,
+.education-card h3,
+.category-header h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+.hero-label,
+.section-number,
+.nav-item,
+.button-primary,
+.button-secondary {
+    font-family: 'Inter', sans-serif;
+}
+
+.hero-title em,
+.section-title em,
+.project-title em {
+    font-style: italic;
+    color: #588157;
+}
 /* ===== DARK MODE SUPPORT ===== */
 [data-theme="dark"] .gradient-text {
     background: linear-gradient(135deg, #E8EDEB 0%, #7A8C69 100%);
@@ -347,10 +373,30 @@ body {
 }
 
 .hero-title {
-    font-size: 4.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 6vw, 5.5rem);
     font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.8rem;
+}
+
+.hero-title span {
+    display: block;
+}
+
+.hero-title .line1 {
+    color: rgba(45, 51, 50, 0.6);
+    font-weight: 400;
+}
+
+.hero-title .name {
+    color: var(--text);
+}
+
+.hero-title .italic {
+    font-style: italic;
+    color: #588157;
 }
 
 .title-line {
