@@ -437,33 +437,41 @@
     <div class="progress-bar" style="width: 0%"></div>
     
     <!-- Navigation with Dark Mode Toggle -->
+     
     <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
         <div class="container mx-auto flex items-center justify-between">
-            <a href="#" style="text-decoration:none;" class="flex items-center space-x-2">
+            <a href="index.html" style="text-decoration:none;" class="flex items-center space-x-2">
                 <span style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;" class="text-primary">By <span style="font-style:italic;color:#588157;">Silinda</span></span>
                 <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
             </a>
             
             <div class="flex items-center gap-4">
-                <!-- Dark Mode Toggle -->
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth" aria-label="Skift tema">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth">
                     <i class="fa-solid fa-moon text-accent"></i>
                 </button>
                 
-                <div class="nav-menu md:flex items-center space-x-8">
+                <div class="hidden md:flex items-center space-x-8">
                     <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
                     <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
-                    <a href="#projekter" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
+                    <a href="all-projects.html" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
                     <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
                     <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
                 </div>
             </div>
             
-            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 p-2" style="z-index:10000;" aria-label="Åben menu">
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+            <button id="menu-toggle" class="md:hidden flex flex-col space-y-1.5 p-2" style="z-index:10001;">
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
+                <span class="w-6 h-0.5 bg-primary"></span>
             </button>
+        </div>
+    
+        <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-white dark:bg-gray-900 z-[10000] flex flex-col items-center justify-center space-y-8 text-2xl font-bold">
+            <a href="#erfaring" class="mobile-nav-link text-primary">Arbejde</a>
+            <a href="#erfaring" class="mobile-nav-link text-primary">Erfaring</a>
+            <a href="#kompetencer" class="mobile-nav-link text-primary">Kompetencer</a>
+            <a href="#om-mig" class="mobile-nav-link text-primary">Om mig</a>
+            <a href="#kontakt" class="mobile-nav-link text-primary">Kontakt</a>
         </div>
     </nav>
 
