@@ -163,6 +163,25 @@
         }
         
         /* FIXED: Clipped "j" issue in gradient text */
+        /* Filter bar */
+        .filter-bar { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:2.5rem; }
+        .filter-btn {
+            padding:0.5rem 1.3rem; border-radius:100px;
+            border:1.5px solid #D1DBCE; background:transparent;
+            color:#4A5553; font-size:0.85rem; font-weight:500;
+            cursor:pointer; transition:all 0.22s ease;
+            font-family:'Inter',sans-serif;
+        }
+        .filter-btn:hover { border-color:#588157; color:#588157; }
+        .filter-btn.active { background:#588157; border-color:#588157; color:white; font-weight:600; }
+        [data-theme="dark"] .filter-btn { border-color:#4A5553; color:#8A9490; }
+        [data-theme="dark"] .filter-btn:hover { border-color:#7A9E6A; color:#7A9E6A; }
+        [data-theme="dark"] .filter-btn.active { background:#588157; border-color:#588157; color:white; }
+
+        /* Card hide/show animation */
+        .project-card { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .project-card.hidden-card { opacity:0; transform:scale(0.95); pointer-events:none; display:none; }
+
         .gradient-text {
             background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
             -webkit-background-clip: text;
@@ -582,10 +601,19 @@
                 </a>
             </header>
             
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">Alle</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="ux">UX/UI</button>
+                <button class="filter-btn" data-filter="data">Data &amp; Python</button>
+                <button class="filter-btn" data-filter="uni">Uni projekter</button>
+            </div>
+
             <!-- Projects Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projectsGrid">
                 <!-- Project 1: Phone Republik -->
-                <div class="project-card">
+                <div class="project-card" data-category="web ux">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -639,7 +667,7 @@
                 </div>
 
                 <!-- Project 3: Spil Fiks (Code only) -->
-                <div class="project-card">
+                <div class="project-card" data-category="web ux">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -666,7 +694,7 @@
                 </div>
 
                 <!-- Project 4: L'ancora Hjemmeside (Website + GitHub) -->
-                <div class="project-card">
+                <div class="project-card" data-category="web ux">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -694,7 +722,7 @@
                 </div>         
 
                 <!-- Project 5: Python-Programming-for-Data-Science (Code only) -->
-                <div class="project-card">
+                <div class="project-card" data-category="data uni">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -716,7 +744,7 @@
                 </div>
                 
                 <!-- Project 6: Software Development -->
-                <div class="project-card">
+                <div class="project-card" data-category="uni">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -737,7 +765,7 @@
                 </div>
                 
                 <!-- Project 7: Bachelor Project (PDF only - academic paper) -->
-                <div class="project-card">
+                <div class="project-card" data-category="ux uni">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -764,7 +792,7 @@
                     </div>
                 </div>
                 <!-- Project 8: Data Dashboard (Code only) -->
-                <div class="project-card">
+                <div class="project-card" data-category="data">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -786,7 +814,7 @@
                 </div>
                 
                 <!-- Project 9: Portfolio Website (Code only) -->
-                <div class="project-card">
+                <div class="project-card" data-category="web ux">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -809,7 +837,7 @@
                     </div>
                 </div>
                 <!-- Project 10: Compsys course programs (Code only) -->
-                <div class="project-card">
+                <div class="project-card" data-category="uni">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
@@ -910,11 +938,9 @@
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
         
-        // Check for saved theme or prefer-color-scheme
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // Only apply dark if user explicitly chose it
         const savedTheme = localStorage.getItem('theme');
-        
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        if (savedTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
             themeIcon.className = 'fa-solid fa-sun';
         }
@@ -935,118 +961,6 @@
     </script>
 
     <script>
-        // Custom cursor for allprojects.html
-        document.addEventListener('DOMContentLoaded', function() {
-            // Only add custom cursor on desktop
-            if (window.innerWidth > 768 && !('ontouchstart' in window)) {
-                const dot = document.createElement('div');
-                dot.className = 'cursor-dot';
-                dot.style.cssText = 'position:fixed;width:8px;height:8px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform 0.1s, background 0.3s;';
-                
-                const outline = document.createElement('div');
-                outline.className = 'cursor-outline';
-                outline.style.cssText = 'position:fixed;width:40px;height:40px;border:2px solid rgba(163,177,138,0.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:all 0.3s;';
-                
-                document.body.appendChild(dot);
-                document.body.appendChild(outline);
-                document.body.style.cursor = 'none';
-                
-                let mouseX = 0, mouseY = 0;
-                let outlineX = 0, outlineY = 0;
-                
-                document.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                    dot.style.left = mouseX + 'px';
-                    dot.style.top = mouseY + 'px';
-                });
-                
-                // Smooth outline animation
-                function animateOutline() {
-                    outlineX += (mouseX - outlineX) * 0.15;
-                    outlineY += (mouseY - outlineY) * 0.15;
-                    outline.style.left = outlineX + 'px';
-                    outline.style.top = outlineY + 'px';
-                    requestAnimationFrame(animateOutline);
-                }
-                animateOutline();
-                
-                // Hover effects
-                const hoverElements = document.querySelectorAll('a, button, .project-card, .action-btn, .tech-tag, .back-btn');
-                hoverElements.forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                        dot.style.background = '#2D3332';
-                        outline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                        outline.style.borderColor = 'rgba(163, 177, 138, 0.8)';
-                        
-                        // Dark mode adjustment
-                        if (document.documentElement.getAttribute('data-theme') === 'dark') {
-                            dot.style.background = '#E8EDEB';
-                        }
-                    });
-                    
-                    el.addEventListener('mouseleave', () => {
-                        dot.style.transform = 'translate(-50%, -50%) scale(1)';
-                        dot.style.background = '#588157';
-                        outline.style.transform = 'translate(-50%, -50%) scale(1)';
-                        outline.style.borderColor = 'rgba(163, 177, 138, 0.5)';
-                    });
-                });
-                
-                // Click effect
-                document.addEventListener('mousedown', () => {
-                    dot.style.transform = 'translate(-50%, -50%) scale(0.8)';
-                    outline.style.transform = 'translate(-50%, -50%) scale(0.9)';
-                });
-                
-                document.addEventListener('mouseup', () => {
-                    dot.style.transform = 'translate(-50%, -50%) scale(1)';
-                    outline.style.transform = 'translate(-50%, -50%) scale(1)';
-                });
-                
-                // Hide cursor when leaving window
-                document.addEventListener('mouseleave', () => {
-                    dot.style.opacity = '0';
-                    outline.style.opacity = '0';
-                });
-                
-                document.addEventListener('mouseenter', () => {
-                    dot.style.opacity = '1';
-                    outline.style.opacity = '1';
-                });
-            }
-        });
-        </script>
-
-
-
-    <script>
-    // Theme toggle (mirrors index.html)
-    (function() {
-        var tt = document.getElementById('theme-toggle');
-        if (!tt) return;
-        var ti = tt.querySelector('i');
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'dark' || (!saved && prefersDark)) {
-            document.documentElement.setAttribute('data-theme','dark');
-            if(ti) ti.className = 'fa-solid fa-sun';
-        }
-        tt.addEventListener('click', function() {
-            var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            if (isDark) {
-                document.documentElement.removeAttribute('data-theme');
-                localStorage.setItem('theme','light');
-                if(ti) ti.className = 'fa-solid fa-moon';
-            } else {
-                document.documentElement.setAttribute('data-theme','dark');
-                localStorage.setItem('theme','dark');
-                if(ti) ti.className = 'fa-solid fa-sun';
-            }
-        });
-    })();
-
     // Lightweight cursor
     (function() {
         if ('ontouchstart' in window || window.innerWidth < 768) return;
@@ -1067,6 +981,35 @@
         });
         document.addEventListener('mouseleave', function() { dot.style.opacity='0'; ring.style.opacity='0'; });
         document.addEventListener('mouseenter', function() { dot.style.opacity='1'; ring.style.opacity='1'; });
+    })();
+    </script>
+
+    <script>
+    // Filter logic
+    (function() {
+        var btns  = document.querySelectorAll('.filter-btn');
+        var cards = document.querySelectorAll('.project-card');
+
+        btns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // Active state
+                btns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var filter = this.getAttribute('data-filter');
+
+                cards.forEach(function(card) {
+                    var cats = card.getAttribute('data-category') || '';
+                    var show = filter === 'all' || cats.indexOf(filter) !== -1;
+                    if (show) {
+                        card.classList.remove('hidden-card');
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
     })();
     </script>
 </body>
