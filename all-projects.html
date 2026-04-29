@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alle Projekter | Silinda</title>
+    <title>Alle Projekter — Silinda Baftijari</title>
+    <meta name="description" content="Alle projekter af Silinda Baftijari — UX/UI design, webudvikling, data og universitetsprojekter.">
+    <meta property="og:title" content="Alle Projekter — Silinda Baftijari">
+    <meta property="og:description" content="En komplet oversigt over mine udviklings- og designprojekter.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://silindabaftijari.vercel.app/all-projects.html">
+    <meta property="og:image" content="https://silindabaftijari.vercel.app/image/og-preview.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23588157'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-style='italic' font-weight='700' fill='white'>S</text></svg>">
+    <meta name="theme-color" content="#F7F4EF" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#141918" media="(prefers-color-scheme: dark)">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -972,45 +981,4 @@
         document.body.appendChild(ring);
         document.body.style.cursor = 'none';
         document.addEventListener('mousemove', function(e) {
-            dot.style.transform = 'translate(' + (e.clientX-3.5) + 'px,' + (e.clientY-3.5) + 'px)';
-            gsap.to(ring, { x: e.clientX-17, y: e.clientY-17, duration:0.18, ease:'power2.out', overwrite:true });
-        }, { passive:true });
-        document.querySelectorAll('a,button,.project-card,.action-btn').forEach(function(el) {
-            el.addEventListener('mouseenter', function() { gsap.to(ring, { scale:1.6, borderColor:'rgba(88,129,87,0.7)', duration:0.2 }); dot.style.background='#2D3332'; });
-            el.addEventListener('mouseleave', function() { gsap.to(ring, { scale:1, borderColor:'rgba(163,177,138,0.55)', duration:0.2 }); dot.style.background='#588157'; });
-        });
-        document.addEventListener('mouseleave', function() { dot.style.opacity='0'; ring.style.opacity='0'; });
-        document.addEventListener('mouseenter', function() { dot.style.opacity='1'; ring.style.opacity='1'; });
-    })();
-    </script>
-
-    <script>
-    // Filter logic
-    (function() {
-        var btns  = document.querySelectorAll('.filter-btn');
-        var cards = document.querySelectorAll('.project-card');
-
-        btns.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                // Active state
-                btns.forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-
-                var filter = this.getAttribute('data-filter');
-
-                cards.forEach(function(card) {
-                    var cats = card.getAttribute('data-category') || '';
-                    var show = filter === 'all' || cats.indexOf(filter) !== -1;
-                    if (show) {
-                        card.classList.remove('hidden-card');
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-    })();
-    </script>
-</body>
-</html>
+            dot.style.transform = 'tr

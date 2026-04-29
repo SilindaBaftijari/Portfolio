@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Side ikke fundet | Silinda Baftijari</title>
+    <meta name="description" content="Siden du ledte efter findes ikke.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23588157'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-style='italic' font-weight='700' fill='white'>S</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #F7F4EF;
+            --text: #1C1F1E;
+            --text-muted: #6B7170;
+            --accent: #588157;
+            --accent-light: #A3B18A;
+            --border: rgba(209,219,206,0.6);
+        }
+        [data-theme="dark"] {
+            --bg: #141918;
+            --text: #E8EBE8;
+            --text-muted: #8A9490;
+            --accent: #7A9E6A;
+            --accent-light: #4D6641;
+            --border: rgba(74,85,83,0.4);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { height:100%; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            transition: background 0.3s, color 0.3s;
+            cursor: none;
+        }
+
+        /* Canvas background */
+        canvas { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 560px;
+        }
+
+        .error-num {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(7rem, 18vw, 12rem);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--accent);
+            opacity: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            opacity: 0;
+            margin-bottom: 1rem;
+        }
+
+        .error-title em { font-style: italic; color: var(--accent); }
+
+        .error-desc {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+            opacity: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+        }
+
+        .btn-primary {
+            padding: 0.85rem 2rem;
+            background: var(--text);
+            color: var(--bg);
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+        .btn-ghost {
+            padding: 0.85rem 2rem;
+            background: transparent;
+            color: var(--text);
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: 1.5px solid var(--border);
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+        .signature {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Fraunces', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-muted);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* Cursor */
+        .cur-dot  { position:fixed; width:7px; height:7px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9997; left:0; top:0; will-change:transform; }
+        .cur-ring { position:fixed; width:34px; height:34px; border:1.5px solid rgba(163,177,138,0.55); border-radius:50%; pointer-events:none; z-index:9996; left:0; top:0; will-change:transform; }
+    </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="cur-dot"  id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<div class="container">
+    <div class="error-num" id="errNum">404</div>
+    <h1 class="error-title" id="errTitle">Siden <em>eksisterer ikke</em></h1>
+    <p class="error-desc" id="errDesc">
+        Det ser ud til at du er gået tabt — men det sker for de bedste designere.<br>
+        Lad os få dig tilbage på sporet.
+    </p>
+    <div class="actions" id="errActions">
+        <a href="index.html" class="btn-primary">
+            <i class="fa-solid fa-house"></i> Gå til forsiden
+        </a>
+        <a href="all-projects.html" class="btn-ghost">
+            <i class="fa-solid fa-folder-open"></i> Se projekter
+        </a>
+    </div>
+</div>
+
+<div class="signature" id="sig">— Dedikeret til detaljen.</div>
+
+<script>
+// ── Canvas ambient dots ──
+(function() {
+    var c = document.getElementById('bg');
+    var ctx = c.getContext('2d');
+    var dots = [];
+    function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    for (var i = 0; i < 30; i++) {
+        dots.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            r: Math.random() * 2.5 + 0.5,
+            vx: (Math.random()-0.5)*0.3,
+            vy: (Math.random()-0.5)*0.3,
+            a: Math.random()*0.25+0.05
+        });
+    }
+    function draw() {
+        ctx.clearRect(0,0,c.width,c.height);
+        dots.forEach(function(d) {
+            d.x += d.vx; d.y += d.vy;
+            if (d.x < 0) d.x = c.width;
+            if (d.x > c.width) d.x = 0;
+            if (d.y < 0) d.y = c.height;
+            if (d.y > c.height) d.y = 0;
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(88,129,87,' + d.a + ')';
+            ctx.fill();
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// ── GSAP entrance ──
+gsap.to('#errNum',     { opacity:1, y:0, duration:0.9, ease:'power3.out', delay:0.2, from:{y:40} });
+gsap.from('#errNum',   { y:40, duration:0.9, ease:'power3.out', delay:0.2 });
+gsap.to('#errNum',     { opacity:1, duration:0.9, ease:'power3.out', delay:0.2 });
+gsap.from('#errTitle', { opacity:0, y:25, duration:0.8, ease:'power3.out', delay:0.45 });
+gsap.to('#errTitle',   { opacity:1, duration:0.8, delay:0.45 });
+gsap.from('#errDesc',  { opacity:0, y:20, duration:0.7, ease:'power3.out', delay:0.65 });
+gsap.to('#errDesc',    { opacity:1, duration:0.7, delay:0.65 });
+gsap.from('#errActions',{opacity:0, y:15, duration:0.7, ease:'power3.out', delay:0.85 });
+gsap.to('#errActions', { opacity:1, duration:0.7, delay:0.85 });
+gsap.to('#sig',        { opacity:1, duration:1, delay:1.2 });
+
+// Floating 404 number
+gsap.to('#errNum', { y:-12, duration:4, ease:'sine.inOut', repeat:-1, yoyo:true, delay:1.5 });
+
+// ── Theme ──
+(function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
+})();
+
+// ── Cursor ──
+(function() {
+    if ('ontouchstart' in window || window.innerWidth < 768) return;
+    var dot  = document.getElementById('curDot');
+    var ring = document.getElementById('curRing');
+    document.addEventListener('mousemove', function(e) {
+        gsap.set(dot,  { x: e.clientX-3.5, y: e.clientY-3.5 });
+        gsap.to(ring,  { x: e.clientX-17,  y: e.clientY-17, duration:0.15, ease:'power2.out', overwrite:true });
+    }, { passive:true });
+    document.querySelectorAll('a, button').forEach(function(el) {
+        el.addEventListener('mouseenter', function() { gsap.to(ring, { scale:1.6, duration:0.2 }); });
+        el.addEventListener('mouseleave', function() { gsap.to(ring, { scale:1,   duration:0.2 }); });
+    });
+    document.addEventListener('mouseleave', function() { dot.style.opacity='0'; ring.style.opacity='0'; });
+    document.addEventListener('mouseenter', function() { dot.style.opacity='1'; ring.style.opacity='1'; });
+})();
+</script>
+</body>
+</html>
