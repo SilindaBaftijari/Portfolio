@@ -1432,4 +1432,21 @@
             e.preventDefault();
 
             scrollToSection(targetId);
-            history.pushState(null, ''
+            history.pushState(null, '', targetId);
+
+            this.blur(); // fjerner blå focus-ramme
+        });
+    });
+
+    // Fix hvis siden åbnes/reloades med #arbejde, #om-mig osv.
+    window.addEventListener('load', function() {
+        if (window.location.hash) {
+            setTimeout(function() {
+                scrollToSection(window.location.hash);
+            }, 300);
+        }
+    });
+    </script>
+
+</body>
+</html>

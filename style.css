@@ -329,7 +329,7 @@ h1, h2, h3,
     gap: 4px;
     background: none;
     border: none;
-    cursor: none !important;
+    cursor: pointer !important;
     padding: 0.5rem;
 }
 
