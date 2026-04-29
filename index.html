@@ -447,9 +447,9 @@
                 </button>
                 
                 <div class="nav-menu hidden md:flex items-center space-x-8">
-                    <a href="#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
                     <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
                     <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                    <a href="#projekter" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
                     <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
                     <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
                 </div>
@@ -477,7 +477,7 @@
                     Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="#arbejde" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-all transform hover:-translate-y-0.5 active:scale-95">Se mit arbejde</a>
+                    <a href="#projekter" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-all transform hover:-translate-y-0.5 active:scale-95">Mine projekter</a>
                     <button id="email-button" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all transform hover:-translate-y-0.5 active:scale-95">
                         <span>Kontakt mig</span>
                         <i class="fa-solid fa-arrow-right"></i>
@@ -748,7 +748,7 @@
 
 
  <!-- Arbejde Section -->
-<section id="arbejde" class="py-20 px-4 md:px-8 bg-white/20">
+<section id="projekter" class="py-20 px-4 md:px-8 bg-white/20">
     <div class="container mx-auto">
         <div class="flex items-center gap-4 mb-12">
             <div class="text-4xl font-bold text-accent/30">03</div>
@@ -1386,7 +1386,49 @@
         document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
         document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
     })();
-    </script>
 
-</body>
-</html>
+        // Smooth anchor scroll with fixed header offset
+        function scrollToSection(targetId) {
+            if (targetId === '#') return;
+        
+            const target = document.querySelector(targetId);
+            if (!target) return;
+        
+            const headerHeight = document.querySelector('nav').offsetHeight;
+        
+            const offsets = {
+                '#erfaring': 0,
+                '#kompetencer': 40,
+                '#projekter': 0,
+                '#om-mig': 10,
+                '#kontakt': 10
+            };
+        
+            const extraSpace = offsets[targetId] ?? 25;
+        
+            const targetPosition =
+                target.getBoundingClientRect().top +
+                window.pageYOffset -
+                headerHeight -
+                extraSpace;
+        
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+
+            if (targetId === '#') return;
+            if (!document.querySelector(targetId)) return;
+
+            e.preventDefault();
+
+            scrollToSection(targetId);
+            history.pushState(null, '', targetId);
+
+            this.blur(); // fjerner blå focus-ramme
+        });
