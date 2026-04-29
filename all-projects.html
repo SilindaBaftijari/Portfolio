@@ -981,4 +981,78 @@
         const themeIcon = themeToggle.querySelector('i');
         
         // Only apply dark if user explicitly chose it
-        c
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+    </script>
+
+    <script>
+    // Lightweight cursor
+    (function() {
+        if ('ontouchstart' in window || window.innerWidth < 768) return;
+        var dot = document.createElement('div');
+        dot.style.cssText = 'position:fixed;width:7px;height:7px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;left:0;top:0;will-change:transform;';
+        document.body.appendChild(dot);
+        var ring = document.createElement('div');
+        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
+        document.body.appendChild(ring);
+        document.body.style.cursor = 'none';
+        document.addEventListener('mousemove', function(e) {
+            dot.style.transform = 'translate(' + (e.clientX-3.5) + 'px,' + (e.clientY-3.5) + 'px)';
+            gsap.to(ring, { x: e.clientX-17, y: e.clientY-17, duration:0.18, ease:'power2.out', overwrite:true });
+        }, { passive:true });
+        document.querySelectorAll('a,button,.project-card,.action-btn').forEach(function(el) {
+            el.addEventListener('mouseenter', function() { gsap.to(ring, { scale:1.6, borderColor:'rgba(88,129,87,0.7)', duration:0.2 }); dot.style.background='#2D3332'; });
+            el.addEventListener('mouseleave', function() { gsap.to(ring, { scale:1, borderColor:'rgba(163,177,138,0.55)', duration:0.2 }); dot.style.background='#588157'; });
+        });
+        document.addEventListener('mouseleave', function() { dot.style.opacity='0'; ring.style.opacity='0'; });
+        document.addEventListener('mouseenter', function() { dot.style.opacity='1'; ring.style.opacity='1'; });
+    })();
+    </script>
+
+    <script>
+    // Filter logic
+    (function() {
+        var btns  = document.querySelectorAll('.filter-btn');
+        var cards = document.querySelectorAll('.project-card');
+
+        btns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // Active state
+                btns.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var filter = this.getAttribute('data-filter');
+
+                cards.forEach(function(card) {
+                    var cats = card.getAttribute('data-category') || '';
+                    var show = filter === 'all' || cats.indexOf(filter) !== -1;
+                    if (show) {
+                        card.classList.remove('hidden-card');
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

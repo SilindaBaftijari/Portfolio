@@ -1397,11 +1397,11 @@
             const headerHeight = document.querySelector('nav').offsetHeight;
         
             const offsets = {
-                '#erfaring': 0,
-                '#kompetencer': 40,
-                '#projekter': 0,
-                '#om-mig': 10,
-                '#kontakt': 10
+                '#erfaring':25,
+                '#kompetencer': 65,
+                '#projekter': 25,
+                '#om-mig': 35,
+                '#kontakt': 35
             };
         
             const extraSpace = offsets[targetId] ?? 25;
@@ -1432,3 +1432,17 @@
 
             this.blur(); // fjerner blå focus-ramme
         });
+    });
+
+    // Fix hvis siden åbnes/reloades med #arbejde, #om-mig osv.
+    window.addEventListener('load', function() {
+        if (window.location.hash) {
+            setTimeout(function() {
+                scrollToSection(window.location.hash);
+            }, 300);
+        }
+    });
+    </script>
+
+</body>
+</html>
