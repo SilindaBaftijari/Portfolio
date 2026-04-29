@@ -1332,15 +1332,10 @@
         ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
         document.body.appendChild(ring);
 
-        var mx = 0, my = 0;
-
-        // Dot follows cursor instantly via transform
+        // Both dot and ring use GSAP — no style.transform conflict
         document.addEventListener('mousemove', function(e) {
-            mx = e.clientX;
-            my = e.clientY;
-            dot.style.transform = 'translate(' + (mx - 3.5) + 'px,' + (my - 3.5) + 'px)';
-            // Ring follows with GSAP quickSetter for max perf
-            gsap.to(ring, { x: mx - 17, y: my - 17, duration: 0.18, ease: 'power2.out', overwrite: true });
+            gsap.set(dot,  { x: e.clientX - 3.5, y: e.clientY - 3.5 });
+            gsap.to(ring,  { x: e.clientX - 17,  y: e.clientY - 17, duration: 0.15, ease: 'power2.out', overwrite: true });
         }, { passive: true });
 
         // Hover — grow ring, change dot color
