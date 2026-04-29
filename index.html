@@ -589,7 +589,7 @@
                                 <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
                                 <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år.</div>
                         </div>
                         
                         <div class="bg-card p-6 rounded-xl border border-border mb-6 transition-all hover:border-accent/50">
@@ -644,7 +644,7 @@
                                 <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
                                 <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år.</div>
                         </div>
                         <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
                         <div class="flex flex-wrap gap-2">
@@ -662,11 +662,11 @@
                                 <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
                                 <div class="text-text-secondary">Freelance</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 1 år.</div>
                         </div>
                         <div class="text-text-secondary mb-4">Fjernarbejde</div>
                         <p class="text-text-secondary leading-relaxed mb-6">
-                            Designede og udviklede for eksempel L'ancora, Spilfiks og Søndersø køreskoles hjemmeside fra bunden. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
+                            Designede og udviklede for eksempel L'ancora, Spilfiks og Søndersø køreskoles hjemmeside fra bunden. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner. Samt udviklet forskellige marketing opslag for forskellige firmaer. 
                         </p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
@@ -1415,43 +1415,4 @@
         document.body.style.cursor = 'none';
 
         // Ring — follows with GSAP lag
-        var ring = document.createElement('div');
-        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
-        document.body.appendChild(ring);
-
-        // Both dot and ring use GSAP — no style.transform conflict
-        document.addEventListener('mousemove', function(e) {
-            gsap.set(dot,  { x: e.clientX - 3.5, y: e.clientY - 3.5 });
-            gsap.to(ring,  { x: e.clientX - 17,  y: e.clientY - 17, duration: 0.15, ease: 'power2.out', overwrite: true });
-        }, { passive: true });
-
-        // Hover — grow ring, change dot color
-        document.querySelectorAll('a, button, .project-card, .skill-category, .education-card').forEach(function(el) {
-            el.addEventListener('mouseenter', function() {
-                gsap.to(ring, { scale: 1.6, borderColor: 'rgba(88,129,87,0.7)', duration: 0.2 });
-                dot.style.background = document.documentElement.getAttribute('data-theme') === 'dark' ? '#E8EDEB' : '#2D3332';
-            });
-            el.addEventListener('mouseleave', function() {
-                gsap.to(ring, { scale: 1, borderColor: 'rgba(163,177,138,0.55)', duration: 0.2 });
-                dot.style.background = '#588157';
-            });
-        });
-
-        // Click
-        document.addEventListener('mousedown', function() {
-            gsap.to(ring, { scale: 0.85, duration: 0.1 });
-            gsap.to(dot,  { scale: 0.7,  duration: 0.1 });
-        });
-        document.addEventListener('mouseup', function() {
-            gsap.to(ring, { scale: 1, duration: 0.2, ease: 'back.out(2)' });
-            gsap.to(dot,  { scale: 1, duration: 0.2, ease: 'back.out(2)' });
-        });
-
-        // Hide on leave
-        document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-        document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-    })();
-    </script>
-
-</body>
-</html>
+        var ring = document.createElement('div'
