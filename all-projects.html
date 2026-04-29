@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alle Projekter | Silinda</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -529,11 +532,10 @@
 <body class="font-inter">
     <div class="bg-canvas"></div>
     
-    <!-- Navigation with Dark Mode Toggle -->
-    <nav class="py-4 px-4 md:px-8 backdrop-blur-md border-b border-border transition-all-smooth">
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
         <div class="container mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2 no-underline">
-                <span class="text-xl font-bold text-primary tracking-tight hover:text-accent transition-colors">SILINDA</span>
+            <a href="index.html" style="text-decoration:none;" class="flex items-center space-x-2">
+                <span style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;" class="text-primary">By <span style="font-style:italic;color:#588157;">Silinda</span></span>
                 <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
             </a>
             
@@ -563,16 +565,18 @@
     <main class="pb-20 px-4 md:px-8">
         <div class="container mx-auto">
             <!-- Header -->
-            <header class="text-center mb-12">
-                <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Samling af Projekter</div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                    <div class="text-text-secondary">Alle</div>
-                    <div class="gradient-text my-2">Projekter</div>
+            <header class="mb-12" style="padding-top:2rem;">
+                <div style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#588157;margin-bottom:1.25rem;">
+                    <span style="width:20px;height:1px;background:#588157;display:inline-block;"></span>
+                    PROJEKTSAMLING
+                </div>
+                <h1 style="font-family:'Fraunces',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1rem;">
+                    Alle <em style="font-style:italic;color:#588157;">projekter</em>
                 </h1>
-                <p class="text-text-secondary text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-                    En komplet oversigt over mine udviklingsprojekter, der spænder fra webapplikationer til Universitets Opgaver samt spil.
+                <p class="text-text-secondary" style="font-size:1rem;line-height:1.75;max-width:520px;margin-bottom:2.5rem;">
+                    En komplet oversigt over mine udviklings- og designprojekter &mdash; fra webapplikationer til universitetsprojekter og data-tools.
                 </p>
-                <a href="index.html#arbejde" class="back-btn inline-flex items-center gap-2">
+                <a href="index.html" class="back-btn inline-flex items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Tilbage til hjemmesiden</span>
                 </a>
@@ -1016,5 +1020,54 @@
         </script>
 
 
+
+    <script>
+    // Theme toggle (mirrors index.html)
+    (function() {
+        var tt = document.getElementById('theme-toggle');
+        if (!tt) return;
+        var ti = tt.querySelector('i');
+        var saved = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.setAttribute('data-theme','dark');
+            if(ti) ti.className = 'fa-solid fa-sun';
+        }
+        tt.addEventListener('click', function() {
+            var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme','light');
+                if(ti) ti.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme','dark');
+                localStorage.setItem('theme','dark');
+                if(ti) ti.className = 'fa-solid fa-sun';
+            }
+        });
+    })();
+
+    // Lightweight cursor
+    (function() {
+        if ('ontouchstart' in window || window.innerWidth < 768) return;
+        var dot = document.createElement('div');
+        dot.style.cssText = 'position:fixed;width:7px;height:7px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;left:0;top:0;will-change:transform;';
+        document.body.appendChild(dot);
+        var ring = document.createElement('div');
+        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
+        document.body.appendChild(ring);
+        document.body.style.cursor = 'none';
+        document.addEventListener('mousemove', function(e) {
+            dot.style.transform = 'translate(' + (e.clientX-3.5) + 'px,' + (e.clientY-3.5) + 'px)';
+            gsap.to(ring, { x: e.clientX-17, y: e.clientY-17, duration:0.18, ease:'power2.out', overwrite:true });
+        }, { passive:true });
+        document.querySelectorAll('a,button,.project-card,.action-btn').forEach(function(el) {
+            el.addEventListener('mouseenter', function() { gsap.to(ring, { scale:1.6, borderColor:'rgba(88,129,87,0.7)', duration:0.2 }); dot.style.background='#2D3332'; });
+            el.addEventListener('mouseleave', function() { gsap.to(ring, { scale:1, borderColor:'rgba(163,177,138,0.55)', duration:0.2 }); dot.style.background='#588157'; });
+        });
+        document.addEventListener('mouseleave', function() { dot.style.opacity='0'; ring.style.opacity='0'; });
+        document.addEventListener('mouseenter', function() { dot.style.opacity='1'; ring.style.opacity='1'; });
+    })();
+    </script>
 </body>
 </html>
