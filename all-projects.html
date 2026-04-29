@@ -207,7 +207,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000; /* Increased from 50 to 1000 */
+            z-index: 9999; /* Increased from 50 to 1000 */
             padding: 1rem 0;
             background: rgba(255, 245, 245, 0.95);
             backdrop-filter: blur(10px);
@@ -218,6 +218,8 @@
         main {
             padding-top: 20px; /* Reduced since we have body padding */
             min-height: calc(100vh - 180px);
+            position: relative;
+            z-index: 1;
         }
         
         /* Mappe Animation */
@@ -284,7 +286,11 @@
             border-color: #A3B18A;
             box-shadow: 0 15px 40px rgba(27, 48, 34, 0.1);
             background: rgba(255, 255, 255, 0.9);
-            z-index: 100; /* Lower than nav's 1000 */
+            z-index: 10; /* Lower than nav's 1000 */
+        }
+
+        .project-card {
+            isolation: isolate;
         }
         
         /* Dark mode project cards */
@@ -869,7 +875,7 @@
                 </div>
                 
                 <!-- Project 11: BISH Logo Design-->
-                <div class="project-card" data-category="uni">
+                <div class="project-card" data-category="ux">
                     <div class="folder-container">
                         <i class="folder-icon closed fas fa-folder"></i>
                         <i class="folder-icon open fas fa-folder-open"></i>
