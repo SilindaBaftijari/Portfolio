@@ -2,7 +2,6 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23588157'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-style='italic' font-weight='700' fill='white'>S</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Silinda | Kreativ Udvikler</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -294,74 +293,29 @@
             background: #7A8C69;
             border-color: #1a1f1e;
         }
-        [data-theme="dark"] .menu-toggle span { background: #E8EBE8 !important; }
 
-        /* Hide nav-menu on mobile by default, show on md+ */
-        .nav-menu { display: none; }
-        @media (min-width: 768px) { .nav-menu { display: flex !important; } }
-
-        /* Mobile Navigation — fullscreen overlay */
+        /* Mobile Navigation */
         @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed !important;
-                inset: 0 !important;
-                width: 100% !important;
-                height: 100vh !important;
-                background: rgba(247, 244, 239, 0.98);
-                backdrop-filter: blur(20px);
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 0.4rem !important;
-                z-index: 9995 !important;
-                transform: translateY(-100%);
-                transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-                pointer-events: none;
-                padding: 2rem !important;
-                margin: 0 !important;
-                left: 0 !important;
-                top: 0 !important;
+            .nav-menu { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 100%; 
+                height: 100vh; 
+                background: rgba(255, 245, 245, 0.98); 
+                backdrop-filter: blur(10px); 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                transition: right 0.3s ease; 
+                z-index: 40; 
             }
+            
             [data-theme="dark"] .nav-menu {
-                background: rgba(20, 25, 24, 0.98);
+                background: rgba(26, 31, 30, 0.98);
             }
-            .nav-menu.active {
-                display: flex !important;
-                transform: translateY(0);
-                pointer-events: auto;
-            }
-            .nav-menu a {
-                font-family: 'Fraunces', serif !important;
-                font-size: clamp(2rem, 7vw, 3rem) !important;
-                font-weight: 600 !important;
-                color: #2D3332 !important;
-                text-decoration: none;
-                letter-spacing: -0.02em;
-                opacity: 0;
-                transform: translateY(24px);
-                transition: color 0.2s;
-                display: flex !important;
-                justify-content: center !important;
-                width: 100% !important;
-                text-align: center !important;
-                padding: 0 !important;
-                margin: 0 auto !important;
-            }
-            [data-theme="dark"] .nav-menu a { color: #E8EBE8 !important; }
-            .nav-menu a:hover { color: #588157 !important; }
-            .nav-menu.active a { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Hamburger → X animation */
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-            transform: translateX(-8px);
-        }
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            
+            .nav-menu.active { right: 0; }
         }
         
         /* Animated Counters */
@@ -475,20 +429,19 @@
                     <i class="fa-solid fa-moon text-accent"></i>
                 </button>
                 
-                <div class="nav-menu md:flex items-center space-x-8" id="mobileNavMenu">
-                    <a href="#arbejde"     class="text-text-secondary hover:text-accent font-medium transition-colors" style="transition-delay:0.05s;">Arbejde</a>
-                    <a href="#erfaring"    class="text-text-secondary hover:text-accent font-medium transition-colors" style="transition-delay:0.1s;">Erfaring</a>
-                    <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors" style="transition-delay:0.15s;">Kompetencer</a>
-                    <a href="#om-mig"      class="text-text-secondary hover:text-accent font-medium transition-colors" style="transition-delay:0.2s;">Om mig</a>
-                    <a href="#kontakt"     class="text-text-secondary hover:text-accent font-medium transition-colors" style="transition-delay:0.25s;">Kontakt</a>
-                    <div class="mobile-sig" style="position:absolute;bottom:2.5rem;font-family:'Fraunces',serif;font-style:italic;font-size:0.85rem;color:#A3B18A;opacity:0;transition:opacity 0.4s 0.4s;">— Dedikeret til detaljen.</div>
+                <div class="nav-menu hidden md:flex items-center space-x-8">
+                    <a href="#arbejde" class="text-text-secondary hover:text-accent font-medium transition-colors">Arbejde</a>
+                    <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                    <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                    <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                    <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
                 </div>
             </div>
             
-            <button class="menu-toggle md:hidden flex flex-col z-50 p-2" aria-label="Åben menu" style="gap:5px;background:none;border:none;cursor:pointer;">
-                <span style="display:block;width:22px;height:1.5px;background:#2D3332;border-radius:2px;transition:all 0.3s ease;transform-origin:center;"></span>
-                <span style="display:block;width:16px;height:1.5px;background:#2D3332;border-radius:2px;transition:all 0.3s ease;"></span>
-                <span style="display:block;width:22px;height:1.5px;background:#2D3332;border-radius:2px;transition:all 0.3s ease;transform-origin:center;"></span>
+            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50 p-2" aria-label="Åben menu">
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
             </button>
         </div>
     </nav>
@@ -589,7 +542,7 @@
                                 <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
                                 <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
                         </div>
                         
                         <div class="bg-card p-6 rounded-xl border border-border mb-6 transition-all hover:border-accent/50">
@@ -644,7 +597,7 @@
                                 <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
                                 <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
                         </div>
                         <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
                         <div class="flex flex-wrap gap-2">
@@ -662,11 +615,11 @@
                                 <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
                                 <div class="text-text-secondary">Freelance</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 1 år.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
                         </div>
                         <div class="text-text-secondary mb-4">Fjernarbejde</div>
                         <p class="text-text-secondary leading-relaxed mb-6">
-                            Designede og udviklede for eksempel L'ancora, Spilfiks og Søndersø køreskoles hjemmeside fra bunden. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner. Samt udviklet forskellige marketing opslag for forskellige firmaer. 
+                            Designede og udviklede for eksempel L'ancora, Spilfiks og Søndersø køreskoles hjemmeside fra bunden. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
                         </p>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
@@ -686,7 +639,7 @@
     <div class="container mx-auto">
         <div class="flex items-center gap-4 mb-12">
             <div class="text-4xl font-bold text-accent/30">02</div>
-            <h2 class="text-3xl md:text-4xl font-bold text-primary font-display gsap-reveal">Kompetencer & Teknologier</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary">Kompetencer & Teknologier</h2>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
             <!-- Design Kompetencer -->
@@ -970,51 +923,11 @@
 
         // Menu toggle
         const menuToggle = document.querySelector('.menu-toggle');
-        const navMenu    = document.querySelector('.nav-menu');
-        const mobileSig  = document.querySelector('.mobile-sig');
-
+        const navMenu = document.querySelector('.nav-menu');
         if (menuToggle && navMenu) {
-            let menuOpen = false;
-
-            menuToggle.addEventListener('click', () => {
-                menuOpen = !menuOpen;
-                navMenu.classList.toggle('active', menuOpen);
-                menuToggle.classList.toggle('active', menuOpen);
-                document.body.style.overflow = menuOpen ? 'hidden' : '';
-                if (mobileSig) mobileSig.style.opacity = menuOpen ? '1' : '0';
-
-                // Stagger links with GSAP when opening
-                if (menuOpen) {
-                    gsap.from('#mobileNavMenu a', {
-                        y: 30, opacity: 0,
-                        duration: 0.55,
-                        stagger: 0.08,
-                        ease: 'power3.out',
-                        delay: 0.1
-                    });
-                }
-            });
-
-            // Close on link click
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menuOpen = false;
-                    navMenu.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                    document.body.style.overflow = '';
-                    if (mobileSig) mobileSig.style.opacity = '0';
-                });
-            });
-
-            // Close on backdrop click (outside menu)
-            document.addEventListener('click', (e) => {
-                if (menuOpen && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                    menuOpen = false;
-                    navMenu.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                    document.body.style.overflow = '';
-                    if (mobileSig) mobileSig.style.opacity = '0';
-                }
+            menuToggle.addEventListener('click', () => { 
+                navMenu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
             });
         }
 
@@ -1242,20 +1155,12 @@
         // Social link hover effects
         document.querySelectorAll('.social-link').forEach(link => {
             link.addEventListener('mouseenter', () => {
-                gsap.to(link, {
-                    scale: 1.1,
-                    duration: 0.2,
-                    ease: 'power2.out'
-                });
+                gsap.to(link, { scale: 1.1, duration: 0.2, ease: 'power2.out' });
             });
-            
             link.addEventListener('mouseleave', () => {
-                gsap.to(link, {
-                    scale: 1,
-                    duration: 0.2,
-                    ease: 'power2.out'
-                });
+                gsap.to(link, { scale: 1, duration: 0.2, ease: 'power2.out' });
             });
+        });
 
         // ============================================
         // MAIN TERMINAL ANIMATION
@@ -1397,10 +1302,6 @@
                 });
             }
         })();
-
-
-
-        });
     </script>
 
     <!-- Custom Cursor -->
@@ -1415,4 +1316,43 @@
         document.body.style.cursor = 'none';
 
         // Ring — follows with GSAP lag
-        var ring = document.createElement('div'
+        var ring = document.createElement('div');
+        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
+        document.body.appendChild(ring);
+
+        // Both dot and ring use GSAP — no style.transform conflict
+        document.addEventListener('mousemove', function(e) {
+            gsap.set(dot,  { x: e.clientX - 3.5, y: e.clientY - 3.5 });
+            gsap.to(ring,  { x: e.clientX - 17,  y: e.clientY - 17, duration: 0.15, ease: 'power2.out', overwrite: true });
+        }, { passive: true });
+
+        // Hover — grow ring, change dot color
+        document.querySelectorAll('a, button, .project-card, .skill-category, .education-card').forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                gsap.to(ring, { scale: 1.6, borderColor: 'rgba(88,129,87,0.7)', duration: 0.2 });
+                dot.style.background = document.documentElement.getAttribute('data-theme') === 'dark' ? '#E8EDEB' : '#2D3332';
+            });
+            el.addEventListener('mouseleave', function() {
+                gsap.to(ring, { scale: 1, borderColor: 'rgba(163,177,138,0.55)', duration: 0.2 });
+                dot.style.background = '#588157';
+            });
+        });
+
+        // Click
+        document.addEventListener('mousedown', function() {
+            gsap.to(ring, { scale: 0.85, duration: 0.1 });
+            gsap.to(dot,  { scale: 0.7,  duration: 0.1 });
+        });
+        document.addEventListener('mouseup', function() {
+            gsap.to(ring, { scale: 1, duration: 0.2, ease: 'back.out(2)' });
+            gsap.to(dot,  { scale: 1, duration: 0.2, ease: 'back.out(2)' });
+        });
+
+        // Hide on leave
+        document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+        document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+    })();
+    </script>
+
+</body>
+</html>
