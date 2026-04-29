@@ -1402,7 +1402,7 @@ h1, h2, h3,
 
 @media (max-width: 768px) {
     .nav-menu {
-        display: none;
+        display: flex;
         position: fixed;
         top: 0;
         right: -100%;

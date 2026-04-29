@@ -450,7 +450,7 @@
                     <i class="fa-solid fa-moon text-accent"></i>
                 </button>
                 
-                <div class="nav-menu hidden md:flex items-center space-x-8">
+                <div class="nav-menu md:flex items-center space-x-8">
                     <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
                     <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
                     <a href="#projekter" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
@@ -1432,21 +1432,4 @@
             e.preventDefault();
 
             scrollToSection(targetId);
-            history.pushState(null, '', targetId);
-
-            this.blur(); // fjerner blå focus-ramme
-        });
-    });
-
-    // Fix hvis siden åbnes/reloades med #arbejde, #om-mig osv.
-    window.addEventListener('load', function() {
-        if (window.location.hash) {
-            setTimeout(function() {
-                scrollToSection(window.location.hash);
-            }, 300);
-        }
-    });
-    </script>
-
-</body>
-</html>
+            history.pushState(null, ''
