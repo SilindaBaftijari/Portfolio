@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexoria - Specialister i Regnskab, Bogholderi, Løn og Skatterådgivning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --off-white: #f5f3ee;
+    --cream: #f9f7f2;
+    --green: #1a3a2a;
+    --green-mid: #2d5a3d;
+    --green-light: #3d7a52;
+    --green-accent: #4CAF72;
+    --gray-100: #f0ede8;
+    --gray-200: #e0ddd7;
+    --gray-400: #9a9690;
+    --gray-600: #5a5650;
+    --text: #1a1916;
+    --text-muted: #6b6860;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Manrope', sans-serif;
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--green);
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 24px;
+    padding: 8px 48px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .topbar a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color .2s; }
+  .topbar a:hover { color: #fff; }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 72px;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--green-accent); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links > li { position: relative; }
+  .nav-links > li > a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: background .2s, color .2s;
+    letter-spacing: 0.01em;
+  }
+  .nav-links > li > a:hover { background: var(--gray-100); }
+  .nav-links > li > a .chevron { font-size: 10px; opacity: 0.5; }
+
+  /* Dropdown */
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 8px;
+    min-width: 220px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity .2s, transform .2s;
+  }
+  .nav-links > li:hover .dropdown {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .dropdown-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    padding: 8px 12px 4px;
+  }
+  .dropdown a {
+    display: block;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background .15s;
+  }
+  .dropdown a:hover { background: var(--gray-100); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nav-lang a { color: var(--text-muted); text-decoration: none; padding: 4px 6px; border-radius: 4px; transition: background .2s; }
+  .nav-lang a.active { color: var(--green); background: var(--gray-100); }
+  .nav-lang a:hover { background: var(--gray-100); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 100px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all .22s cubic-bezier(.4,0,.2,1);
+    letter-spacing: 0.01em;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,58,42,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--green);
+    border: 1.5px solid var(--green);
+  }
+  .btn-outline:hover { background: var(--green); color: white; }
+
+  .btn-white {
+    background: var(--white);
+    color: var(--green);
+  }
+  .btn-white:hover { background: var(--cream); transform: translateY(-1px); }
+
+  .btn-arrow::after { content: '↗'; font-size: 16px; }
+
+  .btn-login {
+    background: var(--green);
+    color: white;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .btn-login:hover { background: var(--green-mid); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green);
+    color: var(--white);
+    min-height: 92vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 30%, rgba(77,175,114,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(77,175,114,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Decorative circles */
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -120px;
+    top: -120px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.07);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 48px 40px;
+    max-width: 800px;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+  }
+  .hero-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-accent); }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 120px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin-bottom: 40px;
+    color: var(--white);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green-accent);
+  }
+
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+
+  /* Trusted by logos */
+  .trusted-strip {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    overflow: hidden;
+  }
+  .trusted-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .logos-track-wrap { overflow: hidden; flex: 1; }
+  .logos-track {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    animation: scroll-logos 22s linear infinite;
+    width: max-content;
+  }
+  .logos-track:hover { animation-play-state: paused; }
+  @keyframes scroll-logos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .logo-pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── MISSION QUOTE ── */
+  .mission {
+    background: var(--off-white);
+    padding: 80px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .mission-quote {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 32px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--green);
+    max-width: 680px;
+  }
+  .mission-quote strong { font-style: normal; font-weight: 700; }
+  .mission-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--green-accent);
+    padding-bottom: 2px;
+  }
+  .mission-link:hover { color: var(--green-accent); }
+
+  /* ── SECTION GENERIC ── */
+  section { padding: 96px 48px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+  .section-title em { font-style: italic; }
+  .section-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── SERVICES ── */
+  .services { background: var(--cream); }
+
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 56px;
+    gap: 24px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .services-grid .card:first-child { grid-column: span 2; }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 36px;
+    transition: box-shadow .25s, transform .25s, border-color .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--green-accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .card:hover { box-shadow: 0 12px 48px rgba(26,58,42,0.1); transform: translateY(-3px); border-color: transparent; }
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .card h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--green);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: gap .2s;
+  }
+  .card-link:hover { gap: 10px; }
+  .card-link::after { content: '↗'; font-size: 14px; }
+
+  /* ── VALUES ── */
+  .values { background: var(--green); color: var(--white); }
+  .values .section-title { color: var(--white); }
+  .values .section-sub { color: rgba(255,255,255,0.6); }
+  .values .section-label { color: var(--green-accent); }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+  }
+  .value-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 32px;
+    transition: background .25s, transform .25s;
+  }
+  .value-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+  .value-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .value-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .value-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+
+  .values-cta {
+    display: flex;
+    gap: 12px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--off-white); }
+  .testimonials-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    gap: 24px;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 36px;
+    position: relative;
+  }
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 80px;
+    line-height: 0.7;
+    color: var(--green-accent);
+    opacity: 0.3;
+    position: absolute;
+    top: 24px;
+    right: 32px;
+  }
+  .testimonial-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: white;
+    font-weight: 400;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .author-name { font-size: 14px; font-weight: 700; color: var(--green); }
+  .author-role { font-size: 12px; color: var(--text-muted); font-style: italic; }
+  .stars { color: var(--green-accent); font-size: 14px; letter-spacing: 2px; margin-bottom: 6px; }
+
+  /* ── TEAM ── */
+  .team { background: var(--cream); }
+  .team-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .team-image {
+    background: var(--green);
+    border-radius: var(--radius);
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .team-illustration {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 20px;
+  }
+  .team-person {
+    width: 90px;
+    height: 130px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 60px 60px 20px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .team-person::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+  }
+  .team-person:nth-child(2) { height: 150px; background: rgba(77,175,114,0.3); }
+  .team-badge {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green-accent);
+    color: white;
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── BLOG ── */
+  .blog { background: var(--off-white); }
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    gap: 24px;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .blog-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .25s, box-shadow .25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,58,42,0.1); }
+  .blog-thumb {
+    aspect-ratio: 16/9;
+    background: var(--green);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .blog-thumb-inner {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: rgba(255,255,255,0.15);
+    font-style: italic;
+  }
+  .blog-thumb .blog-tag {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: var(--green-accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .blog-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .blog-date { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 10px; }
+  .blog-title { font-family: var(--font-display); font-size: 18px; font-weight: 400; color: var(--green); line-height: 1.35; letter-spacing: -0.01em; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    background: var(--green);
+    padding: 96px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .cta-left .section-title { color: var(--white); }
+  .cta-left .section-label { color: var(--green-accent); }
+  .cta-left p { color: rgba(255,255,255,0.65); font-size: 16px; line-height: 1.7; margin-top: 20px; }
+
+  .cta-form {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 40px;
+  }
+  .form-row { margin-bottom: 16px; }
+  .form-row label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+  .form-row input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-sm);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s, background .2s;
+  }
+  .form-row input::placeholder { color: rgba(255,255,255,0.3); }
+  .form-row input:focus { border-color: var(--green-accent); background: rgba(255,255,255,0.12); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .checkbox-row input[type="checkbox"] { margin-top: 3px; accent-color: var(--green-accent); flex-shrink: 0; }
+  .checkbox-row label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--green-accent);
+    color: white;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: background .2s, transform .2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-submit:hover { background: #3d9a60; transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    color: rgba(255,255,255,0.7);
+    padding: 64px 48px 32px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 32px;
+  }
+  .footer-brand .logo {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: -0.03em;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .footer-brand .logo span { color: var(--green-accent); }
+  .footer-brand p { font-size: 13px; line-height: 1.6; max-width: 240px; color: rgba(255,255,255,0.45); }
+  .footer-col h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col ul a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-col ul a:hover { color: var(--white); }
+  .footer-contact-item {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .footer-contact-item a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-contact-item a:hover { color: white; }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color .2s; }
+  .footer-bottom a:hover { color: rgba(255,255,255,0.8); }
+
+  .social-links { display: flex; gap: 8px; }
+  .social-link {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background .2s, color .2s;
+  }
+  .social-link:hover { background: var(--green-mid); color: white; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp .7s cubic-bezier(.4,0,.2,1) both; }
+  .fade-up-1 { animation-delay: .1s; }
+  .fade-up-2 { animation-delay: .2s; }
+  .fade-up-3 { animation-delay: .3s; }
+  .fade-up-4 { animation-delay: .4s; }
+
+  /* ── RESPONSIVE BASICS ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section, .hero-inner, .trusted-strip { padding-left: 20px; padding-right: 20px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .services-grid .card:first-child { grid-column: span 1; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .team-inner { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .cta-section { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .mission { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="mailto:info@Nexoria.dk">info@Nexoria.dk</a>
+  <a href="tel:+4529333355">+45 29 33 33 55</a>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">Nexoria<span>.</span></a>
+
+  <ul class="nav-links">
+    <li><a href="#">International</a></li>
+    <li>
+      <a href="#services">Serviceydelser <span class="chevron">▾</span></a>
+      <div class="dropdown">
+        <div class="dropdown-header">Serviceydelser</div>
+        <a href="#">Alle serviceydelser</a>
+        <a href="#">Årsregnskab</a>
+        <a href="#">Bogholderi</a>
+        <a href="#">Lønadministration</a>
+        <a href="#">CFO-Services</a>
+        <a href="#">Outsourcing</a>
+        <a href="#">Nexoria Hire</a>
+        <a href="#">Skatterådgivning</a>
+        <a href="#">M&A</a>
+        <a href="#">Produktion og Lager</a>
+      </div>
+    </li>
+    <li><a href="#">Karriere</a></li>
+    <li><a href="#">NexoriaClub</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-lang">
+      <a href="#" class="active">da</a>
+      <a href="#">en</a>
+    </div>
+    <a href="#kontakt" class="btn btn-primary btn-arrow">Kontakt</a>
+    <a href="#" class="btn btn-login">Login</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-inner">
+    <div class="hero-tag fade-up"><span class="dot"></span>Regnskab & Rådgivning</div>
+    <h1 class="fade-up fade-up-1">Mere<br>end <em>Tal</em></h1>
+    <div class="hero-cta fade-up fade-up-2">
+      <a href="#kontakt" class="btn btn-white btn-arrow">Book et møde</a>
+      <a href="#services" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.85);">Vores services</a>
+    </div>
+  </div>
+
+  <div class="trusted-strip fade-up fade-up-3">
+    <span class="trusted-label">Betroet af</span>
+    <div class="logos-track-wrap">
+      <div class="logos-track">
+        <div class="logo-pill">Landson</div>
+        <div class="logo-pill">Hannah Grant</div>
+        <div class="logo-pill">TechCorp DK</div>
+        <div class="logo-pill">Nordic Ventures</div>
+        <div class="logo-pill">BlueStar A/S</div>
+        <div class="logo-pill">Greenfield</div>
+        <div class="logo-pill">Alpha Group</div>
+        <!-- duplicate for infinite loop -->
+        <div class="logo-pill">Landson</div>
+        <div class="logo-pill">Hannah Grant</div>
+        <div class="logo-pill">TechCorp DK</div>
+        <div class="logo-pill">Nordic Ventures</div>
+        <div class="logo-pill">BlueStar A/S</div>
+        <div class="logo-pill">Greenfield</div>
+        <div class="logo-pill">Alpha Group</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<div class="mission">
+  <p class="mission-quote">
+    "Vores mission er simpel: at stræbe efter <strong>excellence</strong> og gøre hverdagen nemmere for vores kunder"
+  </p>
+  <a href="#services" class="mission-link">Læs mere ↗</a>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-label">Hvad vi tilbyder</div>
+      <h2 class="section-title">Bliv en del<br>af <em>Nexoria</em></h2>
+    </div>
+    <a href="#services" class="btn btn-outline">Se alle services</a>
+  </div>
+
+  <div class="services-grid">
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h3>Bogholderi</h3>
+      <p>Bogholderi er fundamentet i din virksomheds økonomifunktion, og derfor opretholder vi et højt kvalitetsniveau i vores bogføringstjenester. Vores team har mange års erfaring, og du kan være sikker på, at din bogføring udføres i overensstemmelse med gældende regler og de højeste professionelle standarder.</p>
+      <a href="#" class="card-link">Læs mere</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Årsregnskab</h3>
+      <p>Enhver virksomhed skal indsende et årsregnskab til Erhvervsstyrelsen. Hos Nexoria hjælper vi dig med at udarbejde og indsende årsrapporten korrekt og rettidigt, så du kan fokusere på dine kerneopgaver.</p>
+      <a href="#" class="card-link">Læs mere</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">💼</div>
+      <h3>Lønadministration</h3>
+      <p>Hos Nexoria tilbyder vi professionel lønadministration, der sikrer præcis og rettidig håndtering af dine lønninger. Vores erfarne lønbogholdere sørger for, at alle lønudbetalinger overholder gældende lovgivning.</p>
+      <a href="#" class="card-link">Læs mere</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>CFO Services</h3>
+      <p>Hos Nexoria tilbyder vi skræddersyede CFO-services, der hjælper din virksomhed med at optimere sin økonomistyring. Uanset om du har brug for en deltids-CFO eller en projektbaseret løsning, sikrer vi, at dine behov mødes.</p>
+      <a href="#" class="card-link">Læs mere</a>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>Produktion og Lager</h3>
+      <p>Hos Nexoria tilbyder vi omfattende løsninger til produktion og lagerstyring. Vores ekspertteam sikrer, at dine produktionsprocesser er strømlinede, og at lagerstyringen er nøjagtig og pålidelig.</p>
+      <a href="#" class="card-link">Læs mere</a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="section-label">Hvem vi er</div>
+  <h2 class="section-title" style="max-width:500px;">Vores <em>værdier</em></h2>
+  <p class="section-sub">Vores værdier definerer, hvem vi er — de er kernen i vores DNA og driver vores engagement i kvalitet, integritet og kundetilfredshed.</p>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <span class="value-icon">👑</span>
+      <h3>Kunden er kongen</h3>
+      <p>Hos Nexoria er kunden altid i centrum. Vi leverer førsteklasses service og skræddersyede løsninger, der opfylder dine behov. Din succes er vores højeste prioritet.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">💡</span>
+      <h3>Tænker ud af boksen</h3>
+      <p>Hos Nexoria tænker vi ud af boksen for at levere innovative og skræddersyede løsninger. Vores eksperter arbejder målrettet efter at finde de mest smarte og effektive løsninger.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">🏆</span>
+      <h3>Excellence i alt vi gør</h3>
+      <p>Hos Nexoria stræber vi efter at give vores kunder den bedste oplevelse og tryghed. Vores engagement i kvalitet og præcision betyder, at vi altid leverer det bedste.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">⏱</span>
+      <h3>Altid til tiden</h3>
+      <p>Hos Nexoria er punktlighed en kerneværdi. Vi sørger for, at dine regnskaber og økonomiske opgaver løses præcist og rettidigt med smarte digitale værktøjer.</p>
+    </div>
+  </div>
+
+  <div class="values-cta">
+    <a href="#kontakt" class="btn btn-white btn-arrow">Book et møde</a>
+    <a href="#services" class="btn" style="background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.2);">Vores services ↗</a>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <div>
+      <div class="section-label">Hvad kunderne siger</div>
+      <h2 class="section-title">Hør det fra vores <em>partnere</em></h2>
+    </div>
+    <a href="#kontakt" class="btn btn-outline">Kontakt os</a>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Med Nexoria på holdet har vi fået det bedste fra begge verdener. Vi får opfyldt vores behov for en CFO og får den vej igennem alt den rådgivning, sparring og rapportering, som vi har behov for.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">J</div>
+        <div>
+          <div class="author-name">Johnny Marcher</div>
+          <div class="author-role">CEO, Landson Emission &amp; Technologies</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">Som kunde hos Nexoria føler man sig virkelig som en del af familien. Det er tydeligt at mærke at de reelt interesserer sig for ens virksomhed. Skal man bruge en all-round løsning og vil man have en personlig relation — så er Nexoria det perfekte valg.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">H</div>
+        <div>
+          <div class="author-name">Hannah Grant</div>
+          <div class="author-role">Kok og opskriftsudvikler</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="team-inner">
+    <div class="team-image">
+      <!-- SVG illustration of two team members -->
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <defs>
+          <radialGradient id="bg-grad" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#3d7a52" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#1a3a2a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="300" fill="url(#bg-grad)"/>
+        <!-- Person 1 -->
+        <circle cx="140" cy="105" r="36" fill="rgba(255,255,255,0.15)"/>
+        <rect x="100" y="138" width="80" height="110" rx="40" fill="rgba(255,255,255,0.12)"/>
+        <!-- Person 2 (taller) -->
+        <circle cx="250" cy="95" r="42" fill="rgba(77,175,114,0.3)"/>
+        <rect x="206" y="133" width="88" height="125" rx="44" fill="rgba(77,175,114,0.2)"/>
+        <!-- Ground -->
+        <ellipse cx="195" cy="268" rx="120" ry="8" fill="rgba(255,255,255,0.05)"/>
+        <!-- Badge -->
+        <rect x="262" y="240" width="110" height="32" rx="16" fill="#4CAF72"/>
+        <text x="317" y="261" text-anchor="middle" font-family="Manrope,sans-serif" font-size="11" font-weight="700" fill="white">Team Nexoria</text>
+      </svg>
+    </div>
+    <div>
+      <div class="section-label">Vores team</div>
+      <h2 class="section-title">Mød lederne<br>bag <em>Nexoria</em></h2>
+      <p class="section-sub">Vores team hos Nexoria er dedikeret, innovativt og ambitiøst. Med en passion for at yde den bedste service i alt hvad vi gør, arbejder vi sammen for at nå vores mål og gøre en positiv forskel.</p>
+      <p class="section-sub" style="margin-top:16px;">Vores medarbejdere kommer fra forskellige baggrunde og bringer unikke færdigheder og perspektiver med sig, hvilket gør os til en alsidig og dynamisk gruppe.</p>
+      <a href="#team" class="btn btn-primary btn-arrow" style="margin-top:32px;">Se teamet</a>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog" id="blog">
+  <div class="blog-header">
+    <div>
+      <div class="section-label">Viden & Indsigt</div>
+      <h2 class="section-title">Nyheder <em>&amp; blogs</em></h2>
+    </div>
+    <a href="#blog" class="btn btn-outline">Få mere viden</a>
+  </div>
+
+  <div class="blog-grid">
+    <a href="#" class="blog-card">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#1a3a2a,#2d5a3d);">
+        <div class="blog-thumb-inner">☁</div>
+        <span class="blog-tag">Digitalisering</span>
+      </div>
+      <div class="blog-body">
+        <div class="blog-date">21. marts 2025</div>
+        <div class="blog-title">Derfor skal du digitalisere dit bogholderi</div>
+      </div>
+    </a>
+    <a href="#" class="blog-card">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#2d5a3d,#3d7a52);">
+        <div class="blog-thumb-inner">📋</div>
+        <span class="blog-tag">Årsrapport</span>
+      </div>
+      <div class="blog-body">
+        <div class="blog-date">6. februar 2025</div>
+        <div class="blog-title">Er du klar til at indberette din årsrapport? Her er alt du skal vide</div>
+      </div>
+    </a>
+    <a href="#" class="blog-card">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#1a3a2a,#4CAF72);">
+        <div class="blog-thumb-inner">📑</div>
+        <span class="blog-tag">Regnskab</span>
+      </div>
+      <div class="blog-body">
+        <div class="blog-date">7. januar 2025</div>
+        <div class="blog-title">Hvad er et årsregnskab, og hvorfor er det vigtigt?</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- CTA / CONTACT FORM -->
+<div class="cta-section">
+  <div class="cta-left">
+    <div class="section-label">Kom i gang</div>
+    <h2 class="section-title" style="font-size:clamp(32px,4vw,52px);">Kontakt<br>os <em>nu</em></h2>
+    <p>Kontakt os i dag og oplev, hvordan Nexoria kan revolutionere din regnskabsstyring. Lad os finde de perfekte løsninger til din virksomhed. Vi er her for at hjælpe dig med at tage din virksomhed til næste niveau.</p>
+  </div>
+  <div class="cta-form">
+    <div class="form-grid">
+      <div class="form-row">
+        <label>Dit navn</label>
+        <input type="text" placeholder="Fornavn Efternavn">
+      </div>
+      <div class="form-row">
+        <label>Virksomhed</label>
+        <input type="text" placeholder="Virksomhedsnavn">
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>Din Email</label>
+        <input type="email" placeholder="din@email.dk">
+      </div>
+      <div class="form-row">
+        <label>Telefon nummer</label>
+        <input type="tel" placeholder="+45 XX XX XX XX">
+      </div>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="consent">
+      <label for="consent">Tilmeld mig relevant indhold og tilbud. Du kan til enhver tid afmelde disse meddelelser.</label>
+    </div>
+    <button class="btn-submit">Send besked ↗</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="kontakt">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo">Nexoria<span>.</span></span>
+      <p>Dedikerede regnskabskonsulenter — specialister i regnskab, bogholderi, løn og skatterådgivning.</p>
+      <div class="social-links" style="margin-top:20px;">
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="Facebook">f</a>
+        <a href="#" class="social-link" title="Instagram">ig</a>
+        <a href="#" class="social-link" title="YouTube">yt</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Serviceydelser</h4>
+      <ul>
+        <li><a href="#">Årsrapport</a></li>
+        <li><a href="#">Bogføring</a></li>
+        <li><a href="#">Lønadministration</a></li>
+        <li><a href="#">CFO-Services</a></li>
+        <li><a href="#">Nexoria Hire</a></li>
+        <li><a href="#">M&amp;A</a></li>
+        <li><a href="#">Produktion og Lager</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Om Os</h4>
+      <ul>
+        <li><a href="#">Om os</a></li>
+        <li><a href="#">Team Nexoria</a></li>
+        <li><a href="#">Kontakt</a></li>
+        <li><a href="#">NexoriaClub</a></li>
+        <li><a href="#">Karriere</a></li>
+        <li><a href="#">Vilkår &amp; Betingelser</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <div class="footer-contact-item">Sluseholmen 2<br>2450 København</div>
+      <div class="footer-contact-item">CVR: 33884559</div>
+      <div class="footer-contact-item"><a href="tel:+4529333355">+45 29 33 33 55</a></div>
+      <div class="footer-contact-item"><a href="mailto:info@Nexoria.dk">info@Nexoria.dk</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Copyright © 2023 Nexoria</span>
+    <a href="#">Privatlivspolitik</a>
+  </div>
+</footer>
+
+</body>
+</html>

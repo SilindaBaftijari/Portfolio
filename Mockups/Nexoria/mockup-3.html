@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexoria Revision A/S — Statsautoriserede Revisorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0ece4;
+  --bg2:#e8e3d9;
+  --bg3:#ddd7cb;
+  --w:#ffffff;
+  --ink:#141210;
+  --ink2:#3a3630;
+  --ink3:#8a857c;
+  --sage:#3b5e4a;
+  --sage2:#2d4a39;
+  --sage3:#4f7a62;
+  --hi:#e8d5a0;
+  --hi2:#d4bb78;
+  --f1:'Unbounded',sans-serif;
+  --f2:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--f2);
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+
+/* ══════════════════════════════════
+   SIDEBAR LAYOUT SHELL
+══════════════════════════════════ */
+.shell{
+  min-height:100vh;
+}
+
+/* ── VERTICAL SIDEBAR NAV ── */
+.sidenav{
+  position:fixed;
+  top:0;left:0;bottom:0;
+  width:72px;
+  background:var(--sage);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:28px 0;
+  z-index:300;
+}
+.sn-logo{
+  writing-mode:vertical-lr;
+  transform:rotate(180deg);
+  font-family:var(--f1);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.16em;
+  color:var(--hi);
+  white-space:nowrap;
+}
+.sn-links{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  align-items:center;
+}
+.sn-links a{
+  writing-mode:vertical-lr;
+  transform:rotate(180deg);
+  font-family:var(--f2);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:0.1em;
+  color:rgba(255,255,255,0.45);
+  padding:14px 8px;
+  white-space:nowrap;
+  transition:color .2s;
+  text-transform:uppercase;
+}
+.sn-links a:hover{color:rgba(255,255,255,0.9)}
+.sn-bot{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+.sn-line{width:1px;height:40px;background:rgba(255,255,255,0.15)}
+.sn-dot{width:8px;height:8px;border-radius:50%;background:var(--hi)}
+
+/* ── MAIN CONTENT (right of sidebar) ── */
+.main{
+  margin-left:72px;
+  width:calc(100% - 72px);
+}
+
+/* ══════════════════════════════════
+   ABOVE-FOLD: FULL-BLEED STAMP HERO
+══════════════════════════════════ */
+.stamp-hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  background:var(--sage);
+  position:relative;
+  overflow:hidden;
+}
+
+/* big decorative circle */
+.stamp-hero::after{
+  content:'';
+  position:absolute;
+  width:700px;height:700px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.06);
+  right:-200px;top:-100px;
+  pointer-events:none;
+}
+
+.sh-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:28px 56px 0;
+  position:relative;z-index:1;
+}
+.sh-cert{
+  display:flex;gap:8px;
+  flex-wrap:wrap;
+}
+.sh-cert-pill{
+  font-family:var(--f2);
+  font-size:10px;font-weight:500;
+  letter-spacing:0.06em;
+  color:rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:100px;
+  padding:5px 12px;
+}
+.sh-topbar-cta{
+  display:flex;gap:10px;align-items:center;
+}
+.pill-btn{
+  font-family:var(--f2);
+  font-size:12px;font-weight:500;
+  letter-spacing:0.04em;
+  padding:9px 20px;border-radius:100px;
+  cursor:pointer;border:none;
+  transition:all .2s;
+}
+.pill-ghost{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.7);
+}
+.pill-ghost:hover{border-color:rgba(255,255,255,0.6);color:#fff}
+.pill-hi{
+  background:var(--hi);
+  color:var(--sage2);
+}
+.pill-hi:hover{background:var(--hi2)}
+
+/* big headline */
+.sh-headline{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:40px 56px;
+  position:relative;z-index:1;
+}
+.sh-h1{
+  font-family:var(--f1);
+  font-size:clamp(40px,7vw,96px);
+  font-weight:900;
+  line-height:0.9;
+  letter-spacing:-0.04em;
+  color:var(--w);
+  margin-bottom:0;
+}
+.sh-h1 .outline{
+  -webkit-text-stroke:2px rgba(255,255,255,0.35);
+  color:transparent;
+  display:block;
+  paint-order:stroke fill;
+}
+.sh-h1 .gold{color:var(--hi)}
+
+.sh-sub-row{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:0;
+  align-items:end;
+  padding:0 56px 52px;
+  position:relative;z-index:1;
+}
+.sh-desc{
+  font-size:15px;
+  font-weight:300;
+  color:rgba(255,255,255,0.55);
+  line-height:1.75;
+  max-width:480px;
+}
+.sh-desc strong{font-weight:500;color:rgba(255,255,255,0.8)}
+
+.sh-stats-box{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
+  padding:28px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background-clip:padding-box;
+}
+.sh-stat{
+  padding:16px;
+}
+.sh-stat:nth-child(1){border-right:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1)}
+.sh-stat:nth-child(2){border-bottom:1px solid rgba(255,255,255,0.1);padding-left:20px}
+.sh-stat:nth-child(3){border-right:1px solid rgba(255,255,255,0.1)}
+.sh-stat:nth-child(4){padding-left:20px}
+.sh-stat-n{
+  font-family:var(--f1);
+  font-size:28px;font-weight:700;
+  color:var(--hi);line-height:1;
+  letter-spacing:-0.04em;
+}
+.sh-stat-l{
+  font-size:10px;font-weight:400;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
+/* ══════════════════════════════════
+   BENTO SERVICES GRID
+══════════════════════════════════ */
+.bento{
+  padding:64px 56px;
+  background:var(--bg);
+}
+.bento-label{
+  font-family:var(--f1);
+  font-size:10px;font-weight:400;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:32px;
+  display:flex;align-items:center;gap:12px;
+}
+.bento-label::before{content:'';width:24px;height:1px;background:var(--hi2)}
+
+.bento-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  grid-template-rows:auto auto;
+  gap:12px;
+}
+
+/* card base */
+.bc{
+  border-radius:16px;
+  padding:32px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .25s;
+  cursor:default;
+  min-width:0;
+  word-break:break-word;
+}
+.bc:hover{transform:translateY(-3px)}
+
+/* size variants */
+.bc-wide{grid-column:span 3}
+.bc-med{grid-column:span 2}
+.bc-sm{grid-column:span 1}
+.bc-tall{grid-row:span 2}
+
+/* color variants */
+.bc-light{background:var(--w);border:1.5px solid var(--bg3)}
+.bc-mid{background:var(--bg2);border:1.5px solid var(--bg3)}
+.bc-dark{background:var(--ink);color:var(--w)}
+.bc-sage{background:var(--sage);color:var(--w)}
+.bc-hi{background:var(--hi);color:var(--sage2)}
+
+.bc-num{
+  font-family:var(--f1);
+  font-size:10px;font-weight:400;
+  letter-spacing:0.1em;
+  color:var(--ink3);
+  margin-bottom:16px;
+}
+.bc-dark .bc-num,.bc-sage .bc-num{color:rgba(255,255,255,0.35)}
+.bc-hi .bc-num{color:rgba(59,94,74,0.5)}
+
+.bc-name{
+  font-family:var(--f1);
+  font-size:18px;font-weight:700;
+  letter-spacing:-0.03em;
+  color:var(--ink);
+  line-height:1.1;
+  margin-bottom:12px;
+}
+.bc-dark .bc-name{color:#fff}
+.bc-sage .bc-name{color:#fff}
+.bc-hi .bc-name{color:var(--sage2)}
+
+.bc-desc{
+  font-size:12px;font-weight:300;
+  color:var(--ink3);line-height:1.7;
+}
+.bc-dark .bc-desc{color:rgba(255,255,255,0.5)}
+.bc-sage .bc-desc{color:rgba(255,255,255,0.55)}
+.bc-hi .bc-desc{color:rgba(59,94,74,0.65)}
+
+/* decorative big number behind */
+.bc-bg-num{
+  position:absolute;
+  bottom:-20px;right:16px;
+  font-family:var(--f1);
+  font-size:100px;font-weight:900;
+  color:rgba(0,0,0,0.04);
+  line-height:1;letter-spacing:-0.06em;
+  pointer-events:none;
+  user-select:none;
+}
+.bc-dark .bc-bg-num,.bc-sage .bc-bg-num{color:rgba(255,255,255,0.05)}
+.bc-hi .bc-bg-num{color:rgba(59,94,74,0.07)}
+
+.bc-arrow{
+  position:absolute;bottom:28px;right:28px;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;
+  background:var(--bg2);
+  color:var(--ink);
+  transition:background .2s,color .2s;
+}
+.bc-light:hover .bc-arrow{background:var(--sage);color:#fff}
+.bc-mid:hover .bc-arrow{background:var(--sage);color:#fff}
+.bc-dark .bc-arrow{background:rgba(255,255,255,0.1);color:#fff}
+.bc-dark:hover .bc-arrow{background:var(--hi);color:var(--sage2)}
+.bc-sage .bc-arrow{background:rgba(255,255,255,0.12);color:#fff}
+.bc-sage:hover .bc-arrow{background:var(--hi);color:var(--sage2)}
+.bc-hi .bc-arrow{background:rgba(59,94,74,0.12);color:var(--sage2)}
+.bc-hi:hover .bc-arrow{background:var(--sage);color:#fff}
+
+/* special large card content */
+.bc-tagline{
+  font-family:var(--f1);
+  font-size:clamp(22px,3vw,36px);
+  font-weight:700;
+  letter-spacing:-0.04em;
+  color:var(--ink);
+  line-height:1.1;
+}
+
+/* ══════════════════════════════════
+   FULL-BLEED PROCESS STRIP
+══════════════════════════════════ */
+.process-strip{
+  background:var(--ink);
+  padding:80px 56px;
+  position:relative;
+  overflow:hidden;
+}
+.process-strip::before{
+  content:'HOW';
+  position:absolute;
+  font-family:var(--f1);
+  font-size:300px;font-weight:900;
+  color:rgba(255,255,255,0.02);
+  left:-20px;top:50%;
+  transform:translateY(-50%);
+  letter-spacing:-0.06em;
+  pointer-events:none;
+  line-height:1;
+}
+.ps-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:56px;
+  gap:24px;
+}
+.ps-label{
+  font-family:var(--f1);
+  font-size:10px;font-weight:400;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  margin-bottom:12px;
+}
+.ps-title{
+  font-family:var(--f1);
+  font-size:clamp(28px,4vw,48px);
+  font-weight:700;
+  letter-spacing:-0.04em;
+  color:#fff;line-height:1;
+}
+.ps-title em{color:var(--hi);font-style:normal}
+
+.ps-steps{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;
+  background:rgba(255,255,255,0.07);
+  overflow:hidden;
+  border-radius:12px;
+}
+.ps-step{
+  background:var(--ink);
+  padding:40px 32px;
+  transition:background .2s;
+  position:relative;
+}
+.ps-step:hover{background:#1e1c18}
+.ps-step-n{
+  font-family:var(--f1);
+  font-size:48px;font-weight:900;
+  color:rgba(255,255,255,0.07);
+  line-height:1;letter-spacing:-0.05em;
+  margin-bottom:24px;
+  transition:color .2s;
+}
+.ps-step:hover .ps-step-n{color:rgba(232,213,160,0.18)}
+.ps-step h3{
+  font-family:var(--f1);
+  font-size:15px;font-weight:700;
+  letter-spacing:-0.02em;
+  color:#fff;margin-bottom:10px;
+}
+.ps-step p{
+  font-size:13px;font-weight:300;
+  color:rgba(255,255,255,0.4);
+  line-height:1.7;
+}
+.ps-step-connector{
+  position:absolute;
+  right:-13px;top:50%;
+  transform:translateY(-50%);
+  width:26px;height:26px;
+  border-radius:50%;
+  background:var(--hi);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--sage2);
+  z-index:1;
+  font-weight:700;
+}
+.ps-step:last-child .ps-step-connector{display:none}
+
+/* ══════════════════════════════════
+   TEAM — overlapping cards
+══════════════════════════════════ */
+.team-section{
+  background:var(--bg);
+  padding:80px 56px;
+}
+.ts-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:56px;
+}
+.section-tag{
+  font-family:var(--f1);
+  font-size:10px;font-weight:400;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-tag::before{content:'';width:20px;height:1px;background:var(--hi2)}
+.section-h{
+  font-family:var(--f1);
+  font-size:clamp(28px,4vw,44px);
+  font-weight:700;
+  letter-spacing:-0.04em;
+  color:var(--ink);
+  line-height:1.0;
+}
+.section-h em{color:var(--sage);font-style:normal}
+
+.team-cards{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+.tm{
+  background:var(--w);
+  border-radius:16px;
+  overflow:hidden;
+  border:1.5px solid var(--bg3);
+  transition:transform .25s,box-shadow .25s;
+}
+.tm:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.1)}
+.tm-photo{
+  aspect-ratio:1/1;
+  position:relative;
+  overflow:hidden;
+}
+.tm-photo-bg{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+.tm-initials{
+  font-family:var(--f1);
+  font-size:88px;font-weight:900;
+  color:rgba(255,255,255,0.12);
+  letter-spacing:-0.06em;
+  user-select:none;
+}
+.tm-role-chip{
+  position:absolute;
+  top:14px;left:14px;
+  background:var(--hi);
+  color:var(--sage2);
+  font-family:var(--f1);
+  font-size:9px;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:5px 12px;border-radius:100px;
+}
+.tm-body{padding:22px}
+.tm-name{
+  font-family:var(--f1);
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.03em;
+  color:var(--ink);margin-bottom:6px;
+}
+.tm-bio{
+  font-size:12px;font-weight:300;
+  color:var(--ink3);line-height:1.6;
+  margin-bottom:12px;
+}
+.tm-edu{
+  font-size:10px;font-weight:500;
+  color:var(--sage);
+  background:rgba(59,94,74,0.07);
+  padding:4px 10px;border-radius:6px;
+  display:inline-block;
+  letter-spacing:0.03em;
+}
+
+/* ══════════════════════════════════
+   TESTIMONIALS — large staggered
+══════════════════════════════════ */
+.testi-section{
+  background:var(--bg2);
+  padding:80px 56px;
+}
+.ts2-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:56px;
+}
+.testi-pile{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.tq{
+  background:var(--w);
+  border-radius:16px;
+  padding:44px;
+  display:flex;flex-direction:column;
+  border:1.5px solid var(--bg3);
+  transition:transform .2s;
+}
+.tq:hover{transform:translateY(-3px)}
+.tq-large{
+  background:var(--sage);
+  border-color:var(--sage);
+}
+.tq-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:28px;
+}
+.tq-stars{font-size:14px;letter-spacing:3px;color:var(--hi2)}
+.tq-large .tq-stars{color:var(--hi)}
+.tq-ico{
+  width:36px;height:36px;
+  background:var(--bg);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f1);font-size:18px;font-weight:700;
+  color:var(--ink3);
+}
+.tq-large .tq-ico{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6)}
+.tq-text{
+  font-size:16px;font-weight:300;
+  font-style:italic;
+  color:var(--ink2);
+  line-height:1.7;
+  flex:1;margin-bottom:32px;
+}
+.tq-large .tq-text{color:rgba(255,255,255,0.8)}
+.tq-author{
+  display:flex;align-items:center;gap:12px;
+  padding-top:24px;
+  border-top:1px solid var(--bg2);
+}
+.tq-large .tq-author{border-top-color:rgba(255,255,255,0.12)}
+.tq-av{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f1);font-size:13px;font-weight:700;
+  color:var(--ink);flex-shrink:0;
+}
+.tq-large .tq-av{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.tq-name{font-size:13px;font-weight:500;color:var(--ink)}
+.tq-large .tq-name{color:#fff}
+.tq-role{font-size:11px;color:var(--ink3);margin-top:2px;font-style:italic}
+.tq-large .tq-role{color:rgba(255,255,255,0.45)}
+
+/* ══════════════════════════════════
+   INSIGHT / BLOG — magazine layout
+══════════════════════════════════ */
+.insight{
+  background:var(--w);
+  padding:80px 56px;
+}
+.insight-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:48px;
+}
+.insight-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:16px;
+}
+.ig-main{
+  border-radius:16px;
+  background:var(--sage);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  min-height:480px;
+}
+.ig-main-thumb{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.ig-main-letter{
+  font-family:var(--f1);
+  font-size:200px;font-weight:900;
+  color:rgba(255,255,255,0.06);
+  letter-spacing:-0.06em;
+  user-select:none;
+  line-height:1;
+}
+.ig-main-tag{
+  position:absolute;top:20px;left:20px;
+  background:var(--hi);
+  color:var(--sage2);
+  font-family:var(--f1);
+  font-size:9px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:6px 14px;border-radius:100px;
+}
+.ig-main-body{
+  padding:32px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.ig-date{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:10px;letter-spacing:0.04em}
+.ig-title{
+  font-family:var(--f1);
+  font-size:22px;font-weight:700;
+  letter-spacing:-0.03em;
+  color:#fff;line-height:1.2;
+  margin-bottom:14px;
+}
+.ig-excerpt{font-size:13px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:18px}
+.ig-link{
+  font-family:var(--f1);
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--hi);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:gap .2s;
+}
+.ig-main:hover .ig-link{gap:12px}
+
+.ig-stack{display:flex;flex-direction:column;gap:14px;min-height:480px}
+.ig-mini{
+  border-radius:14px;
+  border:1.5px solid var(--bg3);
+  overflow:hidden;
+  display:flex;
+  transition:border-color .2s,transform .2s;
+  cursor:pointer;
+  min-height:110px;
+}
+.ig-mini:hover{border-color:var(--bg3);transform:translateX(4px)}
+.ig-mini-color{
+  width:72px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.ig-mini-letter{
+  font-family:var(--f1);
+  font-size:32px;font-weight:900;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:-0.04em;
+  user-select:none;
+}
+.ig-mini-body{
+  padding:20px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+.ig-mini-tag{
+  font-size:9px;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:6px;
+}
+.ig-mini-title{
+  font-family:var(--f1);
+  font-size:14px;font-weight:700;
+  letter-spacing:-0.02em;
+  color:var(--ink);line-height:1.2;
+  margin-bottom:5px;
+}
+.ig-mini-date{font-size:11px;color:var(--ink3)}
+
+/* ══════════════════════════════════
+   CONTACT — full-width two-tone
+══════════════════════════════════ */
+.contact-section{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:600px;
+}
+.cs-left{
+  background:var(--hi);
+  padding:80px 64px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.cs-label{
+  font-family:var(--f1);font-size:10px;font-weight:400;
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(59,94,74,0.6);margin-bottom:16px;
+}
+.cs-title{
+  font-family:var(--f1);
+  font-size:clamp(36px,5vw,64px);
+  font-weight:900;
+  letter-spacing:-0.05em;
+  color:var(--sage2);
+  line-height:0.92;
+  margin-bottom:28px;
+}
+.cs-body{
+  font-size:15px;font-weight:300;
+  color:rgba(59,94,74,0.7);
+  line-height:1.75;
+  max-width:360px;
+  margin-bottom:48px;
+}
+.cs-contacts{display:flex;flex-direction:column;gap:18px}
+.cs-row{display:flex;align-items:center;gap:14px}
+.cs-ico{
+  width:38px;height:38px;border-radius:8px;
+  background:rgba(59,94,74,0.12);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.cs-ico svg{width:15px;height:15px;fill:none;stroke:var(--sage2);stroke-width:1.8;stroke-linecap:round}
+.cs-lbl{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(59,94,74,0.5);margin-bottom:3px}
+.cs-val{font-size:14px;color:var(--sage2)}
+.cs-val a{color:var(--sage2)}
+
+.cs-right{
+  background:var(--ink);
+  padding:80px 64px;
+}
+.cs-right h3{
+  font-family:var(--f1);
+  font-size:20px;font-weight:700;
+  letter-spacing:-0.03em;
+  color:#fff;
+  margin-bottom:36px;
+  padding-bottom:28px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.ff{margin-bottom:16px}
+.ff label{
+  display:block;
+  font-family:var(--f1);
+  font-size:9px;font-weight:400;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);margin-bottom:7px;
+}
+.ff input,.ff select{
+  width:100%;
+  padding:13px 16px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  font-family:var(--f2);font-size:14px;font-weight:300;
+  color:rgba(255,255,255,0.8);
+  outline:none;transition:border-color .2s;
+  appearance:none;
+}
+.ff input:focus,.ff select:focus{border-color:var(--hi)}
+.ff input::placeholder{color:rgba(255,255,255,0.2)}
+.ff option{background:var(--ink);color:#fff}
+.ff-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ff-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:22px}
+.ff-check input{width:14px;height:14px;margin-top:3px;accent-color:var(--hi);flex-shrink:0}
+.ff-check label{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.5;font-family:var(--f2);letter-spacing:0;text-transform:none}
+.ff-check label a{color:var(--hi)}
+.ff-submit{
+  width:100%;
+  background:var(--hi);
+  color:var(--sage2);
+  font-family:var(--f1);
+  font-size:13px;font-weight:700;
+  letter-spacing:0.06em;
+  padding:16px;
+  border:none;border-radius:8px;cursor:pointer;
+  transition:background .2s,transform .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.ff-submit:hover{background:var(--hi2);transform:translateY(-1px)}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer{
+  background:var(--sage2);
+  padding:56px 56px 0;
+}
+.ft-top{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:0;
+  padding-bottom:48px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  margin-bottom:24px;
+}
+.ft-brand{padding-right:40px}
+.ft-logo{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:16px;
+}
+.ft-logo-sq{
+  width:28px;height:28px;border-radius:6px;
+  background:var(--hi);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f1);font-size:12px;font-weight:900;
+  color:var(--sage2);
+}
+.ft-logo-name{
+  font-family:var(--f1);font-size:16px;font-weight:700;
+  letter-spacing:-0.03em;color:#fff;
+}
+.ft-about{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.7;max-width:220px;margin-bottom:20px}
+.ft-info a{display:block;font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:5px;transition:color .2s}
+.ft-info a:hover{color:rgba(255,255,255,0.75)}
+.ft-col{padding-left:32px}
+.ft-col h4{
+  font-family:var(--f1);font-size:9px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+  margin-bottom:16px;padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-col ul a{font-size:13px;color:rgba(255,255,255,0.3);transition:color .2s;font-weight:300}
+.ft-col ul a:hover{color:rgba(255,255,255,0.8)}
+.ft-base{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 0;
+}
+.ft-copy{font-size:11px;color:rgba(255,255,255,0.15);letter-spacing:0.04em}
+.ft-soc{display:flex;gap:6px}
+.fsb{
+  width:32px;height:32px;border-radius:6px;
+  background:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f1);font-size:9px;font-weight:700;
+  color:rgba(255,255,255,0.3);
+  transition:all .18s;
+}
+.fsb:hover{background:var(--hi);color:var(--sage2)}
+
+/* shared text btn */
+.text-btn{
+  font-family:var(--f1);
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--sage);
+  display:inline-flex;align-items:center;gap:6px;
+  border-bottom:1.5px solid var(--bg3);
+  padding-bottom:2px;
+  transition:border-color .2s,gap .2s,color .2s;
+  cursor:pointer;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.text-btn:hover{border-color:var(--sage);gap:10px}
+.text-btn-light{color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.15)}
+.text-btn-light:hover{color:#fff;border-color:rgba(255,255,255,0.5)}
+
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.r{opacity:0}.r.go{animation:up .6s cubic-bezier(.4,0,.2,1) both}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media(max-width:900px){
+  .sidenav{display:none}
+  .main{margin-left:0}
+  .shell{grid-template-columns:1fr}
+  .sh-sub-row{grid-template-columns:1fr}
+  .sh-stats-box{display:none}
+  .bento-grid{grid-template-columns:1fr 1fr}
+  .bc-wide,.bc-med,.bc-sm,.bc-tall{grid-column:span 1;grid-row:span 1}
+  .ps-steps{grid-template-columns:1fr 1fr}
+  .team-cards{grid-template-columns:1fr 1fr}
+  .testi-pile{grid-template-columns:1fr}
+  .insight-grid{grid-template-columns:1fr}
+  .contact-section{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr;gap:24px}
+  .sh-headline,.sh-topbar,.sh-sub-row{padding-left:24px;padding-right:24px}
+  .bento,.process-strip,.team-section,.testi-section,.insight,.ft-top{padding-left:24px;padding-right:24px}
+  .cs-left,.cs-right,.ft-base{padding:48px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR NAV ───────────────────── -->
+<div class="shell">
+<nav class="sidenav">
+  <div class="sn-logo">NEXORIA</div>
+  <div class="sn-links">
+    <a href="#ydelser">Ydelser</a>
+    <a href="#process">Tilgang</a>
+    <a href="#team">Team</a>
+    <a href="#indsigt">Viden</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <div class="sn-bot">
+    <div class="sn-line"></div>
+    <div class="sn-dot"></div>
+  </div>
+</nav>
+
+<!-- ── MAIN ─────────────────────────── -->
+<main class="main">
+
+<!-- ══ STAMP HERO ═══════════════════════ -->
+<section class="stamp-hero">
+  <div class="sh-topbar">
+    <div class="sh-cert">
+      <span class="sh-cert-pill">FSR-godkendt</span>
+      <span class="sh-cert-pill">Statsautoriseret</span>
+      <span class="sh-cert-pill">Alliot Global Alliance</span>
+      <span class="sh-cert-pill">Siden 2008</span>
+    </div>
+    <div class="sh-topbar-cta">
+      <button class="pill-btn pill-ghost">Klientportal</button>
+      <button class="pill-btn pill-hi" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Book møde →</button>
+    </div>
+  </div>
+
+  <div class="sh-headline">
+    <h1 class="sh-h1">
+      <span>PRÆCIS</span>
+      <span class="outline">REVISION</span>
+      <span class="gold">DER TÆLLER.</span>
+    </h1>
+  </div>
+
+  <div class="sh-sub-row">
+    <p class="sh-desc">
+      Nexoria Revision er et <strong>statsautoriseret revisionsselskab</strong> med speciale i årsregnskaber, skatteplanlægning og løbende rådgivning til danske SMV'er — altid med et personligt touch.
+    </p>
+    <div class="sh-stats-box">
+      <div class="sh-stat"><div class="sh-stat-n">450+</div><div class="sh-stat-l">Klienter</div></div>
+      <div class="sh-stat"><div class="sh-stat-n">16år</div><div class="sh-stat-l">Erfaring</div></div>
+      <div class="sh-stat"><div class="sh-stat-n">8</div><div class="sh-stat-l">St.aut. rev.</div></div>
+      <div class="sh-stat"><div class="sh-stat-n">99%</div><div class="sh-stat-l">Rating</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BENTO SERVICES ════════════════════ -->
+<section class="bento" id="ydelser">
+  <div class="bento-label">Vores ydelser</div>
+  <div class="bento-grid">
+
+    <!-- Row 1 -->
+    <div class="bc bc-wide bc-dark r">
+      <div class="bc-num">01 / Lovpligtig</div>
+      <div class="bc-name">Revision</div>
+      <div class="bc-desc">Uafhængig revision af årsregnskaber efter ISA-standarderne. Omhyggelig, integritetsfuld og præcis — hvert eneste år.</div>
+      <div class="bc-bg-num">R</div>
+      <div class="bc-arrow">↗</div>
+    </div>
+
+    <div class="bc bc-med bc-hi r">
+      <div class="bc-num">02 / Regnskab</div>
+      <div class="bc-name">Årsreg­nskab</div>
+      <div class="bc-desc">Korrekt indberetning til Erhvervsstyrelsen. Til tiden. Hvert år.</div>
+      <div class="bc-bg-num">Å</div>
+      <div class="bc-arrow">↗</div>
+    </div>
+
+    <div class="bc bc-sm bc-sage r" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+      <div style="font-family:var(--f1);font-size:10px;font-weight:400;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:12px;text-transform:uppercase">Betroet af</div>
+      <div style="font-family:var(--f1);font-size:36px;font-weight:900;color:var(--hi);line-height:1;letter-spacing:-0.04em">450+</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px">virksomheder</div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="bc bc-sm bc-light r" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+      <div style="font-family:var(--f1);font-size:10px;font-weight:400;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;margin-bottom:12px">I erhvervet</div>
+      <div style="font-family:var(--f1);font-size:36px;font-weight:900;color:var(--sage);line-height:1;letter-spacing:-0.04em">16år</div>
+    </div>
+
+    <div class="bc bc-med bc-mid r">
+      <div class="bc-num">03 / Skat</div>
+      <div class="bc-name">Skatte­planlæg­ning</div>
+      <div class="bc-desc">Strategisk rådgivning der minimerer din skatteeksponering lovligt.</div>
+      <div class="bc-bg-num">S</div>
+      <div class="bc-arrow">↗</div>
+    </div>
+
+    <div class="bc bc-wide bc-light r">
+      <div class="bc-tagline">Due diligence · Bogholderi<br>&amp; løn · Rådgivende CFO</div>
+      <div style="margin-top:16px;font-size:12px;color:var(--ink3);max-width:380px">
+        Fra daglig bogføring til komplekse virksomhedshandler — vi dækker hele spektret af finansielle ydelser.
+      </div>
+      <div class="bc-arrow">↗</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PROCESS STRIP ═════════════════════ -->
+<section class="process-strip" id="process">
+  <div class="ps-top">
+    <div>
+      <div class="ps-label">Vores tilgang</div>
+      <div class="ps-title">Sådan <em>arbejder</em> vi</div>
+    </div>
+    <button class="text-btn text-btn-light">Se alle ydelser →</button>
+  </div>
+  <div class="ps-steps">
+    <div class="ps-step r">
+      <div class="ps-step-n">01</div>
+      <h3>Første samtale</h3>
+      <p>En uforpligtende snak hvor vi forstår din virksomhed, dine behov og dine mål — ingen standardløsninger.</p>
+      <div class="ps-step-connector">→</div>
+    </div>
+    <div class="ps-step r">
+      <div class="ps-step-n">02</div>
+      <h3>Gennemgang &amp; tilbud</h3>
+      <p>Vi gennemgår dit materiale og giver et klart, transparent tilbud med faste priser og tydelige deadlines.</p>
+      <div class="ps-step-connector">→</div>
+    </div>
+    <div class="ps-step r">
+      <div class="ps-step-n">03</div>
+      <h3>Revision &amp; rådgivning</h3>
+      <p>Statsautoriserede revisorer udfører arbejdet efter gældende lovgivning og de højeste faglige standarder.</p>
+      <div class="ps-step-connector">→</div>
+    </div>
+    <div class="ps-step r">
+      <div class="ps-step-n">04</div>
+      <h3>Fast årshjul</h3>
+      <p>Vi er din revisor hele året. Fast kontaktperson. Løbende rådgivning — ikke kun ved årsafslutning.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEAM ══════════════════════════════ -->
+<section class="team-section" id="team">
+  <div class="ts-head">
+    <div>
+      <div class="section-tag">Vores revisorer</div>
+      <h2 class="section-h">Menneskene bag <em>Nexoria</em></h2>
+    </div>
+    <button class="text-btn">Se alle revisorer →</button>
+  </div>
+  <div class="team-cards">
+    <div class="tm r">
+      <div class="tm-photo" style="background:#d4cfc4">
+        <div class="tm-photo-bg"><div class="tm-initials">MK</div></div>
+        <div class="tm-role-chip">Partner</div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">Mikkel Kjærgaard</div>
+        <p class="tm-bio">16 år i revision og selskabsret. Specialist i årsregnskaber for mellemstore virksomheder.</p>
+        <span class="tm-edu">HD(R) · CBS</span>
+      </div>
+    </div>
+    <div class="tm r">
+      <div class="tm-photo" style="background:#c4cfd4">
+        <div class="tm-photo-bg"><div class="tm-initials">SL</div></div>
+        <div class="tm-role-chip">Partner</div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">Sofie Lindberg</div>
+        <p class="tm-bio">IFRS-ekspert og digital regnskabspraksis. Tidl. Big Four senior revisor, 8 år.</p>
+        <span class="tm-edu">Cand.merc.aud · SDU</span>
+      </div>
+    </div>
+    <div class="tm r">
+      <div class="tm-photo" style="background:#cdc4d4">
+        <div class="tm-photo-bg"><div class="tm-initials">AH</div></div>
+        <div class="tm-role-chip">Revisor</div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">Anders Holm</div>
+        <p class="tm-bio">Skatteretlig specialist. Transfer pricing og internationale skattestrukturer.</p>
+        <span class="tm-edu">LL.M Skat · KU</span>
+      </div>
+    </div>
+    <div class="tm r">
+      <div class="tm-photo" style="background:#c4d4cb">
+        <div class="tm-photo-bg"><div class="tm-initials">KN</div></div>
+        <div class="tm-role-chip">Revisor</div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">Kamilla Nielsen</div>
+        <p class="tm-bio">SMV-specialist. Rådgiver om kapitalstruktur og investeringsplanlægning.</p>
+        <span class="tm-edu">Cand.merc.aud · CBS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════ -->
+<section class="testi-section">
+  <div class="ts2-head">
+    <div>
+      <div class="section-tag">Klientudtalelser</div>
+      <h2 class="section-h">Hvad de <em>siger</em></h2>
+    </div>
+    <button class="text-btn">Bliv klient →</button>
+  </div>
+  <div class="testi-pile">
+    <div class="tq tq-large r">
+      <div class="tq-top">
+        <div class="tq-stars">★★★★★</div>
+        <div class="tq-ico">"</div>
+      </div>
+      <p class="tq-text">"Nexoria har været vores revisor i seks år. De leverer grundig, pålidelig revision til tiden — og deres skatterådgivning har sparet os for betydelige beløb. Præcis den langsigtede partner vi søgte."</p>
+      <div class="tq-author">
+        <div class="tq-av">JM</div>
+        <div>
+          <div class="tq-name">Johnny Marcher</div>
+          <div class="tq-role">CEO, Landson Emission &amp; Technologies</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="tq r">
+        <div class="tq-top">
+          <div class="tq-stars">★★★★★</div>
+          <div class="tq-ico">"</div>
+        </div>
+        <p class="tq-text">"Som selvstændig har jeg altid frygtet årsregnskabet. Nexoria gør det utroligt nemt — de forklarer i et sprog jeg forstår."</p>
+        <div class="tq-author">
+          <div class="tq-av">HG</div>
+          <div>
+            <div class="tq-name">Hannah Grant</div>
+            <div class="tq-role">Selvstændig kok</div>
+          </div>
+        </div>
+      </div>
+      <div class="tq r">
+        <div class="tq-top">
+          <div class="tq-stars">★★★★★</div>
+          <div class="tq-ico">"</div>
+        </div>
+        <p class="tq-text">"Proaktive, præcise og altid klar med et svar. Nexoria har transformeret vores finansielle processer."</p>
+        <div class="tq-author">
+          <div class="tq-av">LE</div>
+          <div>
+            <div class="tq-name">Lars Eriksen</div>
+            <div class="tq-role">CFO, Nordic Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSIGHT / BLOG ════════════════════ -->
+<section class="insight" id="indsigt">
+  <div class="insight-head">
+    <div>
+      <div class="section-tag">Faglig viden</div>
+      <h2 class="section-h">Seneste fra <em>Nexoria</em></h2>
+    </div>
+    <button class="text-btn">Alle artikler →</button>
+  </div>
+  <div class="insight-grid">
+    <div class="ig-main">
+      <div class="ig-main-thumb">
+        <span class="ig-main-letter">§</span>
+        <span class="ig-main-tag">Lovgivning</span>
+      </div>
+      <div class="ig-main-body">
+        <div class="ig-date">21. marts 2025</div>
+        <div class="ig-title">Bogføringsloven 2024 — hvad ændrer sig for din virksomhed?</div>
+        <div class="ig-excerpt">Den nye bogføringslov kræver digital bogføring for langt flere. Vi gennemgår de vigtigste ændringer, frister og konsekvenser for din virksomhed.</div>
+        <span class="ig-link">Læs artikel →</span>
+      </div>
+    </div>
+    <div class="ig-stack">
+      <div class="ig-mini r" style="background:var(--w)">
+        <div class="ig-mini-color" style="background:#e8e3d9">
+          <span class="ig-mini-letter" style="color:rgba(0,0,0,0.08)">Å</span>
+        </div>
+        <div class="ig-mini-body">
+          <div class="ig-mini-tag">Årsrapport</div>
+          <div class="ig-mini-title">Frister for årsrapport 2024 — det skal du vide</div>
+          <div class="ig-mini-date">6. februar 2025</div>
+        </div>
+      </div>
+      <div class="ig-mini r" style="background:var(--w)">
+        <div class="ig-mini-color" style="background:#ddd7cb">
+          <span class="ig-mini-letter" style="color:rgba(0,0,0,0.08)">S</span>
+        </div>
+        <div class="ig-mini-body">
+          <div class="ig-mini-tag">Skat</div>
+          <div class="ig-mini-title">Skatteoptimering for SMV'er — muligheder du overser</div>
+          <div class="ig-mini-date">7. januar 2025</div>
+        </div>
+      </div>
+      <div class="ig-mini r" style="background:var(--w)">
+        <div class="ig-mini-color" style="background:var(--sage);opacity:0.85">
+          <span class="ig-mini-letter">M</span>
+        </div>
+        <div class="ig-mini-body">
+          <div class="ig-mini-tag">M&amp;A</div>
+          <div class="ig-mini-title">Hvad koster det at sælge din virksomhed?</div>
+          <div class="ig-mini-date">12. december 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ═══════════════════════════ -->
+<section class="contact-section" id="kontakt">
+  <div class="cs-left">
+    <div>
+      <div class="cs-label">Kontakt os</div>
+      <h2 class="cs-title">LÅD OS<br>TAGE EN<br>SNAK.</h2>
+      <p class="cs-body">Ring, skriv eller book et gratis, uforpligtende møde. Vi hjælper alle — fra soloselvstændige til mellemstore virksomheder.</p>
+    </div>
+    <div class="cs-contacts">
+      <div class="cs-row">
+        <div class="cs-ico"><svg viewBox="0 0 16 16"><path d="M2 4h12l-6 5-6-5zM2 4v8h12V4"/></svg></div>
+        <div><div class="cs-lbl">Email</div><div class="cs-val"><a href="mailto:info@nexoria.dk">info@nexoria.dk</a></div></div>
+      </div>
+      <div class="cs-row">
+        <div class="cs-ico"><svg viewBox="0 0 16 16"><path d="M2 2.5h3l1.5 3-1.5 1A8 8 0 0010 10l1-1.5 3 1.5V13a1.5 1.5 0 01-1.5 1 10 10 0 01-10-10A1.5 1.5 0 012 2.5"/></svg></div>
+        <div><div class="cs-lbl">Telefon</div><div class="cs-val"><a href="tel:+4529333355">+45 29 33 33 55</a></div></div>
+      </div>
+      <div class="cs-row">
+        <div class="cs-ico"><svg viewBox="0 0 16 16"><circle cx="8" cy="7" r="2.5"/><path d="M8 1a6 6 0 016 6c0 4-6 9-6 9S2 11 2 7a6 6 0 016-6z"/></svg></div>
+        <div><div class="cs-lbl">Adresse</div><div class="cs-val">Sluseholmen 2, 2450 Kbh SV</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="cs-right">
+    <h3>Book et gratis møde</h3>
+    <div class="ff-2">
+      <div class="ff"><label>Navn</label><input type="text" placeholder="Fornavn Efternavn"></div>
+      <div class="ff"><label>Virksomhed</label><input type="text" placeholder="Virksomhedens navn"></div>
+    </div>
+    <div class="ff-2">
+      <div class="ff"><label>Email</label><input type="email" placeholder="din@email.dk"></div>
+      <div class="ff"><label>Telefon</label><input type="tel" placeholder="+45 XX XX XX XX"></div>
+    </div>
+    <div class="ff">
+      <label>Hvad kan vi hjælpe med?</label>
+      <select>
+        <option value="">Vælg ydelse…</option>
+        <option>Lovpligtig revision</option>
+        <option>Årsregnskab</option>
+        <option>Skatteplanlægning</option>
+        <option>Bogholderi &amp; løn</option>
+        <option>Due diligence</option>
+        <option>Rådgivende CFO</option>
+        <option>Andet</option>
+      </select>
+    </div>
+    <div class="ff-check">
+      <input type="checkbox" id="c">
+      <label for="c">Jeg accepterer at Nexoria Revision A/S behandler mine oplysninger. Se vores <a href="#">privatlivspolitik</a>.</label>
+    </div>
+    <button class="ff-submit">Send forespørgsel →</button>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════ -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <div class="ft-logo">
+        <div class="ft-logo-sq">N</div>
+        <span class="ft-logo-name">Nexoria Revision</span>
+      </div>
+      <p class="ft-about">Statsautoriseret revisionsselskab godkendt af Erhvervsstyrelsen. Revision og rådgivning siden 2008.</p>
+      <div class="ft-info">
+        <a href="tel:+4529333355">+45 29 33 33 55</a>
+        <a href="mailto:info@nexoria.dk">info@nexoria.dk</a>
+        <a>Sluseholmen 2, 2450 Kbh SV</a>
+        <a>CVR: 33 88 45 59</a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h4>Ydelser</h4>
+      <ul>
+        <li><a href="#">Lovpligtig revision</a></li>
+        <li><a href="#">Årsregnskab</a></li>
+        <li><a href="#">Skatteplanlægning</a></li>
+        <li><a href="#">Bogholderi &amp; løn</a></li>
+        <li><a href="#">Due diligence</a></li>
+        <li><a href="#">Rådgivende CFO</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Virksomheden</h4>
+      <ul>
+        <li><a href="#">Om Nexoria</a></li>
+        <li><a href="#">Vores revisorer</a></li>
+        <li><a href="#">Karriere</a></li>
+        <li><a href="#">Alliot Global</a></li>
+        <li><a href="#">Privatlivspolitik</a></li>
+        <li><a href="#">Vilkår</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Sociale medier</h4>
+      <ul>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-base">
+    <span class="ft-copy">© 2025 Nexoria Revision A/S · CVR 33884559</span>
+    <div class="ft-soc">
+      <a href="#" class="fsb">Li</a>
+      <a href="#" class="fsb">Fb</a>
+      <a href="#" class="fsb">Ig</a>
+      <a href="#" class="fsb">Yt</a>
+    </div>
+  </div>
+</footer>
+
+</main>
+</div>
+
+<script>
+const io=new IntersectionObserver(e=>{
+  e.forEach(en=>{
+    if(en.isIntersecting){
+      const s=[...en.target.parentElement.querySelectorAll('.r')];
+      const i=s.indexOf(en.target);
+      en.target.style.animationDelay=(i*.07)+'s';
+      en.target.classList.add('go');
+      io.unobserve(en.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
