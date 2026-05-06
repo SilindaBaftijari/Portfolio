@@ -341,6 +341,7 @@
 
         [data-theme="dark"] #mobile-menu-overlay {
             background: rgba(26, 31, 30, 0.98) !important;
+            color: #E8EDEB;
         }
         
         /* Animated Counters */
@@ -470,8 +471,8 @@
             </button>
         </div>
 
-        <div id="mobile-menu-overlay" class="hidden fixed inset-0 z-[10000] flex flex-col items-center justify-center" style="background:rgba(255,245,245,0.98);backdrop-filter:blur(10px);">
-            <button id="mobile-menu-close" style="position:absolute;top:1.25rem;right:1.25rem;font-size:1.5rem;background:none;border:none;cursor:pointer;color:inherit;" aria-label="Luk menu">&times;</button>
+        <div id="mobile-menu-overlay" class="fixed inset-0 z-[10000]" style="display:none; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,245,245,0.98); backdrop-filter:blur(10px);">
+            <button id="mobile-menu-close" style="position:absolute;top:1.25rem;right:1.25rem;font-size:1.75rem;background:none;border:none;cursor:pointer;color:inherit;line-height:1;" aria-label="Luk menu">&times;</button>
             <a href="#erfaring" class="mobile-nav-link text-primary" style="font-size:1.5rem;font-weight:600;padding:0.75rem 0;text-decoration:none;">Erfaring</a>
             <a href="#kompetencer" class="mobile-nav-link text-primary" style="font-size:1.5rem;font-weight:600;padding:0.75rem 0;text-decoration:none;">Kompetencer</a>
             <a href="all-projects.html" class="mobile-nav-link text-primary" style="font-size:1.5rem;font-weight:600;padding:0.75rem 0;text-decoration:none;">Projekter</a>
@@ -961,11 +962,11 @@
         const mobileClose = document.getElementById('mobile-menu-close');
 
         function openMenu() {
-            mobileOverlay.classList.remove('hidden');
+            mobileOverlay.style.display = 'flex';
             menuToggle.classList.add('active');
         }
         function closeMenu() {
-            mobileOverlay.classList.add('hidden');
+            mobileOverlay.style.display = 'none';
             menuToggle.classList.remove('active');
         }
 
