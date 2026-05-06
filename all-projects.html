@@ -542,9 +542,12 @@
             }
         }
 
-        /* Navigation Menu */
-        .nav-menu.active {
-            display: flex !important;
+        [data-theme="dark"] #mobile-menu-overlay {
+            background: rgba(26, 31, 30, 0.98) !important;
+            color: #E8EDEB;
+        }
+        [data-theme="dark"] #mobile-menu-overlay a {
+            color: #E8EDEB !important;
         }
 
         /* Ensure the grid has proper stacking context */
@@ -588,13 +591,22 @@
                 </div>
             </div>
             
-            <button class="menu-toggle md:hidden flex flex-col space-y-1.5 z-50 p-2" aria-label="Åben menu">
+            <button id="menu-toggle" class="menu-toggle md:hidden flex flex-col space-y-1.5 p-2" style="z-index:10001;" aria-label="Åben menu">
                 <span class="w-6 h-0.5 bg-primary transition-all"></span>
                 <span class="w-6 h-0.5 bg-primary transition-all"></span>
                 <span class="w-6 h-0.5 bg-primary transition-all"></span>
             </button>
         </div>
     </nav>
+
+    <div id="mobile-menu-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,245,245,0.98); backdrop-filter:blur(10px);">
+        <button id="mobile-menu-close" style="position:absolute;top:1.25rem;right:1.25rem;font-size:1.75rem;background:none;border:none;cursor:pointer;color:inherit;line-height:1;" aria-label="Luk menu">&times;</button>
+        <a href="index.html#erfaring" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Erfaring</a>
+        <a href="index.html#kompetencer" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Kompetencer</a>
+        <a href="all-projects.html" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Projekter</a>
+        <a href="index.html#om-mig" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Om mig</a>
+        <a href="index.html#kontakt" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Kontakt</a>
+    </div>
 
     <main class="pb-20 px-4 md:px-8">
         <div class="container mx-auto">
@@ -969,23 +981,26 @@
 
     <script>
         // Menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (menuToggle && navMenu) {
-            menuToggle.addEventListener('click', () => { 
-                navMenu.classList.toggle('active');
-                menuToggle.classList.toggle('active');
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+
+        function openMenu() {
+            mobileOverlay.style.display = 'flex';
+            menuToggle.classList.add('active');
+        }
+        function closeMenu() {
+            mobileOverlay.style.display = 'none';
+            menuToggle.classList.remove('active');
+        }
+
+        if (menuToggle && mobileOverlay) {
+            menuToggle.addEventListener('click', () => {
+                mobileOverlay.style.display === 'flex' ? closeMenu() : openMenu();
             });
-            
-            // Close menu when clicking outside on mobile
-            document.addEventListener('click', (event) => {
-                if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
-                    if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
-                        navMenu.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                    }
-                }
+            mobileClose && mobileClose.addEventListener('click', closeMenu);
+            mobileOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
             });
         }
 
