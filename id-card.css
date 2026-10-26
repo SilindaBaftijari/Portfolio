@@ -1,0 +1,48 @@
+/* ===== ID-kort i snor ===== */
+.id-pass {
+  position: relative;
+  height: clamp(520px, 72vh, 680px);
+}
+.id-pass-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none; /* klik går igennem – kortet fanges i id-card.js */
+  z-index: 1;
+}
+.id-pass-stage canvas { display: block; }
+.id-pass-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.6s ease 1.2s;
+  z-index: 2;
+}
+.id-pass--ready .id-pass-hint { opacity: 0.55; }
+.id-pass-flip {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.id-pass-flip:focus-visible {
+  width: auto; height: auto; margin: 0; clip: auto;
+  left: 50%; bottom: 2.2rem; transform: translateX(-50%);
+  padding: 0.6rem 1.1rem; border-radius: 999px;
+  background: #2D3332; color: #fff; font-size: 0.85rem; z-index: 3;
+}
+.id-pass-dragging, .id-pass-dragging * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+@media (max-width: 767px) {
+  .id-pass { height: 560px; }
+}

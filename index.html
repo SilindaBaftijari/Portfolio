@@ -429,6 +429,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="id-card.css">
 </head>
 <body class="font-inter">
     <!-- Loading Animation -->
@@ -529,26 +530,11 @@
                     <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl animate-float-medium"></div>
                 </div>
 
-                <!-- Main terminal -->
-                <div id="heroEditor" style="opacity:0;transform:translateY(20px);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(45,51,50,0.1),0 0 0 1px rgba(209,219,206,0.6);">
-                    <div id="editorTitleBar" style="display:flex;align-items:center;gap:6px;padding:11px 16px;background:#F0EDE8;border-bottom:1px solid rgba(209,219,206,0.6);">
-                        <div style="width:11px;height:11px;border-radius:50%;background:#FF6B6B;flex-shrink:0;"></div>
-                        <div style="width:11px;height:11px;border-radius:50%;background:#FFD93D;flex-shrink:0;"></div>
-                        <div style="width:11px;height:11px;border-radius:50%;background:#6BCB77;flex-shrink:0;"></div>
-                        <span style="margin:0 auto;font-size:0.62rem;color:#7E8C89;font-family:monospace;letter-spacing:0.08em;">zsh - silinda@portfolio</span>
-                        <div style="display:flex;align-items:center;gap:4px;">
-                            <span style="width:5px;height:5px;border-radius:50%;background:#6BCB77;animation:livePulse 1.5s ease-in-out infinite;"></span>
-                            <span style="font-size:0.55rem;font-weight:700;color:#6BCB77;letter-spacing:0.1em;font-family:monospace;">LIVE</span>
-                        </div>
-                    </div>
-                    <div id="editorBody" style="background:#FAFAF8;padding:1.1rem 1.3rem;height:230px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;">
-                        <pre id="heroCode" style="font-family:Courier New,monospace;font-size:0.75rem;line-height:1.9;margin:0;white-space:pre;color:#2D3332;"></pre>
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.3rem 1rem;background:#F0EDE8;border-top:1px solid rgba(209,219,206,0.4);">
-                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">ZSH</span>
-                        <span id="heroStatus" style="font-size:0.58rem;color:#588157;font-family:monospace;font-weight:700;">ready</span>
-                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">~/portfolio</span>
-                    </div>
+                <!-- ID-kort i snor (3D) – se id-card.js -->
+                <div id="id-pass" class="id-pass">
+                    <div class="id-pass-stage" aria-hidden="true"></div>
+                    <button type="button" class="id-pass-flip" aria-pressed="false">Vend ID-kortet</button>
+                    <p class="id-pass-hint">Træk i kortet · Klik for at vende</p>
                 </div>
 
 
@@ -1479,6 +1465,12 @@
         }
     });
     </script>
+
+    <!-- ID-kort (Three.js) -->
+    <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
+    <script type="module" src="id-card.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23588157'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-style='italic' font-weight='700' fill='white'>S</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silinda | Kreativ Udvikler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Blød Organisk Palet
+                        primary: '#2D3332',      // Mørk Kulk-Grøn (Tekst)
+                        secondary: '#588157',    // Mørkere Salvie (Kontrast)
+                        accent: '#A3B18A',       // Salvie Grøn (Hovedaccent)
+                        background: '#FFF5F5',   // Blød Pink-Hvid (Baggrund)
+                        card: 'rgba(255, 255, 255, 0.7)',
+                        border: '#D1DBCE',       // Dæmpet Salvie-Kant
+                        hover: 'rgba(27, 48, 34, 0.06)',
+                        text: {
+                            primary: '#2D3332',
+                            secondary: '#4A5553',
+                            muted: '#7E8C89'
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-medium': 'float 4s ease-in-out infinite',
+                        'float-fast': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce': 'bounce 1s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        bounce: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #FFF5F5; 
+            color: #2D3332; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark Mode */
+        [data-theme="dark"] body { 
+            background-color: #1a1f1e; 
+            color: #E8EDEB; 
+        }
+        
+        [data-theme="dark"] .gradient-text {
+            background: linear-gradient(135deg, #E8EDEB 0%, #7A8C69 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Loading Animation */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            background: #2D3332;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        [data-theme="dark"] .page-transition {
+            background: #1a1f1e;
+        }
+        
+        .page-transition.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(90deg, #A3B18A, #588157);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+            transition: width 0.1s ease-out;
+        }
+        
+        /* Tilpassede Baggradsgradienter */
+        .bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(163, 177, 138, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(45, 51, 50, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(163, 177, 138, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+        
+        [data-theme="dark"] .bg-canvas {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(122, 140, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 31, 30, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(122, 140, 105, 0.1) 0%, transparent 50%);
+        }
+        
+        .font-display { font-family: 'Fraunces', serif !important; }
+        .hero-line { 
+            overflow: hidden; 
+            display: block; 
+            padding-bottom: 0.12em; 
+            margin-bottom: -0.12em; 
+        }
+        
+        .hero-line-inner { 
+            display: block; 
+            padding-top: 0.05em; 
+            opacity: 0;
+            transform: translateY(110%);
+        }
+        
+        .animate-slide-up > *:not(h1) {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+        .gsap-reveal { opacity: 0; transform: translateY(24px); }
+        @keyframes loaderBar { 0%,100%{transform:scaleX(0.3);opacity:0.4} 50%{transform:scaleX(1);opacity:1} }
+        @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        @keyframes badgeIn { 0%{opacity:0;transform:scale(0.4) rotate(-6deg)} 70%{transform:scale(1.08) rotate(1deg)} 100%{opacity:1;transform:scale(1) rotate(0deg)} }
+        @keyframes caretBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+        .gradient-text {
+            background: linear-gradient(135deg, #2D3332 0%, #A3B18A 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        
+        /* Kodevindue Styling */
+        .code-window {
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px);
+            border: 1px solid #D1DBCE; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(27, 48, 34, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .code-window {
+            background: rgba(30, 35, 34, 0.7);
+            border: 1px solid #4A5553;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .window-dots span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+        .window-dots span:nth-child(1) { background: #E5989B; }
+        .window-dots span:nth-child(2) { background: #FFB4A2; }
+        .window-dots span:nth-child(3) { background: #B7B7A4; }
+        
+        /* Færdigheder & Interaktive Visuelle Elementer */
+        .skill-bar { background: rgba(163, 177, 138, 0.2); height: 4px; border-radius: 2px; overflow: hidden; }
+        .skill-level { height: 100%; background: linear-gradient(90deg, #A3B18A, #588157); width: 0; transition: width 1.5s cubic-bezier(0.17, 0.55, 0.55, 1); }
+        
+        [data-theme="dark"] .skill-level {
+            background: linear-gradient(90deg, #7A8C69, #588157);
+        }
+        
+        .project-image { background: linear-gradient(135deg, rgba(163, 177, 138, 0.1), rgba(45, 51, 50, 0.05)); height: 200px; border-radius: 12px; border: 1px solid #D1DBCE; position: relative; overflow: hidden; }
+        .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .image-overlay { position: absolute; inset: 0; background: rgba(255, 245, 245, 0.9); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 1rem; }
+        
+        [data-theme="dark"] .project-image {
+            background: linear-gradient(135deg, rgba(122, 140, 105, 0.1), rgba(30, 35, 34, 0.1));
+            border: 1px solid #4A5553;
+        }
+        
+        [data-theme="dark"] .image-overlay {
+            background: rgba(26, 31, 30, 0.9);
+        }
+        
+        .project-card:hover .image-overlay { opacity: 1; }
+        .project-card:hover img { transform: scale(1.05); }
+        .project-card:hover { transform: translateY(-4px); background-color: rgba(27, 48, 34, 0.06); }
+        
+        .visual-lines {
+            position: absolute; inset: 0;
+            background: 
+                linear-gradient(90deg, transparent 49%, rgba(163, 177, 138, 0.15) 50%, transparent 51%),
+                linear-gradient(transparent 49%, rgba(163, 177, 138, 0.15) 50%, transparent 51%);
+        }
+
+        /* Tilpassede Ikoner */
+        .custom-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(163, 177, 138, 0.15), rgba(88, 129, 87, 0.1));
+            border: 1px solid rgba(209, 219, 206, 0.5);
+            color: #588157;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .custom-icon {
+            background: linear-gradient(135deg, rgba(122, 140, 105, 0.2), rgba(88, 129, 87, 0.15));
+            border: 1px solid rgba(122, 140, 105, 0.3);
+            color: #7A8C69;
+        }
+
+        /* Uddannelse Kort */
+        .education-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #D1DBCE;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .education-card {
+            background: rgba(30, 35, 34, 0.8);
+            border: 1px solid #4A5553;
+        }
+        
+        .education-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(27, 48, 34, 0.08);
+            border-color: #A3B18A;
+        }
+        
+        [data-theme="dark"] .education-card:hover {
+            border-color: #7A8C69;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Erfarings Tidslinje */
+        .timeline-container {
+            position: relative;
+            margin-left: 1rem;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(163, 177, 138, 0.3);
+        }
+        
+        [data-theme="dark"] .timeline-container::before {
+            background: rgba(122, 140, 105, 0.3);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #A3B18A;
+            border: 3px solid #FFF5F5;
+            border-radius: 50%;
+            position: absolute;
+            left: -1px;
+            top: 5px;
+            z-index: 1;
+        }
+        
+        [data-theme="dark"] .timeline-dot {
+            background: #7A8C69;
+            border-color: #1a1f1e;
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-menu { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 100%; 
+                height: 100vh; 
+                background: rgba(255, 245, 245, 0.98); 
+                backdrop-filter: blur(10px); 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                transition: right 0.3s ease; 
+                z-index: 9999; 
+            }
+            
+            [data-theme="dark"] .nav-menu {
+                background: rgba(26, 31, 30, 0.98);
+            }
+            
+            .nav-menu.active { right: 0; }
+        }
+
+        .menu-toggle {
+            position: relative;
+        }
+
+        [data-theme="dark"] #mobile-menu-overlay {
+            background: rgba(26, 31, 30, 0.98) !important;
+            color: #E8EDEB;
+        }
+        [data-theme="dark"] #mobile-menu-overlay a {
+            color: #E8EDEB !important;
+        }
+        
+        /* Animated Counters */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Transition classes */
+        .transition-all-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Dark mode text colors */
+        [data-theme="dark"] .text-primary {
+            color: #E8EDEB;
+        }
+        
+        [data-theme="dark"] .text-text-secondary {
+            color: #B8C5B7;
+        }
+        
+        [data-theme="dark"] .text-text-muted {
+            color: #7E8C89;
+        }
+        
+        /* Dark mode backgrounds */
+        [data-theme="dark"] .bg-white\/30 {
+            background-color: rgba(26, 31, 30, 0.3);
+        }
+        
+        [data-theme="dark"] .bg-white\/20 {
+            background-color: rgba(26, 31, 30, 0.2);
+        }
+        
+        [data-theme="dark"] .bg-white\/60 {
+            background-color: rgba(26, 31, 30, 0.6);
+        }
+        
+        [data-theme="dark"] .bg-card {
+            background: rgba(30, 35, 34, 0.7);
+        }
+        
+        [data-theme="dark"] .border-border {
+            border-color: #4A5553;
+        }
+        
+        /* Cursor Styles */
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #588157;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, background 0.3s ease;
+        }
+        
+        .cursor-outline {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(163, 177, 138, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9996;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+        
+        /* Hide default cursor */
+        @media (min-width: 769px) {
+            html, body *:not(input):not(textarea):not(select) {
+                cursor: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter">
+    <!-- Loading Animation -->
+    <div class="page-transition">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1.25rem;">
+            <span style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:600;color:#A3B18A;letter-spacing:-0.02em;">By <span style="font-style:italic;color:#FFF5F5;">Silinda</span></span>
+            <div style="width:40px;height:2px;background:#A3B18A;border-radius:2px;animation:loaderBar 1.2s ease-in-out infinite;"></div>
+        </div>
+    </div>
+    
+    <div class="bg-canvas"></div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-bar" style="width: 0%"></div>
+    
+    <!-- Navigation with Dark Mode Toggle -->
+     
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="index.html" style="text-decoration:none;" class="flex items-center space-x-2">
+                <span style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;" class="text-primary">By <span style="font-style:italic;color:#588157;">Silinda</span></span>
+                <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
+            </a>
+            
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth">
+                    <i class="fa-solid fa-moon text-accent"></i>
+                </button>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
+                    <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
+                    <a href="all-projects.html" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
+                    <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
+                    <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
+                </div>
+            </div>
+            
+            <button id="menu-toggle" class="menu-toggle md:hidden flex flex-col space-y-1.5 p-2" style="z-index:10001;" aria-label="Åben menu">
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                <span class="w-6 h-0.5 bg-primary transition-all"></span>
+            </button>
+        </div>
+
+    </nav>
+
+    <div id="mobile-menu-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,245,245,0.98); backdrop-filter:blur(10px);">
+        <button id="mobile-menu-close" style="position:absolute;top:1.25rem;right:1.25rem;font-size:1.75rem;background:none;border:none;cursor:pointer;color:inherit;line-height:1;" aria-label="Luk menu">&times;</button>
+        <a href="#erfaring" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Erfaring</a>
+        <a href="#kompetencer" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Kompetencer</a>
+        <a href="all-projects.html" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Projekter</a>
+        <a href="#om-mig" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Om mig</a>
+        <a href="#kontakt" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Kontakt</a>
+    </div>
+
+    <!-- Hero Section with Animated Stats -->
+    <section class="min-h-screen flex items-center pt-20 pb-20 px-4 md:px-8">
+        <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate-slide-up">
+                <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Kreativ Udvikler & Designer</div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-display" style="line-height:1.08;letter-spacing:-0.02em;">
+                    <span class="hero-line"><span class="hero-line-inner text-text-secondary" style="font-weight:300;">Hej, jeg er</span></span>
+                    <span class="hero-line"><span class="hero-line-inner gradient-text" style="display:block;">Silinda</span></span>
+                    <span class="hero-line"><span class="hero-line-inner text-primary" style="font-style:italic;">Baftijari</span></span>
+                </h1>
+                <p class="text-text-secondary text-lg mb-8 max-w-lg leading-relaxed">
+                    Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#projekter" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-all transform hover:-translate-y-0.5 active:scale-95">Mine projekter</a>
+                    <button id="email-button" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all transform hover:-translate-y-0.5 active:scale-95">
+                        <span>Kontakt mig</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Animated Stats -->
+                <div class="mt-12 grid grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="3">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Års erfaring</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="10">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Projekter</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-secondary counter" data-target="10">0+</div>
+                        <div class="text-text-secondary text-sm mt-1">Kunder</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative animate-fade-in">
+                <div class="absolute inset-0" style="pointer-events:none;">
+                    <div class="absolute top-1/4 left-1/4 w-40 h-40 bg-accent/20 rounded-full blur-3xl animate-float-slow"></div>
+                    <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl animate-float-medium"></div>
+                </div>
+
+                <!-- Main terminal -->
+                <div id="heroEditor" style="opacity:0;transform:translateY(20px);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(45,51,50,0.1),0 0 0 1px rgba(209,219,206,0.6);">
+                    <div id="editorTitleBar" style="display:flex;align-items:center;gap:6px;padding:11px 16px;background:#F0EDE8;border-bottom:1px solid rgba(209,219,206,0.6);">
+                        <div style="width:11px;height:11px;border-radius:50%;background:#FF6B6B;flex-shrink:0;"></div>
+                        <div style="width:11px;height:11px;border-radius:50%;background:#FFD93D;flex-shrink:0;"></div>
+                        <div style="width:11px;height:11px;border-radius:50%;background:#6BCB77;flex-shrink:0;"></div>
+                        <span style="margin:0 auto;font-size:0.62rem;color:#7E8C89;font-family:monospace;letter-spacing:0.08em;">zsh - silinda@portfolio</span>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                            <span style="width:5px;height:5px;border-radius:50%;background:#6BCB77;animation:livePulse 1.5s ease-in-out infinite;"></span>
+                            <span style="font-size:0.55rem;font-weight:700;color:#6BCB77;letter-spacing:0.1em;font-family:monospace;">LIVE</span>
+                        </div>
+                    </div>
+                    <div id="editorBody" style="background:#FAFAF8;padding:1.1rem 1.3rem;height:230px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;">
+                        <pre id="heroCode" style="font-family:Courier New,monospace;font-size:0.75rem;line-height:1.9;margin:0;white-space:pre;color:#2D3332;"></pre>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.3rem 1rem;background:#F0EDE8;border-top:1px solid rgba(209,219,206,0.4);">
+                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">ZSH</span>
+                        <span id="heroStatus" style="font-size:0.58rem;color:#588157;font-family:monospace;font-weight:700;">ready</span>
+                        <span style="font-size:0.55rem;color:#A3B18A;font-family:monospace;">~/portfolio</span>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Resten af din eksisterende kode (behold alt som det er) -->
+    <!-- Erfaring Section -->
+    <section id="erfaring" class="py-20 px-4 md:px-8 bg-white/30">
+        <div class="container mx-auto max-w-4xl">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">01</div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2 font-display gsap-reveal">Erfaring</h2>
+                    <p class="text-text-secondary">Fuld professionel historik</p>
+                </div>
+            </div>
+            
+            <!-- Timeline Container -->
+            <div class="timeline-container">
+
+                <!-- Phone Republik -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
+                                <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
+                        </div>
+                        
+                        <div class="bg-card p-6 rounded-xl border border-border mb-6 transition-all hover:border-accent/50">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="custom-icon">
+                                    <i class="fa-solid fa-bullhorn"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary">Marketing på sociale medier</h4>
+                                    <div class="text-sm text-text-secondary">Fuldtid · Fjernarbejde</div>
+                                </div>
+                            </div>
+                            <p class="text-text-secondary leading-relaxed mb-4">
+                                Jeg er ansvarlig for Phone Republik's sociale medier, herunder Instagram, TikTok og Facebook. I denne rolle arbejder jeg på at styrke virksomhedens online tilstedeværelse ved at skabe engagerende indhold og strategier.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Digital marketing</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Sociale medier</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Webdesigner student -->
+                        <div class="bg-card p-6 rounded-xl border border-border transition-all hover:border-accent/50">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="custom-icon">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary">Webdesigner studentermedhjælper</h4>
+                                    <div class="text-sm text-text-secondary">Praktik · jan. 2017 - nu · 9 år</div>
+                                </div>
+                            </div>
+                            <p class="text-text-secondary leading-relaxed mb-4">
+                                I rollen som studentermedhjælper hos Phone Republik er jeg ansvarlig for at assistere med design og optimering af virksomhedens hjemmeside. Mit arbejde omfatter UI/UX-design, hvor jeg arbejder på at forbedre brugeroplevelsen.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">UI/UX Design</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Front-end Udvikling</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webdesign</span>
+                                <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Optimering</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slagsassistent -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
+                                <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
+                        </div>
+                        <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Detailhandel</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Freelance -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div>
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
+                                <div class="text-text-secondary">Freelance</div>
+                            </div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
+                        </div>
+                        <div class="text-text-secondary mb-4">Fjernarbejde</div>
+                        <p class="text-text-secondary leading-relaxed mb-6">
+                            Designede og udviklede for eksempel L'ancora, Spilfiks og Søndersø køreskoles hjemmeside fra bunden. Arbejdet omfattede opsætning og tilpasning samt strukturering af indhold, udvikling af mobilvenligt layout og implementering af optimeringsfunktioner.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Brugeroplevelse</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">UI/UX Design</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Webudvikling</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Responsivt design</span>
+                            <span class="px-3 py-1 bg-accent/20 text-secondary rounded-full text-xs font-medium">Front-end Udvikling</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kompetencer Section -->
+<section id="kompetencer" class="py-20 px-4 md:px-8">
+    <div class="container mx-auto">
+        <div class="flex items-center gap-4 mb-12">
+            <div class="text-4xl font-bold text-accent/30">02</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary font-display gsap-reveal">Kompetencer & Teknologier</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Design Kompetencer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-pen-ruler"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary">Design</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">UI/UX Design</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Prototyper</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Brugerresearch</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Figma</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Udvikling Kompetencer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary">Udvikling</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">HTML</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">CSS</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">JavaScript</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">WordPress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Værktøjer -->
+            <div class="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="custom-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary">Værktøjer</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">VS Code</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Git</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2 border-b border-border/50">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">GSAP</span>
+                    </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <i class="fa-solid fa-circle text-accent text-xs"></i>
+                        <span class="text-text-secondary">Canva</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+ <!-- Arbejde Section -->
+<section id="projekter" class="py-20 px-4 md:px-8 bg-white/20">
+    <div class="container mx-auto">
+        <div class="flex items-center gap-4 mb-12">
+            <div class="text-4xl font-bold text-accent/30">03</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary font-display gsap-reveal">Udvalgte Projekter</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+    
+            <!-- Phone Republik Card -->
+            <a href="https://phonerepublik.dk/" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/phone-republik.png" alt="Phone Republik" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">Phone Republik</h3>
+                    <p class="text-text-secondary text-sm mb-6">Digital serviceplatform skabt til at forene teknisk ekspertise med en intuitiv brugeroplevelse. Jeg har designet og udviklet en responsiv løsning, der optimerer kunderejsen fra prissøgning til booking af reparation.</p>
+                </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
+    
+            <!-- L'ancora Card -->
+            <a href="https://lancora.dk" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/Søndersø-køreskole.png" alt="Søndersø Køreskole" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">Søndersø Køreskole</h3>
+                    <p class="text-text-secondary text-sm mb-6">En komplet digital løsning udviklet for Søndersø Køreskole fra koncept til færdig PHP-baseret hjemmeside. Fokus har været på en mobiloptimeret og brugervenlig platform med booking, elevadministration og klar informationsstruktur.</p>
+                </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
+            
+            <!-- SpilFiks Card -->
+            <a href="https://spilfiks.dk" target="_blank" class="group project-card bg-card p-6 rounded-2xl border border-border shadow-sm transition-all flex flex-col justify-between hover:no-underline relative">
+                <div>
+                    <div class="project-image mb-6 overflow-hidden">
+                        <img src="image/spilfiks.png" alt="Spil Fiks" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">Spil Fiks</h3>
+                    <p class="text-text-secondary text-sm mb-6">
+                        Gennemarbejdet UX-case og prototype for en reparationsplatform dedikeret til spillekonsoller som PS5, Xbox og Nintendo. Hjemmesiden fokuserer på at gøre fejlfinding og bookingprocessen intuitiv for gamere gennem et moderne, mørkt interface.
+                    </p>
+                </div>
+                <div class="text-secondary font-bold text-sm uppercase tracking-widest group-hover:text-primary transition-colors">
+                    Besøg hjemmesiden →
+                </div>
+                <!-- Click overlay for better UX -->
+                <div class="absolute inset-0 z-10 cursor-pointer" aria-hidden="true"></div>
+            </a>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="all-projects.html" class="inline-block px-8 py-3 bg-accent text-white rounded-lg font-medium hover:bg-secondary transition-colors flex items-center gap-2 mx-auto w-fit transform hover:-translate-y-0.5 active:scale-95">
+                <span>Se alle projekter</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+    <!-- Om Mig Section -->
+    <section id="om-mig" class="py-20 px-4 md:px-8">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="text-4xl font-bold text-accent/30">04</div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2 font-display gsap-reveal">Om mig</h2>
+                    <p class="text-text-secondary text-lg">Udvikler med empati, designer med logik</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <p class="text-text-secondary text-lg leading-relaxed mb-6">
+                        Jeg er en Datalogistuderende på Københavns Universitet med en stærk interesse for interaktionsdesign, UI/UX og udvikling af digitale løsninger.
+                    </p>
+                    <p class="text-text-secondary text-lg leading-relaxed mb-8">
+                        Jeg trives i krydsfeltet mellem empati og logik og sikrer, at hvert pixel har en mening og hver bruger føler sig hjemme.
+                    </p>
+                    
+                    <!-- Statistikker -->
+                    <div class="grid grid-cols-2 gap-6 mb-12">
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">3+</div>
+                            <div class="text-text-secondary font-medium">Års erfaring</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">10+</div>
+                            <div class="text-text-secondary font-medium">Projekter</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">10+</div>
+                            <div class="text-text-secondary font-medium">Kunder</div>
+                        </div>
+                        <div class="text-center p-6 education-card">
+                            <div class="text-3xl font-bold text-secondary mb-2">100%</div>
+                            <div class="text-text-secondary font-medium">Tilfredshed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Uddannelse -->
+                <div>
+                    <div class="bg-card p-8 rounded-2xl border border-border shadow-sm mb-8">
+                        <h3 class="text-xl font-bold text-primary mb-8">Uddannelse</h3>
+                        
+                        <!-- Københavns Universitet -->
+                        <div class="mb-8">
+                            <div class="flex items-start gap-4 mb-4">
+                                <div class="custom-icon mt-1">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-primary mb-1">Københavns Universitet</h4>
+                                    <p class="text-text-secondary mb-2">Bachelor i Datalogi</p>
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 rounded-full text-sm text-secondary">
+                                        <i class="fa-solid fa-calendar text-xs"></i>
+                                        <span>2021 – 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- UNORD -->
+                        <div>
+                            <div class="flex items-start gap-4 mb-4">
+                                <div class="custom-icon mt-1">
+                                    <i class="fa-solid fa-school"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-primary mb-1">UNORD</h4>
+                                    <p class="text-text-secondary mb-2">Matematik, Fysik & Kemi Program</p>
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 rounded-full text-sm text-secondary">
+                                        <i class="fa-solid fa-calendar text-xs"></i>
+                                        <span>2018 – 2021</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt Section -->
+    <section id="kontakt" class="py-20 px-4 md:px-8">
+        <div class="container mx-auto max-w-4xl bg-card border border-border rounded-3xl p-12 shadow-xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold text-primary mb-4 font-display gsap-reveal">Lad os vokse sammen.</h2>
+                <p class="text-text-secondary">Klar til at starte din næste digitale rejse?</p>
+            </div>
+            <form id="contact-form" class="grid md:grid-cols-2 gap-8">
+                <input type="text" placeholder="Dit navn" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
+                <input type="email" placeholder="E-mailadresse" class="bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors">
+                <textarea placeholder="Din besked" rows="4" class="md:col-span-2 bg-transparent border-b border-accent/30 py-3 focus:outline-none focus:border-secondary transition-colors"></textarea>
+                <div class="md:col-span-2 text-center">
+                    <button type="submit" class="px-10 py-4 bg-primary text-white rounded-full font-bold hover:bg-secondary transition-all transform hover:-translate-y-1 active:scale-95">
+                        Send besked
+                    </button>
+                </div>
+            </form>
+            <div class="flex justify-center gap-6 mt-12">
+                <a href="https://www.linkedin.com/in/silinda-baftijari-68a676228/" class="social-link text-text-muted hover:text-secondary text-2xl transition-all transform hover:-translate-y-1"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/SilindaBaftijari" class="social-link text-text-muted hover:text-secondary text-2xl transition-all transform hover:-translate-y-1"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-border text-center">
+        <p class="text-text-muted text-sm">© 2025 Silinda Baftijari. Dedikeret til detaljen.</p>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script>
+        // Hide loading animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.page-transition').classList.add('hidden');
+            }, 200);
+        });
+
+        // Menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+
+        function openMenu() {
+            mobileOverlay.style.display = 'flex';
+            menuToggle.classList.add('active');
+        }
+        function closeMenu() {
+            mobileOverlay.style.display = 'none';
+            menuToggle.classList.remove('active');
+        }
+
+        if (menuToggle && mobileOverlay) {
+            menuToggle.addEventListener('click', () => {
+                mobileOverlay.style.display === 'flex' ? closeMenu() : openMenu();
+            });
+            mobileClose && mobileClose.addEventListener('click', closeMenu);
+            mobileOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Apply dark mode to terminal on page load if needed
+        (function() {
+            var saved = localStorage.getItem('theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                window.addEventListener('load', function() {
+                    var tb = document.getElementById('editorTitleBar');
+                    var eb = document.getElementById('editorBody');
+                    var ce = document.getElementById('heroCode');
+                    var ed = document.getElementById('heroEditor');
+                    if(tb){tb.style.background='#1E2220';tb.style.borderBottomColor='rgba(255,255,255,0.05)';}
+                    if(eb) eb.style.background='#0F1412';
+                    if(ce) ce.style.color='#E8EBE8';
+                    if(ed) ed.style.boxShadow='0 24px 70px rgba(0,0,0,0.35)';
+                });
+            }
+        })();
+
+        // Hero reveal
+        function runHeroAnim() {
+            var hl = document.querySelectorAll('.hero-line-inner');
+        
+            gsap.to(hl, { 
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power4.out',
+                stagger: 0.14,
+                delay: 0.1
+            });
+        
+            gsap.to('.animate-slide-up > *:not(h1)', { 
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                stagger: 0.1,
+                delay: 0.55
+            });
+        }
+        
+        window.addEventListener('load', function() { 
+            setTimeout(runHeroAnim, 560); 
+        });
+
+        // Section reveals
+        document.querySelectorAll('.gsap-reveal').forEach(function(el) {
+            gsap.to(el, {
+                scrollTrigger: { trigger:el, start:'top 88%', toggleActions:'play none none none' },
+                y:0, opacity:1, duration:0.9, ease:'power3.out'
+            });
+        });
+        
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        });
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme or prefer-color-scheme
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+
+        // Email copy functionality
+        const emailButton = document.getElementById('email-button');
+        if (emailButton) {
+            emailButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = 'silindabaftijari@gmail.com';
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(email).then(() => {
+                    const original = this.innerHTML;
+                    this.innerHTML = '<i class="fa-solid fa-check"></i> Email kopieret!';
+                    this.style.background = 'rgba(88, 129, 87, 0.1)';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = original;
+                        this.style.background = '';
+                    }, 2000);
+                });
+                
+                // Open mail client
+                window.location.href = `mailto:${email}`;
+            });
+        }
+
+        // Animated counters
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target') || 100;
+                const increment = target / 50;
+                let current = 0;
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const updateCounter = () => {
+                                if (current < target) {
+                                    current += increment;
+                                    counter.textContent = Math.ceil(current) + '+';
+                                    setTimeout(updateCounter, 30);
+                                } else {
+                                    counter.textContent = target + '+';
+                                }
+                            };
+                            updateCounter();
+                            observer.unobserve(counter);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(counter);
+            });
+        }
+        
+        // Initialize counters
+        document.addEventListener('DOMContentLoaded', initCounters);
+
+        // Form submission
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sender...';
+                submitButton.disabled = true;
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Besked sendt!';
+                    submitButton.style.background = '#588157';
+                    
+                    setTimeout(() => {
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                        submitButton.style.background = '';
+                        contactForm.reset();
+                    }, 2000);
+                }, 1500);
+            });
+        }
+
+        // Section animations with GSAP
+        gsap.utils.toArray('section:not(:first-of-type)').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out'
+            });
+        });
+        // Skill bars animation
+        document.querySelectorAll('.skill-level').forEach(level => {
+            const targetWidth = level.getAttribute('data-level') || '80%';
+            ScrollTrigger.create({
+                trigger: level,
+                start: 'top 90%',
+                onEnter: () => {
+                    gsap.to(level, {
+                        width: targetWidth,
+                        duration: 1.5,
+                        ease: 'power3.out'
+                    });
+                }
+            });
+        });
+
+        // Micro-interactions
+        document.querySelectorAll('.skill-category, .education-card, .project-card').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                gsap.to(item, {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                gsap.to(item, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Button click effects
+        document.querySelectorAll('button:not(#theme-toggle), .button-primary, .button-secondary').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Don't trigger for links that navigate
+                if (this.tagName === 'A' && this.getAttribute('href') !== '#') return;
+                
+                gsap.to(this, {
+                    scale: 0.95,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Social link hover effects
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, { scale: 1.1, duration: 0.2, ease: 'power2.out' });
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, { scale: 1, duration: 0.2, ease: 'power2.out' });
+            });
+        });
+
+        // ============================================
+        // MAIN TERMINAL ANIMATION
+        // ============================================
+        (function() {
+            var editor   = document.getElementById('heroEditor');
+            var codeEl   = document.getElementById('heroCode');
+            var bodyEl   = document.getElementById('editorBody');
+            var statusEl = document.getElementById('heroStatus');
+            if (!editor) return;
+
+            var CARET = '<span style="color:#588157;animation:caretBlink 1s step-end infinite;">|</span>';
+            var CHAR_MS = 32;
+
+            // All ASCII-safe terminal lines
+            var LINES = [
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'who am i',                col:'#2D3332', pause:350 },
+                { r:'  -> Silinda Baftijari',col:'#588157' },
+                { r:'  -> 24 år, København, Danmark', col:'#588157' },
+                { r:'  -> KU Datalogi 2021-2026', col:'#588157' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'npm run design',        col:'#2D3332', pause:400 },
+                { r:'  ✓ UX/UI loaded',    col:'#4A5553' },
+                { r:'  ✓ Figma loaded',    col:'#4A5553' },
+                { r:'  ✓ Canva loaded',    col:'#4A5553' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'open social-media/',    col:'#2D3332', pause:350 },
+                { r:'  ✓ Instagram Design', col:'#4A5553' },
+                { r:'  ✓ TikTok Design',   col:'#4A5553' },
+                { r:'', col:'' },
+                { r:'silinda@portfolio ~ %', col:'#588157', pause:200 },
+                { r:'Import Language',  col:'#2D3332', pause:500 },
+                { r:'  ✓ Python', col:'#588157' },
+                { r:'  ✓ CSS', col:'#588157' },
+                { r:'  ✓ JavaScript', col:'#588157' },
+                { r:'  ✓ WordPress', col:'#588157' },
+            ];
+
+            var done = [];
+            var li = 0;
+
+            function render() {
+                codeEl.innerHTML = done.join('\n') + CARET;
+                if (bodyEl) { bodyEl.scrollTop = bodyEl.scrollHeight; }
+            }
+
+            function typeLine(line, cb) {
+                var pause = line.pause || 0;
+                if (!line.r) { done.push(''); render(); setTimeout(cb, 60); return; }
+                var c = 0;
+                done.push('');
+                function tick() {
+                    c++;
+                    done[done.length-1] = '<span style="color:#9A9A9A">' + line.r.slice(0,c) + '</span>';
+                    render();
+                    if (c >= line.r.length) {
+                        done[done.length-1] = '<span style="color:' + line.col + '">' + line.r + '</span>';
+                        render();
+                        statusEl.textContent = 'running...';
+                        setTimeout(cb, 60 + pause);
+                    } else {
+                        setTimeout(tick, 22 + Math.random()*10);
+                    }
+                }
+                tick();
+            }
+
+            function runLines() {
+                if (li >= LINES.length) {
+                    codeEl.innerHTML = done.join('\n');
+                    statusEl.textContent = 'done';
+                    setTimeout(deleteAll, 2200);
+                    return;
+                }
+                typeLine(LINES[li], function() { li++; runLines(); });
+            }
+
+            function deleteAll() {
+                statusEl.textContent = 'clearing...';
+                var full = LINES.map(function(l){ return l.r; }).join('\n');
+                function del() {
+                    if (full.length > 0) {
+                        full = full.slice(0,-1);
+                        codeEl.innerHTML = '<span style="color:#A3B18A">' + full + '</span>' + CARET;
+                        setTimeout(del, 8);
+                    } else {
+                        done = []; li = 0;
+                        codeEl.innerHTML = CARET;
+                        statusEl.textContent = 'ready';
+                        setTimeout(runLines, 500);
+                    }
+                }
+                del();
+            }
+
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    gsap.to(editor, { opacity:1, y:0, duration:0.9, ease:'power3.out' });
+                    setTimeout(runLines, 900);
+                }, 700);
+            });
+
+            // Magnetic tilt
+            editor.addEventListener('mousemove', function(e) {
+                var r = this.getBoundingClientRect();
+                var x = (e.clientX - r.left - r.width/2)  / r.width  * 6;
+                var y = (e.clientY - r.top  - r.height/2) / r.height * 6;
+                gsap.to(this, { rotationY:x, rotationX:-y, transformPerspective:800, duration:0.4, ease:'power2.out' });
+            });
+            editor.addEventListener('mouseleave', function() {
+                gsap.to(this, { rotationY:0, rotationX:0, duration:0.7, ease:'elastic.out(1,0.5)' });
+            });
+            gsap.to(editor, { y:-8, duration:4, ease:'sine.inOut', repeat:-1, yoyo:true, delay:2 });
+
+            // Theme toggle
+            var themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    // Read AFTER main handler has toggled data-theme
+                    setTimeout(function() {
+                        var nowDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                        var tb = document.getElementById('editorTitleBar');
+                        var eb = document.getElementById('editorBody');
+                        if (nowDark) {
+                            if(tb){tb.style.background='#1E2220';tb.style.borderBottomColor='rgba(255,255,255,0.05)';}
+                            if(eb) eb.style.background='#0F1412';
+                            if(codeEl) codeEl.style.color='#E8EBE8';
+                            editor.style.boxShadow='0 24px 70px rgba(0,0,0,0.35)';
+                        } else {
+                            if(tb){tb.style.background='#F0EDE8';tb.style.borderBottomColor='rgba(209,219,206,0.6)';}
+                            if(eb) eb.style.background='#FAFAF8';
+                            if(codeEl) codeEl.style.color='#2D3332';
+                            editor.style.boxShadow='0 12px 40px rgba(45,51,50,0.1),0 0 0 1px rgba(209,219,206,0.6)';
+                        }
+                    }, 10);
+                });
+            }
+        })();
+    </script>
+
+    <!-- Custom Cursor -->
+    <script>
+    (function() {
+        if ('ontouchstart' in window || window.innerWidth < 768) return;
+
+        // Dot — snaps instantly to mouse
+        var dot = document.createElement('div');
+        dot.style.cssText = 'position:fixed;width:7px;height:7px;background:#588157;border-radius:50%;pointer-events:none;z-index:9997;left:0;top:0;will-change:transform;';
+        document.body.appendChild(dot);
+        document.body.style.cursor = 'none';
+
+        // Ring — follows with GSAP lag
+        var ring = document.createElement('div');
+        ring.style.cssText = 'position:fixed;width:34px;height:34px;border:1.5px solid rgba(163,177,138,0.55);border-radius:50%;pointer-events:none;z-index:9996;left:0;top:0;will-change:transform;';
+        document.body.appendChild(ring);
+
+        // Both dot and ring use GSAP — no style.transform conflict
+        document.addEventListener('mousemove', function(e) {
+            gsap.set(dot,  { x: e.clientX - 3.5, y: e.clientY - 3.5 });
+            gsap.to(ring,  { x: e.clientX - 17,  y: e.clientY - 17, duration: 0.15, ease: 'power2.out', overwrite: true });
+        }, { passive: true });
+
+        // Hover — grow ring, change dot color
+        document.querySelectorAll('a, button, .project-card, .skill-category, .education-card').forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                gsap.to(ring, { scale: 1.6, borderColor: 'rgba(88,129,87,0.7)', duration: 0.2 });
+                dot.style.background = document.documentElement.getAttribute('data-theme') === 'dark' ? '#E8EDEB' : '#2D3332';
+            });
+            el.addEventListener('mouseleave', function() {
+                gsap.to(ring, { scale: 1, borderColor: 'rgba(163,177,138,0.55)', duration: 0.2 });
+                dot.style.background = '#588157';
+            });
+        });
+
+        // Click
+        document.addEventListener('mousedown', function() {
+            gsap.to(ring, { scale: 0.85, duration: 0.1 });
+            gsap.to(dot,  { scale: 0.7,  duration: 0.1 });
+        });
+        document.addEventListener('mouseup', function() {
+            gsap.to(ring, { scale: 1, duration: 0.2, ease: 'back.out(2)' });
+            gsap.to(dot,  { scale: 1, duration: 0.2, ease: 'back.out(2)' });
+        });
+
+        // Hide on leave
+        document.addEventListener('mouseleave', function() { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+        document.addEventListener('mouseenter', function() { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+    })();
+
+        // Smooth anchor scroll with fixed header offset
+        function scrollToSection(targetId) {
+            if (targetId === '#') return;
+        
+            const target = document.querySelector(targetId);
+            if (!target) return;
+        
+            const headerHeight = document.querySelector('nav').offsetHeight;
+        
+            const offsets = {
+                '#erfaring':25,
+                '#kompetencer': 65,
+                '#projekter': 5,
+                '#om-mig': 35,
+                '#kontakt': 35
+            };
+        
+            const extraSpace = offsets[targetId] ?? 25;
+        
+            const targetPosition =
+                target.getBoundingClientRect().top +
+                window.pageYOffset -
+                headerHeight -
+                extraSpace;
+        
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+
+            if (targetId === '#') return;
+            if (!document.querySelector(targetId)) return;
+
+            e.preventDefault();
+
+            scrollToSection(targetId);
+            history.pushState(null, '', targetId);
+
+            this.blur(); // fjerner blå focus-ramme
+        });
+    });
+
+    // Fix hvis siden åbnes/reloades med #arbejde, #om-mig osv.
+    window.addEventListener('load', function() {
+        if (window.location.hash) {
+            setTimeout(function() {
+                scrollToSection(window.location.hash);
+            }, 300);
+        }
+    });
+    </script>
+
+</body>
+</html>
