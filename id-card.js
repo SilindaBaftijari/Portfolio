@@ -21,9 +21,9 @@ const CONFIG = {
     paper: '#FFFDF8',
     ink: '#2D3332',
     muted: '#5E6663',
-    accent: '#7A8C69',
-    accentSoft: '#E3E8DA',
-    accentLight: '#C5D1B4',
+    accent: '#4F6343',
+    accentSoft: '#DDE3D3',
+    accentLight: '#B7C9A4',
     back: '#2D3332',
     edge: '#E6E1D6'
   }
@@ -173,7 +173,7 @@ async function init(host) {
     const rect = host.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
     const desktop = window.innerWidth >= 768;
-    const reach = desktop ? rect.top + window.scrollY : 140; // hvor langt op snoren går
+    const reach = desktop ? rect.top + window.scrollY : 80; // hvor langt op snoren går
     stageW = vw;
     stageH = Math.round(reach + rect.height);
     stage.style.left = (-rect.left) + 'px';

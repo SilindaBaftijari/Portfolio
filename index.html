@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
     
     <script>
@@ -26,7 +27,7 @@
                         primary: '#2D3332',      // Mørk Kulk-Grøn (Tekst)
                         secondary: '#588157',    // Mørkere Salvie (Kontrast)
                         accent: '#A3B18A',       // Salvie Grøn (Hovedaccent)
-                        background: '#FFF5F5',   // Blød Pink-Hvid (Baggrund)
+                        background: '#F4F1EA',   // Varm off-white (Baggrund)
                         card: 'rgba(255, 255, 255, 0.7)',
                         border: '#D1DBCE',       // Dæmpet Salvie-Kant
                         hover: 'rgba(27, 48, 34, 0.06)',
@@ -72,7 +73,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #FFF5F5; 
+            background-color: #F4F1EA; 
             color: #2D3332; 
             overflow-x: hidden; 
             scroll-behavior: smooth;
@@ -298,7 +299,7 @@
             width: 12px;
             height: 12px;
             background: #A3B18A;
-            border: 3px solid #FFF5F5;
+            border: 3px solid #F4F1EA;
             border-radius: 50%;
             position: absolute;
             left: -1px;
@@ -319,7 +320,7 @@
                 right: -100%; 
                 width: 100%; 
                 height: 100vh; 
-                background: rgba(255, 245, 245, 0.98); 
+                background: rgba(244, 241, 234, 0.98); 
                 backdrop-filter: blur(10px); 
                 flex-direction: column; 
                 justify-content: center; 
@@ -430,6 +431,7 @@
         }
     </style>
     <link rel="stylesheet" href="id-card.css">
+    <link rel="stylesheet" href="hero.css">
 </head>
 <body class="font-inter">
     <!-- Loading Animation -->
@@ -447,37 +449,36 @@
     
     <!-- Navigation with Dark Mode Toggle -->
      
-    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-8 bg-white/60 backdrop-blur-md border-b border-border transition-all-smooth">
-        <div class="container mx-auto flex items-center justify-between">
-            <a href="index.html" style="text-decoration:none;" class="flex items-center space-x-2">
-                <span style="font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;" class="text-primary">By <span style="font-style:italic;color:#588157;">Silinda</span></span>
-                <div class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></div>
-            </a>
-            
-            <div class="flex items-center gap-4">
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-accent/10 hover:bg-accent/20 transition-all-smooth">
-                    <i class="fa-solid fa-moon text-accent"></i>
-                </button>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#erfaring" class="text-text-secondary hover:text-accent font-medium transition-colors">Erfaring</a>
-                    <a href="#kompetencer" class="text-text-secondary hover:text-accent font-medium transition-colors">Kompetencer</a>
-                    <a href="all-projects.html" class="text-text-secondary hover:text-accent font-medium transition-colors">Projekter</a>
-                    <a href="#om-mig" class="text-text-secondary hover:text-accent font-medium transition-colors">Om mig</a>
-                    <a href="#kontakt" class="text-text-secondary hover:text-accent font-medium transition-colors">Kontakt</a>
-                </div>
-            </div>
-            
-            <button id="menu-toggle" class="menu-toggle md:hidden flex flex-col space-y-1.5 p-2" style="z-index:10001;" aria-label="Åben menu">
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
-                <span class="w-6 h-0.5 bg-primary transition-all"></span>
-            </button>
-        </div>
+    <nav class="site-nav fixed top-0 left-0 w-full z-50">
+        <div class="site-nav-inner">
+            <a href="index.html" class="site-logo">silinda<span>.</span></a>
 
+            <div class="site-pill hidden lg:flex" aria-label="Hovedmenu">
+                <a href="#erfaring">Erfaring</a>
+                <a href="#kompetencer">Kompetencer</a>
+                <a href="all-projects.html">Projekter</a>
+                <a href="#om-mig">Om mig</a>
+                <a href="#kontakt">Kontakt</a>
+            </div>
+
+            <div class="site-actions">
+                <button id="theme-toggle" class="site-icon-btn" aria-label="Skift tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <a href="cv.pdf" target="_blank" class="site-cv hidden lg:flex">CV ↗</a>
+                <a href="https://www.linkedin.com/in/silinda-baftijari-68a676228/" target="_blank" class="site-icon-btn site-icon-btn--dark" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <button id="menu-toggle" class="menu-toggle lg:hidden flex flex-col space-y-1.5 p-2" style="z-index:10001;" aria-label="Åben menu">
+                    <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                    <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                    <span class="w-6 h-0.5 bg-primary transition-all"></span>
+                </button>
+            </div>
+        </div>
     </nav>
 
-    <div id="mobile-menu-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,245,245,0.98); backdrop-filter:blur(10px);">
+    <div id="mobile-menu-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; flex-direction:column; align-items:center; justify-content:center; background:rgba(244,241,234,0.98); backdrop-filter:blur(10px);">
         <button id="mobile-menu-close" style="position:absolute;top:1.25rem;right:1.25rem;font-size:1.75rem;background:none;border:none;cursor:pointer;color:inherit;line-height:1;" aria-label="Luk menu">&times;</button>
         <a href="#erfaring" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Erfaring</a>
         <a href="#kompetencer" class="mobile-nav-link" style="font-family:'Fraunces',serif;font-size:1.75rem;font-weight:600;padding:0.9rem 0;text-decoration:none;color:#2d3a35;">Kompetencer</a>
@@ -487,40 +488,21 @@
     </div>
 
     <!-- Hero Section with Animated Stats -->
-    <section class="min-h-screen flex items-center pt-20 pb-20 px-4 md:px-8">
+    <section id="top" class="min-h-screen flex items-center pt-24 pb-20 px-4 md:px-8">
         <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="animate-slide-up">
-                <div class="inline-block px-4 py-1.5 bg-accent/20 rounded-full mb-6 text-sm font-semibold text-secondary">Kreativ Udvikler & Designer</div>
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-display" style="line-height:1.08;letter-spacing:-0.02em;">
-                    <span class="hero-line"><span class="hero-line-inner text-text-secondary" style="font-weight:300;">Hej, jeg er</span></span>
-                    <span class="hero-line"><span class="hero-line-inner gradient-text" style="display:block;">Silinda</span></span>
-                    <span class="hero-line"><span class="hero-line-inner text-primary" style="font-style:italic;">Baftijari</span></span>
+                <p class="hero-eyebrow"><span class="dot"></span>Åben for freelance · København</p>
+                <h1 class="hero-title font-display">
+                    <span class="hero-line"><span class="hero-line-inner">Jeg gør det</span></span>
+                    <span class="hero-line"><span class="hero-line-inner"><span class="hero-em">komplicerede<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 60 4, 140 4, 296 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span></span></span>
+                    <span class="hero-line"><span class="hero-line-inner">nemt at klikke på.</span></span>
                 </h1>
-                <p class="text-text-secondary text-lg mb-8 max-w-lg leading-relaxed">
-                    Jeg skaber digitale oplevelser, der kombinerer ren æstetik med funktionelt design. Studerer i øjeblikket Datalogi på Københavns Universitet.
+                <p class="hero-sub">
+                    Jeg har designet hjemmesider for Phone Republik siden 2017. I dag læser jeg Datalogi på KU og bygger digitale løsninger fra skitse til kode — løsninger, folk faktisk forstår.
                 </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#projekter" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-all transform hover:-translate-y-0.5 active:scale-95">Mine projekter</a>
-                    <button id="email-button" class="flex items-center gap-2 px-6 py-3 border border-accent text-secondary rounded-lg font-medium hover:bg-accent/10 transition-all transform hover:-translate-y-0.5 active:scale-95">
-                        <span>Kontakt mig</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-                
-                <!-- Animated Stats -->
-                <div class="mt-12 grid grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-secondary counter" data-target="3">0+</div>
-                        <div class="text-text-secondary text-sm mt-1">Års erfaring</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-secondary counter" data-target="10">0+</div>
-                        <div class="text-text-secondary text-sm mt-1">Projekter</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-secondary counter" data-target="10">0+</div>
-                        <div class="text-text-secondary text-sm mt-1">Kunder</div>
-                    </div>
+                <div class="hero-ctas">
+                    <a href="#projekter" class="btn-dark">Se mit arbejde <i class="fa-solid fa-arrow-down"></i></a>
+                    <a href="#om-mig" class="btn-ghost">Om mig</a>
                 </div>
             </div>
             
@@ -1464,6 +1446,32 @@
             }, 300);
         }
     });
+    </script>
+
+    <!-- Aktiv menu-pille ved scroll -->
+    <script>
+    (function () {
+        var links = document.querySelectorAll('.site-pill a[href^="#"]');
+        if (!links.length || !('IntersectionObserver' in window)) return;
+        var byId = {};
+        links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                links.forEach(function (a) { a.classList.remove('is-active'); });
+                var l = byId[e.target.id];
+                if (l) l.classList.add('is-active');
+            });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        Object.keys(byId).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) obs.observe(el);
+        });
+        var top = document.getElementById('top');
+        if (top) new IntersectionObserver(function (e) {
+            if (e[0].isIntersecting) links.forEach(function (a) { a.classList.remove('is-active'); });
+        }, { rootMargin: '-45% 0px -50% 0px' }).observe(top);
+    })();
     </script>
 
     <!-- ID-kort (Three.js) -->
