@@ -15,12 +15,18 @@
 }
 
 /* ---------- NAV ---------- */
+/* Gennemsigtig øverst (så ID-kortets strop ses helt op til kanten),
+   får baggrund når man scroller (klassen sættes i index.html) */
 .site-nav {
+  background: transparent;
+  transition: background 0.3s ease, -webkit-backdrop-filter 0.3s ease, backdrop-filter 0.3s ease;
+}
+.site-nav.is-scrolled {
   background: rgba(244, 241, 234, 0.78);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
-[data-theme="dark"] .site-nav { background: rgba(26, 31, 30, 0.72); }
+[data-theme="dark"] .site-nav.is-scrolled { background: rgba(26, 31, 30, 0.72); }
 .site-nav-inner {
   max-width: 1280px;
   margin: 0 auto;

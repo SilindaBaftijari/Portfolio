@@ -1,6 +1,6 @@
 // =====================================================================
 //  ID-kort i snor — 3D (Three.js) med verlet-fysik
-//  Træk i kortet for at svinge/kaste det · klik for at vende det
+//  Falder ned og dingler ved indlæsning · træk for at svinge · klik for at vende
 // =====================================================================
 import * as THREE from 'three';
 
@@ -16,16 +16,18 @@ const CONFIG = {
   skills: ['UI/UX & Figma', 'HTML · CSS · JavaScript', 'WordPress & PHP', 'GSAP-animationer'],
   photo: null,    // fx 'image/silinda.jpg'  (portræt, beskæres automatisk)
   qrImage: null,  // fx 'image/qr-cv.png'    (QR-kode til dit CV)
-  bandText: 'SILINDA BAFTIJARI   ✦   KREATIV UDVIKLER   ✦   ',
   colors: {
     paper: '#FFFDF8',
     ink: '#2D3332',
     muted: '#5E6663',
-    accent: '#4F6343',
-    accentSoft: '#DDE3D3',
+    accent: '#3B5A40',      // kortets grønne detaljer
+    accentSoft: '#DCE4D3',
     accentLight: '#B7C9A4',
-    back: '#2D3332',
-    edge: '#E6E1D6'
+    back: '#25302A',
+    edge: '#E6E1D6',
+    strap: '#2C4732',       // mørk skovgrøn strop
+    strapEdge: '#22392A',
+    dot: '#F3EBD7'          // cremefarvede prikker
   }
 };
 
@@ -35,13 +37,15 @@ const SLOT_W = 0.46, SLOT_H = 0.09, SLOT_Y = CARD_H / 2 - 0.2;
 const CLIP_OFF = 0.36;                       // kortets top -> ringen
 const AB = CLIP_OFF + CARD_H;                // ring -> kortets bund
 const CENTER_F = (CLIP_OFF + CARD_H / 2) / AB;
-const BAND_W = 0.3;
-let BAND_TILE = 2.4;                         // sættes ud fra tekstens længde
+const BAND_W = 0.36;                         // bredere strop
+let BAND_TILE = 0.72;                        // sættes i drawBand()
 
 // ---------- Fysik ----------
 const SEGMENTS = 22;
 const GRAVITY = -36;
 const DAMPING = 0.994;
+const INTRO_DAMPING = 0.9978;                // mindre dæmpning under intro = længere dingel
+const INTRO_MS = 3200;
 const ITER = 28;
 const SUB_DT = 1 / 120;
 const INV_ROPE = 6, INV_CARD = 0.6;
@@ -115,11 +119,11 @@ async function init(host) {
   card.add(front, back, edge);
 
   // Klips + ring
-  const metal = new THREE.MeshStandardMaterial({ color: 0xb4b9b5, metalness: 0.35, roughness: 0.35 });
-  const plastic = new THREE.MeshStandardMaterial({ color: 0xd5d9d5, roughness: 0.3, transparent: true, opacity: 0.85 });
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.02, 10, 28), metal);
+  const metal = new THREE.MeshStandardMaterial({ color: 0xc9ccc6, metalness: 0.45, roughness: 0.28 });
+  const plastic = new THREE.MeshStandardMaterial({ color: 0xd9ddd8, roughness: 0.3, transparent: true, opacity: 0.85 });
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.022, 12, 32), metal);
   ring.position.set(0, CARD_H / 2 + CLIP_OFF - 0.02, 0);
-  const clamp = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.12, 0.07), metal);
+  const clamp = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.12, 0.07), metal);
   clamp.position.set(0, CARD_H / 2 + 0.17, 0);
   const tongueF = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.34, 0.01), plastic);
   tongueF.position.set(0, CARD_H / 2 + 0.01, CARD_D / 2 + 0.01);
@@ -145,9 +149,13 @@ async function init(host) {
   bandGeo.setIndex(bandIdx);
   const bandTex = toTexture(drawBand(), maxAniso);
   bandTex.wrapT = THREE.RepeatWrapping;
-  const band = new THREE.Mesh(bandGeo, new THREE.MeshStandardMaterial({ map: bandTex, side: THREE.DoubleSide, roughness: 0.8 }));
+  const band = new THREE.Mesh(bandGeo, new THREE.MeshStandardMaterial({ map: bandTex, side: THREE.DoubleSide, roughness: 0.85 }));
   band.frustumCulled = false;
   scene.add(band);
+
+  // skjult indtil intro-faldet starter
+  card.visible = false;
+  band.visible = false;
 
   // ================= FYSIK =================
   const N = SEGMENTS;          // pts[N] = ringen (A), pts[N+1] = kortets bund (B)
@@ -158,6 +166,7 @@ async function init(host) {
   let stageW = 1, stageH = 1;
   let theta = 0, thetaTarget = 0, omega = 0;
   let dragging = false, moved = false, downX = 0, downY = 0;
+  let introUntil = 0;
   const target = new THREE.Vector3();
   const grabOffset = new THREE.Vector3();
   const curve = new THREE.CatmullRomCurve3([], false, 'centripetal');
@@ -169,7 +178,7 @@ async function init(host) {
   const basis = new THREE.Matrix4();
   const center = new THREE.Vector3();
 
-  function layout(intro) {
+  function layout() {
     const rect = host.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
     const desktop = window.innerWidth >= 768;
@@ -198,23 +207,40 @@ async function init(host) {
     const ringPx = reach + Math.max(10 + CLIP_OFF * P, free * 0.45) - CLIP_OFF * P;
     const ringY = toWY(ringPx);
     segLen = Math.max(0.05, (anchor.y - ringY) / N);
-    resetRope(intro);
+    resetRope();
   }
 
-  function resetRope(intro) {
+  function resetRope() {
     pts = []; prev = []; inv = [];
-    const lift = intro ? 2.6 : 0;
     for (let i = 0; i <= N; i++) {
-      const p = new THREE.Vector3(anchor.x, anchor.y - segLen * i + lift * (i / N), 0);
+      const p = new THREE.Vector3(anchor.x, anchor.y - segLen * i, 0);
       pts.push(p); prev.push(p.clone()); inv.push(i === 0 ? 0 : INV_ROPE);
     }
     inv[N] = INV_CARD;
     const b = new THREE.Vector3(pts[N].x, pts[N].y - AB, 0);
     pts.push(b); prev.push(b.clone()); inv.push(INV_CARD);
-    if (intro) {
-      pts[N + 1].x += 0.45; prev[N + 1].x += 0.45;
-    }
     curve.points = pts.slice(0, N + 1);
+  }
+
+  // Kortet starter oppe og ude til siden, falder, fanges af snoren og dingler
+  function dropIn() {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    resetRope();
+    if (!reduce) {
+      const ang = -0.6;                      // svinger ind fra venstre
+      const dx = Math.sin(ang), dy = -Math.cos(ang);
+      for (let i = 1; i <= N; i++) {
+        pts[i].set(anchor.x + dx * segLen * i * 0.55, anchor.y + dy * segLen * i * 0.55, 0);
+        prev[i].copy(pts[i]);
+      }
+      pts[N + 1].set(pts[N].x + dx * AB, pts[N].y + dy * AB, 0);
+      prev[N + 1].copy(pts[N + 1]);
+      omega = 0.05;                          // lille drej i faldet
+      introUntil = performance.now() + INTRO_MS;
+    }
+    card.visible = true;
+    band.visible = true;
+    host.classList.add('id-pass--ready');
   }
 
   function satisfy(ia, ib, len, ropeOnly) {
@@ -235,10 +261,11 @@ async function init(host) {
 
   function substep() {
     const g = GRAVITY * SUB_DT * SUB_DT;
+    const damp = performance.now() < introUntil ? INTRO_DAMPING : DAMPING;
     for (let i = 0; i < pts.length; i++) {
       if (inv[i] === 0) continue;
       const p = pts[i], pr = prev[i];
-      tmpA.subVectors(p, pr).multiplyScalar(DAMPING);
+      tmpA.subVectors(p, pr).multiplyScalar(damp);
       pr.copy(p);
       p.add(tmpA);
       p.y += g;
@@ -331,6 +358,7 @@ async function init(host) {
     raycaster.setFromCamera(ndc, camera);
   }
   function hitsCard(x, y) {
+    if (!card.visible) return false;
     setRay(x, y);
     return raycaster.intersectObjects(hitTargets, false).length > 0;
   }
@@ -340,6 +368,7 @@ async function init(host) {
     if (!hitsCard(e.clientX, e.clientY)) return;
     e.preventDefault();
     dragging = true; moved = false;
+    introUntil = 0;
     downX = e.clientX; downY = e.clientY;
     raycaster.ray.intersectPlane(plane, hit);
     cardCenter(center);
@@ -381,11 +410,17 @@ async function init(host) {
   let visible = true;
   new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; }).observe(host);
 
-  layout(true);
+  layout();
   let resizeTimer;
-  const relayout = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => layout(false), 120); };
+  const relayout = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(layout, 120); };
   window.addEventListener('resize', relayout);
-  window.addEventListener('load', () => layout(false));
+
+  // Start faldet lige når loader-skærmen begynder at forsvinde
+  if (document.readyState === 'complete') {
+    setTimeout(dropIn, 150);
+  } else {
+    window.addEventListener('load', () => { layout(); setTimeout(dropIn, 350); }, { once: true });
+  }
 
   let last = performance.now(), acc = 0;
   function frame(now) {
@@ -400,7 +435,6 @@ async function init(host) {
     renderer.render(scene, camera);
   }
   requestAnimationFrame(frame);
-  host.classList.add('id-pass--ready');
 }
 
 // =====================================================================
@@ -503,6 +537,13 @@ function drawFront(photo) {
     const w = photo.width * s, h = photo.height * s;
     ctx.drawImage(photo, px + (pw - w) / 2, py + (ph - h) / 2, w, h);
   } else {
+    // diskrete prikker i fotofeltet, så det matcher stroppen
+    ctx.fillStyle = 'rgba(59, 90, 64, 0.08)';
+    for (let y = py + 30, row = 0; y < py + ph; y += 56, row++) {
+      for (let x = px + 30 + (row % 2) * 28; x < px + pw; x += 56) {
+        ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
+      }
+    }
     const initials = CONFIG.firstName[0] + CONFIG.lastName[0];
     text(ctx, initials, TEX_W / 2, py + ph / 2 + 100, 'italic 300 300px Fraunces', C.accent, 0, 'center');
     text(ctx, '[DIT FOTO]', TEX_W / 2, py + ph - 50, '600 22px Inter', C.muted, 3, 'center');
@@ -545,14 +586,14 @@ function drawBack(qr) {
 
   ctx.fillStyle = C.back;
   ctx.fillRect(0, 0, TEX_W, TEX_H);
-  ctx.fillStyle = '#3A413E';
+  ctx.fillStyle = '#34413A';
   rr(ctx, TEX_W / 2 - 140, SLOT_PX_Y - 38, 280, 76, 38); ctx.fill();
 
   text(ctx, 'ADGANGSNIVEAU', 72, 242, '600 28px Inter', '#AEB6B2', 6);
   CONFIG.skills.forEach((s, i) => text(ctx, '✓  ' + s, 72, 336 + i * 74, '400 46px Inter', '#F4F1EA'));
   text(ctx, '✓  Kaffe, ubegrænset', 72, 336 + CONFIG.skills.length * 74, '400 46px Inter', '#AEB6B2');
 
-  ctx.strokeStyle = '#59615D'; ctx.lineWidth = 3; ctx.setLineDash([12, 10]);
+  ctx.strokeStyle = '#55615A'; ctx.lineWidth = 3; ctx.setLineDash([12, 10]);
   ctx.beginPath(); ctx.moveTo(72, 722); ctx.lineTo(TEX_W - 72, 722); ctx.stroke();
   ctx.setLineDash([]);
 
@@ -575,32 +616,48 @@ function drawBack(qr) {
   return c;
 }
 
+// Mørk skovgrøn strop med cremefarvede polka dots (sømløs tekstur)
 function drawBand() {
   const C = CONFIG.colors;
-  const W = 128;
-  const ctx0 = document.createElement('canvas').getContext('2d');
-  ctx0.font = '600 40px Inter';
-  if ('letterSpacing' in ctx0) ctx0.letterSpacing = '6px';
-  const tw = Math.ceil(ctx0.measureText(CONFIG.bandText).width);
-  const reps = Math.max(1, Math.round(1024 / tw));
-  const H = tw * reps;                       // præcis et helt antal gentagelser -> sømløs
+  const W = 128, H = 256;                    // 4 gentagelser af prikmønstret pr. flise
   BAND_TILE = H / W * BAND_W;
   const c = document.createElement('canvas');
   c.width = W; c.height = H;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = C.accent;
+
+  // stof
+  ctx.fillStyle = C.strap;
   ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(255,253,248,0.45)'; ctx.lineWidth = 2; ctx.setLineDash([10, 8]);
-  [12, W - 12].forEach((x) => { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); });
+
+  // vævet struktur
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+  for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.025)';
+  for (let x = 0; x < W; x += 6) ctx.fillRect(x, 0, 1, H);
+
+  // mørkere kanter
+  ctx.fillStyle = C.strapEdge;
+  ctx.fillRect(0, 0, 7, H);
+  ctx.fillRect(W - 7, 0, 7, H);
+
+  // syninger
+  ctx.strokeStyle = 'rgba(243, 235, 215, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([8, 6]);
+  [13, W - 13].forEach((x) => { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); });
   ctx.setLineDash([]);
-  ctx.save();
-  ctx.translate(W / 2, 0);
-  ctx.rotate(Math.PI / 2);
-  ctx.textBaseline = 'middle';
-  ctx.font = '600 40px Inter';
-  ctx.fillStyle = C.paper;
-  if ('letterSpacing' in ctx) ctx.letterSpacing = '6px';
-  for (let i = 0; i < reps; i++) ctx.fillText(CONFIG.bandText, i * tw, 0);
-  ctx.restore();
+
+  // polka dots — forskudt mønster, periode 64px
+  const dot = (x, y) => {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';  // lille skygge giver dybde
+    ctx.beginPath(); ctx.arc(x + 1, y + 1.5, 11, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.dot;
+    ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
+  };
+  for (let y = 0; y < H; y += 64) {
+    dot(42, y + 16);
+    dot(86, y + 16);
+    dot(64, y + 48);
+  }
   return c;
 }
