@@ -11,7 +11,7 @@ const CONFIG = {
   role: 'KREATIV UDVIKLER & DESIGNER',
   org: 'SILINDA STUDIO',
   badge: 'STAFF',
-  idLines: ['ID · 2017-0001', 'ADGANG · ALLE OMRÅDER'],
+  idLines: ['ID · 2017-0001'],
   email: 'silindabaftijari@gmail.com',
   skills: ['UI/UX & Figma', 'HTML · CSS · JavaScript', 'WordPress & PHP', 'GSAP-animationer'],
   photo: null,    // fx 'image/silinda.jpg'  (portræt, beskæres automatisk)
