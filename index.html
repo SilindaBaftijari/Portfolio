@@ -557,7 +557,8 @@
                                 <h3 class="text-xl font-bold text-primary">Phone Republik</h3>
                                 <div class="text-text-secondary">9 år · København, Region Hovedstaden, Danmark</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">okt. 2023 - nu · 2 år 3 mdr.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0"
+                            data-start-date="2023-10-01"> </div>
                         </div>
                         
                         <div class="bg-card p-6 rounded-xl border border-border mb-6 transition-all hover:border-accent/50">
@@ -612,7 +613,8 @@
                                 <h3 class="text-xl font-bold text-primary">Slagsassistent</h3>
                                 <div class="text-text-secondary">NEYE-Fonden · Deltid</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">aug. 2022 - nu · 3 år 5 mdr.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0"
+                            data-start-date="2022-08-01"> </div>
                         </div>
                         <div class="text-text-secondary mb-4">Ballerup Kommune, Region Hovedstaden, Danmark · På arbejdspladsen</div>
                         <div class="flex flex-wrap gap-2">
@@ -630,7 +632,8 @@
                                 <h3 class="text-xl font-bold text-primary">Webudvikler</h3>
                                 <div class="text-text-secondary">Freelance</div>
                             </div>
-                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0">mar. 2025 · 9 md.</div>
+                            <div class="text-sm text-secondary font-bold mt-2 md:mt-0"
+                            data-start-date="2025-03-01"> </div>
                         </div>
                         <div class="text-text-secondary mb-4">Fjernarbejde</div>
                         <p class="text-text-secondary leading-relaxed mb-6">
@@ -1499,5 +1502,69 @@
     </script>
     <script type="module" src="id-card.js"></script>
 
+
+
+
+    <!-- Automatisk opdatering af erfaring -->
+    <script>
+        (function () {
+        
+            function updateExperienceDates() {
+                const today = new Date();
+        
+                document.querySelectorAll('[data-start-date]').forEach(function(element) {
+        
+                    const startString = element.dataset.startDate;
+                    const [year, month, day] = startString.split('-').map(Number);
+        
+                    const start = new Date(year, month - 1, day);
+        
+                    let years = today.getFullYear() - start.getFullYear();
+                    let months = today.getMonth() - start.getMonth();
+        
+                    if (today.getDate() < start.getDate()) {
+                        months--;
+                    }
+        
+                    if (months < 0) {
+                        years--;
+                        months += 12;
+                    }
+        
+                    if (years < 0) return;
+        
+                    const duration = [];
+        
+                    if (years > 0) {
+                        duration.push(years + ' år');
+                    }
+        
+                    if (months > 0) {
+                        duration.push(months + ' mdr.');
+                    }
+        
+                    if (duration.length === 0) {
+                        duration.push('Under 1 måned');
+                    }
+        
+                    const startText = start.toLocaleDateString('da-DK', {
+                        month: 'short',
+                        year: 'numeric'
+                    });
+        
+                    element.textContent =
+                        startText + ' – nu · ' + duration.join(' ');
+                });
+            }
+        
+            // Opdater ved indlæsning
+            updateExperienceDates();
+        
+            // Opdater løbende, mens siden er åben
+            setInterval(updateExperienceDates, 60 * 60 * 1000);
+        
+        })();
+        </script>
+        
 </body>
 </html>
